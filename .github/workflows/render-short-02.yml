@@ -38,6 +38,10 @@ jobs:
       - name: Install HyperFrames and GSAP
         run: |
           npm install --global hyperframes
+      - name: Prepare project-local GSAP asset
+        run: |
+          mkdir -p production/short-02/vendor
+          cp production/vendor/gsap.min.js production/short-02/vendor/gsap.min.js
       - name: Validate Short 02 composition
         working-directory: production/short-02
         run: hyperframes check --json
