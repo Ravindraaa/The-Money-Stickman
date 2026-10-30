@@ -1,6 +1,10 @@
 name: Render 2D Production Pilot
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - 'production/**'
+      - '.github/workflows/render-2d-pilot.yml'
 permissions:
   contents: read
 jobs:
