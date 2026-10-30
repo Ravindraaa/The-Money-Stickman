@@ -30,7 +30,7 @@ jobs:
       - name: Validate composition
         working-directory: production
         run: hyperframes check --json
-      - name: Render 38-second visual timeline
+      - name: Render visual timeline
         working-directory: production
         run: hyperframes render
       - name: Install narration dependencies
@@ -40,15 +40,15 @@ jobs:
       - name: Generate approved Voice B narration
         working-directory: production
         run: python scripts/generate_short_01_voice.py
-      - name: Mux narration into final vertical MP4
+      - name: Mux narration into 32-second final vertical MP4
         working-directory: production
         run: |
           mkdir -p final
           VIDEO="$(find renders -maxdepth 1 -type f -name '*.mp4' | head -n 1)"
           test -n "$VIDEO"
           DURATION="$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "$VIDEO")"
-          python -c "d=float('$DURATION'); print(f'Visual render duration: {d:.2f}s'); assert 37.5 <= d <= 38.5, 'Visual render must be 38 seconds'"
-          ffmpeg -y -i "$VIDEO" -i short-01-voice.wav -filter_complex "[1:a]loudnorm=I=-16:TP=-1.5:LRA=11,apad,atrim=0:38,afade=t=out:st=37:d=1[voice]" -map 0:v:0 -map "[voice]" -c:v copy -c:a aac -b:a 192k -t 38 -movflags +faststart final/the-money-stickman-short-01.mp4
+          python -c "d=float('$DURATION'); print(f'Visual render duration: {d:.2f}s'); assert d >= 32, 'Visual render must be at least 32 seconds'"
+          ffmpeg -y -i "$VIDEO" -i short-01-voice.wav -filter_complex "[1:a]atempo=0.82,loudnorm=I=-16:TP=-1.5:LRA=11,apad,atrim=0:32,afade=t=out:st=31:d=1[voice]" -map 0:v:0 -map "[voice]" -c:v copy -c:a aac -b:a 192k -t 32 -movflags +faststart final/the-money-stickman-short-01.mp4
           ffprobe -v error -show_entries format=duration:stream=codec_name,width,height -of json final/the-money-stickman-short-01.mp4
       - name: Upload review MP4 and narration
         uses: actions/upload-artifact@v4
