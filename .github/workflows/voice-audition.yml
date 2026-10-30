@@ -1,0 +1,29 @@
+name: Generate Chatterbox Voice Audition
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audition:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install CPU dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install chatterbox-tts soundfile
+      - name: Generate audition
+        working-directory: production
+        run: python scripts/generate_voice_audition.py
+      - name: Upload voice sample
+        uses: actions/upload-artifact@v4
+        with:
+          name: money-stickman-voice-audition
+          path: production/voice-audition.wav
+          if-no-files-found: error
+          retention-days: 7
