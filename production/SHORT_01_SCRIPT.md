@@ -4,7 +4,7 @@
 **Format:** 9:16 vertical  
 **Target runtime:** 35–40 seconds  
 **Style:** Existing 2D Money Stickman character; energetic but clear American male narration  
-**Status:** Script and timing prepared; voice audition pending
+**Status:** Voice B approved; 38-second narrated review render in production
 
 ## Hook (0:00–0:06)
 **VO:** "Your paycheck hits… and somehow, it’s already gone. Where did it all go?"  
