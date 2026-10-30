@@ -3,7 +3,10 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - 'production/**'
+      - 'production/index.html'
+      - 'production/compositions/**'
+      - 'production/scripts/**'
+      - 'production/SHORT_01_SCRIPT.md'
       - '.github/workflows/render-2d-pilot.yml'
 permissions:
   contents: read
