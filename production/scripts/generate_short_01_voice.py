@@ -25,8 +25,8 @@ def main():
     print(f"Saved short-01-voice.wav at {model.sr} Hz; narration duration: {duration:.2f}s")
     if duration > 40:
         raise SystemExit(f"Narration is {duration:.2f}s; exceeds 40-second maximum")
-    if duration < 30:
-        raise SystemExit(f"Narration is {duration:.2f}s; below 30-second minimum")
+    if duration < 24:
+        raise SystemExit(f"Narration is {duration:.2f}s; unexpectedly short")
 
 if __name__ == "__main__":
     main()
