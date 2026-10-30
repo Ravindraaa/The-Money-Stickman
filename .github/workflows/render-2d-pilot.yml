@@ -20,8 +20,10 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y ffmpeg
-      - name: Install HyperFrames
-        run: npm install --global hyperframes
+      - name: Install HyperFrames and GSAP
+        run: |
+          npm install --global hyperframes
+          npm install --prefix production gsap
       - name: Validate composition
         working-directory: production
         run: hyperframes check --json
