@@ -34,6 +34,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: money-stickman-2d-pilot
-          path: production/output/*.mp4
+          path: production/renders/*.mp4
           if-no-files-found: error
           retention-days: 7
