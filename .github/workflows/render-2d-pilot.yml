@@ -1,0 +1,33 @@
+name: Render 2D Production Pilot
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install FFmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+      - name: Install HyperFrames
+        run: npm install --global hyperframes
+      - name: Validate composition
+        working-directory: production
+        run: hyperframes check --json
+      - name: Render MP4
+        working-directory: production
+        run: hyperframes render
+      - name: Upload pilot
+        uses: actions/upload-artifact@v4
+        with:
+          name: money-stickman-2d-pilot
+          path: production/output/*.mp4
+          if-no-files-found: error
+          retention-days: 7
