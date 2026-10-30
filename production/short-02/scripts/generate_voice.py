@@ -3,12 +3,7 @@ import soundfile as sf
 from chatterbox.tts import ChatterboxTTS
 
 TEXT = (
-    "Stop! Before you buy that thing online... try this. "
-    "Your brain wants it now. That's exactly how impulse spending wins. "
-    "Add it to your cart... then wait twenty-four hours. "
-    "Tomorrow, ask yourself three questions: Do I need it? Can I afford it? Will I still want it? "
-    "If the answer is no, close that tab. You just avoided an unplanned purchase. "
-    "Follow The Money Stickman for simple money rules that actually stick."
+    "Stop! Before you buy that thing online, try this simple rule. Your brain wants the reward right now, and that is exactly how impulse spending wins. Add the item to your cart, but do not check out. Wait twenty-four hours. Tomorrow, ask yourself three questions. Do I actually need it? Can I afford it without using a credit card or skipping a bill? And will I still want it next week? If the answer is no, close that tab and keep your money. If you still want it, compare prices and make a plan before you buy. One pause can prevent a purchase you regret. Follow The Money Stickman for simple money rules that actually stick."
 )
 
 def main():
