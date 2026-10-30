@@ -14,3 +14,6 @@ The existing Kokoro am_michael preset is not locked. User selected another voice
 
 ## Render
 Run the GitHub Actions workflow named Render 2D Production Pilot. It checks and renders the composition, then uploads an MP4 artifact. Inspect the rendered MP4 for animation, safe areas, legibility and sound before calling it publish-ready.
+
+## Current pilot scope
+This initial 2D pass is visual-only. Voice selection is tracked separately in VOICE_DECISION.md and must be completed before a narrated release.
