@@ -8,7 +8,7 @@
   },
   "voice": {
     "lang": "en-us",
-    "voice": "af_heart",
+    "voice": "am_michael",
     "speed": 1.04
   },
   "scenes": [
@@ -16,7 +16,7 @@
       "id": "hook",
       "start": 0,
       "end": 5,
-      "voice": "Your first one thousand dollars can feel impossible to save. And it's not always because you spend too much.",
+      "voice": "Saving your first thousand dollars can feel impossible. Here's why.",
       "headline": "WHY IS THE FIRST $1,000 SO HARD?",
       "visual": "payday_zero",
       "sfx": "cash"
@@ -25,7 +25,7 @@
       "id": "payday",
       "start": 5,
       "end": 11,
-      "voice": "Payday hits. For a moment, your bank balance looks amazing.",
+      "voice": "Payday hits. Your bank balance finally looks good.",
       "headline": "PAYDAY HITS 💸",
       "visual": "payday",
       "sfx": "pop"
@@ -34,7 +34,7 @@
       "id": "bills",
       "start": 11,
       "end": 18,
-      "voice": "Then rent, groceries, subscriptions, and bills show up like they were waiting outside.",
+      "voice": "Then rent, food, subscriptions, and bills take their share.",
       "headline": "THEN… THE BILLS ARRIVE",
       "visual": "bill_attack",
       "sfx": "whoosh"
@@ -43,7 +43,7 @@
       "id": "surprise",
       "start": 18,
       "end": 25,
-      "voice": "One surprise expense, like a car repair or a dentist visit, can wipe out what you set aside.",
+      "voice": "One car repair or dentist visit can wipe out your savings.",
       "headline": "SURPRISE EXPENSE: $240",
       "visual": "expense",
       "sfx": "impact"
@@ -52,7 +52,7 @@
       "id": "solution",
       "start": 25,
       "end": 35,
-      "voice": "Try this: move a small amount to savings automatically on payday. Start with ten or twenty dollars. Make it easy to repeat.",
+      "voice": "Try this: automatically save ten or twenty dollars each payday. Start small, and repeat.",
       "headline": "AUTOMATE A SMALL AMOUNT",
       "visual": "auto_save",
       "sfx": "coin"
@@ -61,7 +61,7 @@
       "id": "finish",
       "start": 35,
       "end": 43,
-      "voice": "Your first thousand isn't built in one perfect month. It's built one repeatable payday at a time. Follow The Money Stickman for money lessons that make sense.",
+      "voice": "Your first thousand grows one payday at a time. Follow The Money Stickman for simple money lessons.",
       "headline": "ONE PAYDAY AT A TIME.",
       "visual": "growth",
       "sfx": "sparkle"
