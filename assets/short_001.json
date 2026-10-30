@@ -1,0 +1,71 @@
+{
+  "title": "Why Your First $1,000 Is So Hard to Save",
+  "target_seconds": 43,
+  "canvas": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30
+  },
+  "voice": {
+    "lang": "en-us",
+    "voice": "af_heart",
+    "speed": 1.04
+  },
+  "scenes": [
+    {
+      "id": "hook",
+      "start": 0,
+      "end": 5,
+      "voice": "Your first one thousand dollars can feel impossible to save. And it's not always because you spend too much.",
+      "headline": "WHY IS THE FIRST $1,000 SO HARD?",
+      "visual": "payday_zero",
+      "sfx": "cash"
+    },
+    {
+      "id": "payday",
+      "start": 5,
+      "end": 11,
+      "voice": "Payday hits. For a moment, your bank balance looks amazing.",
+      "headline": "PAYDAY HITS 💸",
+      "visual": "payday",
+      "sfx": "pop"
+    },
+    {
+      "id": "bills",
+      "start": 11,
+      "end": 18,
+      "voice": "Then rent, groceries, subscriptions, and bills show up like they were waiting outside.",
+      "headline": "THEN… THE BILLS ARRIVE",
+      "visual": "bill_attack",
+      "sfx": "whoosh"
+    },
+    {
+      "id": "surprise",
+      "start": 18,
+      "end": 25,
+      "voice": "One surprise expense, like a car repair or a dentist visit, can wipe out what you set aside.",
+      "headline": "SURPRISE EXPENSE: $240",
+      "visual": "expense",
+      "sfx": "impact"
+    },
+    {
+      "id": "solution",
+      "start": 25,
+      "end": 35,
+      "voice": "Try this: move a small amount to savings automatically on payday. Start with ten or twenty dollars. Make it easy to repeat.",
+      "headline": "AUTOMATE A SMALL AMOUNT",
+      "visual": "auto_save",
+      "sfx": "coin"
+    },
+    {
+      "id": "finish",
+      "start": 35,
+      "end": 43,
+      "voice": "Your first thousand isn't built in one perfect month. It's built one repeatable payday at a time. Follow The Money Stickman for money lessons that make sense.",
+      "headline": "ONE PAYDAY AT A TIME.",
+      "visual": "growth",
+      "sfx": "sparkle"
+    }
+  ],
+  "notes": "Illustrative example only. No guaranteed results. Do not imply that $1,000 is equally attainable for everyone; encourage viewers to adapt savings to their circumstances."
+}
