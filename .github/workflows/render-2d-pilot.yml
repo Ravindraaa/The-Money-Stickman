@@ -1,4 +1,4 @@
-name: Render 2D Production Pilot
+name: Render Money Stickman Short 01
 on:
   workflow_dispatch:
   push:
@@ -10,12 +10,15 @@ permissions:
 jobs:
   render:
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
       - name: Install FFmpeg
         run: |
           sudo apt-get update
@@ -27,13 +30,32 @@ jobs:
       - name: Validate composition
         working-directory: production
         run: hyperframes check --json
-      - name: Render MP4
+      - name: Render 38-second visual timeline
         working-directory: production
         run: hyperframes render
-      - name: Upload pilot
+      - name: Install narration dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install chatterbox-tts soundfile
+      - name: Generate approved Voice B narration
+        working-directory: production
+        run: python scripts/generate_short_01_voice.py
+      - name: Mux narration into final vertical MP4
+        working-directory: production
+        run: |
+          mkdir -p final
+          VIDEO="$(find renders -maxdepth 1 -type f -name '*.mp4' | head -n 1)"
+          test -n "$VIDEO"
+          DURATION="$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "$VIDEO")"
+          python -c "d=float('$DURATION'); print(f'Visual render duration: {d:.2f}s'); assert 37.5 <= d <= 38.5, 'Visual render must be 38 seconds'"
+          ffmpeg -y -i "$VIDEO" -i short-01-voice.wav -filter_complex "[1:a]loudnorm=I=-16:TP=-1.5:LRA=11,apad,atrim=0:38,afade=t=out:st=37:d=1[voice]" -map 0:v:0 -map "[voice]" -c:v copy -c:a aac -b:a 192k -t 38 -movflags +faststart final/the-money-stickman-short-01.mp4
+          ffprobe -v error -show_entries format=duration:stream=codec_name,width,height -of json final/the-money-stickman-short-01.mp4
+      - name: Upload review MP4 and narration
         uses: actions/upload-artifact@v4
         with:
-          name: money-stickman-2d-pilot
-          path: production/renders/*.mp4
+          name: money-stickman-short-01-review
+          path: |
+            production/final/the-money-stickman-short-01.mp4
+            production/short-01-voice.wav
           if-no-files-found: error
           retention-days: 7
