@@ -27,7 +27,7 @@ jobs:
       - name: Upload voice sample
         uses: actions/upload-artifact@v4
         with:
-          name: money-stickman-voice-audition
-          path: production/voice-audition.wav
+          name: money-stickman-voice-audition-b
+          path: production/voice-audition-b.wav
           if-no-files-found: error
           retention-days: 7
