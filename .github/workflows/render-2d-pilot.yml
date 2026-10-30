@@ -10,6 +10,9 @@ permissions:
 jobs:
   render:
     runs-on: ubuntu-latest
+    concurrency:
+      group: money-stickman-short-01-render
+      cancel-in-progress: true
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
@@ -19,10 +22,27 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+      - name: Cache Python packages and Chatterbox model
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/pip
+            ~/.cache/huggingface
+            ~/.cache/torch
+          key: money-stickman-voice-${{ runner.os }}-py311-v1
+          restore-keys: |
+            money-stickman-voice-${{ runner.os }}-py311-
       - name: Install FFmpeg
         run: |
           sudo apt-get update
           sudo apt-get install -y ffmpeg
+      - name: Cache npm packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: money-stickman-npm-${{ runner.os }}-node22-v1
+          restore-keys: |
+            money-stickman-npm-${{ runner.os }}-node22-
       - name: Install HyperFrames and GSAP
         run: |
           npm install --global hyperframes
