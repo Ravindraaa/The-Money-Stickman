@@ -1,6 +1,10 @@
 name: Generate Chatterbox Voice Audition
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - 'production/scripts/generate_voice_audition.py'
+      - '.github/workflows/voice-audition.yml'
 permissions:
   contents: read
 jobs:
