@@ -41,7 +41,7 @@ if "window.__timelines.main" not in html:
 # and is cut from the actual narration paragraph for its matching section.
 import html as html_escape
 script_text = (root / "EPISODE_SCRIPT.md").read_text()
-sections = re.findall(r"\\*\\*Scene \\d+ — [^\\n]+\\*\\*\\s*\\n([^\\n]+)", script_text)
+sections = re.findall(r"\*\*Scene \d+ — [^\n]+\*\*\s*\n([^\n]+)", script_text)
 if len(sections) != 8:
     raise SystemExit(f"Expected 8 narration sections, found {len(sections)}")
 beat_cards = []
@@ -61,7 +61,6 @@ for section_no, (paragraph, section_duration) in enumerate(zip(sections, duratio
         p0, p1 = start/total*100, min(start+0.22,end)/total*100
         p2, p3 = max(start+0.22,end-0.22)/total*100, end/total*100
         safe = html_escape.escape(phrase)
-        words_upper = html_escape.escape(" ".join(words[:0]))  # deterministic empty prefix
         kind = " ".join(phrase.lower().split())
         if any(k in kind for k in ["rent","bill","insurance","groceries","gas","paycheck","paid"]):
             label, fill = "MONEY IN / MONEY OUT", "82%"
@@ -79,8 +78,8 @@ for section_no, (paragraph, section_duration) in enumerate(zip(sections, duratio
         beat_css.append(f"@keyframes microbeat{beat_no}{{0%,{p0:.4f}%{{opacity:0;transform:translateY(24px) scale(.98)}}{p1:.4f}%,{p2:.4f}%{{opacity:1;transform:translateY(0) scale(1)}}{p3:.4f}%,100%{{opacity:0;transform:translateY(-16px) scale(1.01)}}}}")
         elapsed = end
 stage_markup = '<div id="beat-stage" data-layout-ignore>' + "".join(beat_cards) + '</div>'
-html = re.sub(r'<div id="beat-stage"[^>]*>.*?</div>\\s*<audio', stage_markup + '\\n<audio', html, flags=re.S)
-html = html.replace('</style>', '\\n.scene .visual{opacity:0}\\n' + '\\n'.join(beat_css) + '\\n</style>')
+html = re.sub(r'<div id="beat-stage"[^>]*>.*?</div>\s*<audio', stage_markup + '\n<audio', html, flags=re.S)
+html = html.replace('</style>', '\n.scene .visual{opacity:0}\n' + '\n'.join(beat_css) + '\n</style>')
 print(f"VISUAL_BEATS={beat_no} TARGET_SECONDS_PER_BEAT={total/beat_no:.2f}")
 
 html_path.write_text(html)
