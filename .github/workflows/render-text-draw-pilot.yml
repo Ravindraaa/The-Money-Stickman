@@ -33,7 +33,7 @@ jobs:
         working-directory: production/text-draw
         run: |
           python -m pip install --user edge-tts
-          ~/.local/bin/edge-tts --voice en-US-AndrewMultilingualNeural --rate=+5% --text "Your paycheck just landed. Two thousand dollars. But rent, food, gas, and debt take most of it. Here's the move: save twenty dollars automatically, before you spend it." --write-media narration.mp3
+          ~/.local/bin/edge-tts --voice en-US-AndrewMultilingualNeural --rate=+5% --text "You make seventy thousand dollars a year… and you're still broke. Here's why. Your paycheck looks big, but after taxes, you're taking home much less. Then comes rent. A car payment. Insurance. Groceries. Credit card bills. Suddenly, your money is already gone before the next paycheck arrives. And here's the trap: every time you earn more, you upgrade your lifestyle. A nicer car. A bigger apartment. More subscriptions. Want to break the cycle? Stop increasing your spending every time your income increases. Pay yourself first. Automate your savings. And give every dollar a job. What's eating your paycheck?" --write-media narration.mp3
       - name: Verify and mux MP4 with narration
         working-directory: production/text-draw
         run: |
