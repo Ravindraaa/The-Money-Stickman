@@ -35,8 +35,9 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y ffmpeg
-      - name: Install HyperFrames
-        run: npm install --global hyperframes
+      - name: Install HyperFrames and GSAP
+        run: |
+          npm install --global hyperframes
       - name: Prepare project-local GSAP asset
         run: |
           mkdir -p production/short-03/vendor
@@ -51,7 +52,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install chatterbox-tts soundfile
-      - name: Generate narration in locked Voice B style
+      - name: Generate narration in approved Voice B style
         working-directory: production/short-03
         run: python scripts/generate_voice.py
       - name: Mux narration into 35-second MP4
