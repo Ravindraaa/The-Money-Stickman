@@ -11,7 +11,7 @@ for p in chunks:
     if d < 8.0:
         raise SystemExit(f"Voice chunk unexpectedly short: {p.name}={d:.2f}s")
     durations.append(d)
-total = sum(durations) + 1.0
+total = sum(durations)
 html_path = root / "index.html"
 html = html_path.read_text()
 import re
