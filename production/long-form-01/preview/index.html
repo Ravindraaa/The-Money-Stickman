@@ -6,34 +6,34 @@
 #root{position:absolute;inset:0;overflow:hidden;background:#070b18;color:#f8fafc;font-family:Arial,Helvetica,sans-serif}
 .bg{position:absolute;inset:0;background:radial-gradient(ellipse at 72% 45%,#17334e 0%,#070b18 68%)}
 .grid{position:absolute;inset:0;opacity:.13;background-image:linear-gradient(#7893b51c 1px,transparent 1px),linear-gradient(90deg,#7893b51c 1px,transparent 1px);background-size:58px 58px}
-.brand{position:absolute;top:35px;left:76px;font-size:18px;letter-spacing:5px;font-weight:900;color:#a5e6ff}
+.brand{position:absolute;top:35px;left:76px;font-size:30px;letter-spacing:4px;font-weight:900;color:#ffffff}
 .progress{position:absolute;top:82px;left:76px;right:76px;height:6px;background:#31465f;border-radius:8px;overflow:hidden}
 .progress:after{content:"";display:block;width:100%;height:100%;background:linear-gradient(90deg,#22d3ee,#4ade80);transform-origin:left;animation:progress 60s linear both}
 @keyframes progress{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 .scene{position:absolute;inset:0;opacity:0}
-.kicker{position:absolute;left:90px;top:185px;width:820px;font-size:21px;letter-spacing:4px;color:#d7e9f8;font-weight:900}
+.kicker{position:absolute;left:90px;top:185px;width:820px;font-size:30px;letter-spacing:3px;color:#ffffff;font-weight:900}
 .head{position:absolute;left:90px;top:250px;width:820px;height:220px;font-size:70px;line-height:1.03;font-weight:1000;letter-spacing:-2px;color:#ffffff}
-.copy{position:absolute;left:94px;top:535px;width:790px;height:150px;font-size:30px;line-height:1.35;color:#f1f7ff;font-weight:650}
-.accent{color:#6ee7a8}.yellow{color:#fde047}.cyan{color:#67e8f9}
+.copy{position:absolute;left:94px;top:535px;width:790px;height:150px;font-size:32px;line-height:1.35;color:#ffffff;font-weight:700}
+.accent{color:#b7ffdc}.yellow{color:#fff19a}.cyan{color:#baf6ff}
 .panel{position:absolute;left:1010px;top:195px;width:820px;height:700px;border:2px solid #58718c;border-radius:30px;background:linear-gradient(145deg,#172f49,#0d1b2d);box-shadow:0 28px 70px #0009;overflow:hidden}
-.panel-title{position:absolute;left:58px;top:48px;font-size:20px;letter-spacing:3px;font-weight:900;color:#d8eaff}
-.amount{position:absolute;left:58px;top:135px;font-size:145px;line-height:1;font-weight:1000;letter-spacing:-7px;color:#6ee7a8;text-shadow:0 12px 40px #4ade8030}
-.panel-caption{position:absolute;left:64px;top:300px;font-size:24px;font-weight:900;letter-spacing:2px;color:#f1f7ff}
+.panel-title{position:absolute;left:58px;top:38px;font-size:30px;letter-spacing:2px;font-weight:900;color:#ffffff}
+.amount{position:absolute;left:58px;top:135px;font-size:145px;line-height:1;font-weight:1000;letter-spacing:-7px;color:#b7ffdc;text-shadow:0 12px 40px #4ade8030}
+.panel-caption{position:absolute;left:64px;top:290px;font-size:30px;font-weight:900;letter-spacing:1px;color:#ffffff}
 .bill{position:absolute;left:150px;top:405px;width:500px;height:190px;border:5px solid #6ee7a8;border-radius:22px;background:linear-gradient(135deg,#15533f,#0b2a22);display:grid;place-items:center;color:#d1fae5;font-size:66px;font-weight:1000;box-shadow:0 20px 45px #0008;animation:float 2.5s ease-in-out infinite alternate}
 @keyframes float{to{transform:translateY(-14px) rotate(1deg)}}
 .coin{position:absolute;width:82px;height:82px;border:6px solid #fde68a;border-radius:50%;background:radial-gradient(circle,#facc15,#a16207);display:grid;place-items:center;color:#422006;font-size:38px;font-weight:1000;box-shadow:0 12px 25px #0008;animation:bob 2s ease-in-out infinite alternate}
 .coin.one{left:55px;top:545px}.coin.two{right:55px;top:545px;animation-delay:.5s}
 @keyframes bob{to{transform:translateY(-18px) rotate(12deg)}}
-.footer{position:absolute;left:90px;bottom:42px;font-size:18px;letter-spacing:3px;font-weight:900;color:#d1deed}
-.tile{position:absolute;width:315px;height:135px;padding:25px;border:2px solid #66829f;border-radius:18px;background:#12263c;color:#ffffff;font-size:27px;font-weight:950;box-shadow:0 12px 30px #0006}
-.tile small{display:block;margin-top:12px;font-size:20px;letter-spacing:1px;color:#d7e9f8;font-weight:800}
-.tile.rent{left:58px;top:125px}.tile.food{right:58px;top:125px}.tile.car{left:58px;top:300px}.tile.bills{right:58px;top:300px}
-.total{position:absolute;left:0;right:0;top:500px;text-align:center;font-size:74px;font-weight:1000;color:#fde047}
-.total-caption{position:absolute;left:0;right:0;top:600px;text-align:center;font-size:22px;letter-spacing:2px;font-weight:900;color:#f1f7ff}
+.footer{position:absolute;left:90px;bottom:42px;font-size:28px;letter-spacing:2px;font-weight:900;color:#ffffff}
+.tile{position:absolute;width:315px;height:120px;padding:20px;border:2px solid #9bb6d2;border-radius:18px;background:#12263c;color:#ffffff;font-size:30px;font-weight:950;box-shadow:0 12px 30px #0006;animation:tileIn .55s cubic-bezier(.2,.8,.2,1) both}
+.tile small{display:block;margin-top:8px;font-size:28px;letter-spacing:1px;color:#ffffff;font-weight:900}
+.tile.rent{left:58px;top:390px;animation-delay:.1s}.tile.food{right:58px;top:390px;animation-delay:.25s}.tile.car{left:58px;top:535px;animation-delay:.4s}.tile.bills{right:58px;top:535px;animation-delay:.55s}\n@keyframes tileIn{from{opacity:0;transform:translateY(38px) scale(.94)}to{opacity:1;transform:translateY(0) scale(1)}}
+.total{position:absolute;left:0;right:0;top:500px;text-align:center;font-size:74px;font-weight:1000;color:#ffffff}
+.total-caption{position:absolute;left:0;right:0;top:600px;text-align:center;font-size:28px;letter-spacing:1px;font-weight:900;color:#ffffff}
 .scene .kicker,.scene .head,.scene .copy,.scene .panel{animation:enter .7s ease-out both}
 @keyframes enter{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
 </style>
-<div class="bg"></div><div class="grid"></div><div class="brand">THE MONEY STICKMAN</div><div class="progress"></div>
+<div class="bg"></div><div class="grid"></div><div class="brand" data-layout-ignore>THE MONEY STICKMAN</div><div class="progress"></div>
 <section class="scene s1">
 <div class="kicker">THE FIRST MILESTONE</div>
 <div class="head">WHY IS YOUR FIRST <span class="accent">$1,000</span> SO HARD TO SAVE?</div>
