@@ -1,0 +1,46 @@
+name: Render Text + Draw Motion Pilot
+on:
+  push:
+    branches: [text-draw-motion-pilot]
+    paths:
+      - 'production/text-draw/**'
+      - '.github/workflows/render-text-draw-pilot.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install FFmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+      - name: Install HyperFrames
+        run: npm install --global hyperframes
+      - name: Validate composition
+        working-directory: production/text-draw
+        run: hyperframes check --json
+      - name: Render visual timeline
+        working-directory: production/text-draw
+        run: hyperframes render
+      - name: Verify MP4
+        working-directory: production/text-draw
+        run: |
+          VIDEO="$(find renders -maxdepth 1 -type f -name '*.mp4' | head -n 1)"
+          test -n "$VIDEO"
+          ffprobe -v error -show_entries format=duration:stream=codec_name,width,height -of json "$VIDEO"
+          mkdir -p final
+          cp "$VIDEO" final/text-draw-motion-pilot.mp4
+      - name: Upload review render
+        uses: actions/upload-artifact@v4
+        with:
+          name: text-draw-motion-pilot
+          path: production/text-draw/final/text-draw-motion-pilot.mp4
+          if-no-files-found: error
+          retention-days: 7
