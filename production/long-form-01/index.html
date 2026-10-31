@@ -27,6 +27,16 @@
 .line{position:absolute;height:5px;background:linear-gradient(90deg,#22d3ee,#4ade80);transform-origin:left;animation:linegrow 1.4s ease both}@keyframes linegrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 .scene .kicker,.scene .head,.scene .copy{animation:enter .8s cubic-bezier(.2,.8,.2,1) both}.scene .visual{animation:enter .8s cubic-bezier(.2,.8,.2,1) both,panelPulse 7s ease-in-out 1s infinite alternate}@keyframes panelPulse{from{filter:brightness(1)}to{filter:brightness(1.16)}}@keyframes enter{from{opacity:0;transform:translateY(35px)}to{opacity:1;transform:translateY(0)}}
 .footer{position:absolute;bottom:40px;left:90px;font-size:18px;color:#7891aa;letter-spacing:3px;font-weight:800}
+
+#beat-stage{position:absolute;right:100px;top:185px;width:780px;height:690px;z-index:20;pointer-events:none}
+.microbeat{position:absolute;inset:0;border:1px solid #45617e;border-radius:32px;background:linear-gradient(145deg,#132a42f5,#091626f5);box-shadow:0 30px 85px #000a;display:flex;flex-direction:column;justify-content:center;padding:70px 76px;opacity:0;overflow:hidden}
+.microbeat:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 80% 15%,#22d3ee22,transparent 45%)}
+.microbeat .beat-index{font-size:18px;letter-spacing:5px;color:#67e8f9;font-weight:900;margin-bottom:28px}
+.microbeat .beat-title{font-size:54px;line-height:1.05;font-weight:1000;letter-spacing:-1.5px;color:#f8fafc;max-width:620px}
+.microbeat .beat-sub{font-size:24px;line-height:1.25;color:#a9c2d9;margin-top:24px;font-weight:700}
+.microbeat .beat-graphic{height:12px;width:100%;border-radius:12px;background:#263b54;margin-top:46px;overflow:hidden}
+.microbeat .beat-graphic:after{content:"";display:block;height:100%;width:var(--fill,72%);background:linear-gradient(90deg,#22d3ee,#4ade80);border-radius:12px;transform-origin:left;animation:beatGrow 2.6s ease-out both}
+@keyframes beatGrow{from{transform:scaleX(.05)}to{transform:scaleX(1)}}
 </style>
 <div class="bg"></div><div class="grid"></div><div class="brand">THE MONEY STICKMAN</div><div class="progress"></div>
 <section class="scene s1">
@@ -70,5 +80,6 @@
 <div class="copy">It buys options. Less panic. More breathing room. And proof that your system is working.</div>
 <div class="visual"><div class="big-number pulse">$1,000</div><div class="label">BUILT ONE PAYDAY AT A TIME</div><div class="bill float" style="left:200px;top:390px">YOU DID IT</div><div class="tile" style="left:230px;top:590px">WHAT MAKES SAVING HARD FOR YOU?<small>SHARE IT IN THE COMMENTS</small></div></div><div class="footer">THE MONEY STICKMAN • SIMPLE MONEY HABITS THAT STICK</div>
 </section>
+<div id="beat-stage" data-layout-ignore></div>
 <audio id="narration" src="narration.mp3" data-start="0" data-duration="240" data-track-index="0" data-volume="1"></audio>
 </div></body></html>
