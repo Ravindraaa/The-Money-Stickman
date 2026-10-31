@@ -1,31 +1,23 @@
-<template>
-<style>
+<template><style>
 #root{position:absolute;inset:0;overflow:hidden;background:radial-gradient(ellipse at 52% 42%,#14263e 0%,#07101f 48%,#040914 100%);font-family:Inter,Arial,sans-serif;color:#f7fbff}
-.top{position:absolute;top:72px;left:70px;right:70px;display:flex;justify-content:space-between;align-items:center;font-size:23px;letter-spacing:5px;font-weight:800;color:#a9b7c9}.line{position:absolute;top:126px;left:70px;width:940px;height:3px;background:#23384d}.progress{height:100%;width:0;background:#54ef9b;box-shadow:0 0 20px #54ef9b}
-.eyebrow{position:absolute;top:255px;width:100%;text-align:center;font-size:28px;letter-spacing:7px;font-weight:800;color:#8fa4bb}
-.head{position:absolute;top:385px;left:65px;right:65px;text-align:center;font-size:88px;line-height:1.04;font-weight:950;letter-spacing:-3px}.green{color:#54ef9b;text-shadow:0 0 28px #54ef9b55}.pink{color:#ff6c9a;text-shadow:0 0 25px #ff6c9a55}
-.sub{position:absolute;top:685px;left:110px;right:110px;text-align:center;font-size:34px;line-height:1.3;font-weight:650;color:#d6e0ec}
-.card{position:absolute;top:960px;left:140px;right:140px;height:245px;border:3px solid #ff6c9a;border-radius:30px;background:linear-gradient(145deg,#251b31,#0b1b2b);box-shadow:0 0 55px #ff6c9a22;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;opacity:0}
-.card small{font-size:27px;letter-spacing:5px;color:#b9c7d6;font-weight:850}.minimum{font-size:62px;font-weight:950;color:#ff6c9a}
-.foot{position:absolute;bottom:100px;width:100%;text-align:center;font-size:22px;letter-spacing:5px;color:#71849b;font-weight:800}
-</style>
-<div id="root" data-composition-id="hook" data-width="1080" data-height="1920">
-<div class="top"><span>MONEY, MADE SIMPLE / THE MONEY STICKMAN</span><span>01</span></div><div class="line"><div class="progress"></div></div>
-<div class="eyebrow">THE CREDIT CARD TRAP</div>
-<div class="head" id="head">ONLY PAYING<br>THE <span class="pink">MINIMUM?</span></div>
-<div class="sub" id="sub">That small payment can keep you in debt longer.</div>
-<div class="card" id="card"><small>CREDIT CARD</small><div class="minimum">MINIMUM DUE</div></div>
-<div class="foot">SMALL MOVES. MORE CONTROL.</div></div>
-<script>
+.top{position:absolute;top:72px;left:70px;right:70px;display:flex;justify-content:space-between;font-size:21px;letter-spacing:4px;font-weight:800;color:#a9b7c9}
+.line{position:absolute;top:126px;left:70px;width:940px;height:4px;background:#23384d}.progress{height:100%;width:0;background:#54ef9b;box-shadow:0 0 20px #54ef9b}
+.eyebrow{position:absolute;top:250px;width:100%;text-align:center;font-size:25px;letter-spacing:6px;font-weight:850;color:#8fa4bb}
+.beat{position:absolute;inset:390px 65px 300px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;text-align:center;opacity:0}
+.head{font-size:76px;line-height:1.04;font-weight:950;letter-spacing:-2px;max-width:950px}
+.sub{margin-top:38px;font-size:32px;line-height:1.25;font-weight:650;color:#d6e0ec;max-width:900px}
+.visual{margin-top:62px;min-width:520px;min-height:155px;padding:28px 38px;border:2px solid #31516a;border-radius:28px;background:linear-gradient(135deg,#10253a,#0b1b2b);box-shadow:0 0 55px #54ef9b16;display:flex;align-items:center;justify-content:center;gap:24px;font-size:48px;font-weight:950}
+.pink{color:#ff6c9a;text-shadow:0 0 24px #ff6c9a55}.green{color:#54ef9b;text-shadow:0 0 24px #54ef9b55}.yellow{color:#ffd45c;text-shadow:0 0 24px #ffd45c55}
+.foot{position:absolute;bottom:100px;width:100%;text-align:center;font-size:21px;letter-spacing:5px;color:#71849b;font-weight:800}
+.pill{padding:14px 22px;border-radius:18px;background:#172d42;border:2px solid #41617b;font-size:30px}
+.bars{height:120px;display:flex;align-items:end;gap:14px}.bars i{display:block;width:54px;border-radius:10px 10px 4px 4px;background:linear-gradient(180deg,#ff6c9a,#743d68);height:30px}
+.orbit{width:115px;height:115px;border:8px solid #54ef9b;border-radius:50%;display:grid;place-items:center;font-size:42px;color:#54ef9b;box-shadow:0 0 35px #54ef9b44}
+</style><div id="root" data-composition-id="hook" data-width="1080" data-height="1920"><div class="top"><span>MONEY, MADE SIMPLE / THE MONEY STICKMAN</span><span>01</span></div><div class="line"><div class="progress"></div></div><div class="eyebrow">THE CREDIT CARD TRAP</div><section class="beat" id="beat1"><div class="head">ONLY PAYING<br>THE <span class="pink">MINIMUM?</span></div><div class="sub">That small payment can keep you in debt much longer.</div><div class="visual"><span class="pill">CREDIT CARD</span><span class="yellow">MINIMUM DUE</span></div></section><section class="beat" id="beat2"><div class="head">A SMALL<br><span class="yellow">PAYMENT.</span></div><div class="sub">It feels manageable today…</div><div class="visual"><span class="orbit">$</span><span class="pill">LOW PAYMENT</span></div></section><section class="beat" id="beat3"><div class="head">A MUCH LONGER<br><span class="pink">PAYOFF.</span></div><div class="sub">…but it can keep you in debt longer than expected.</div><div class="visual"><span class="bars"><i style="height:35px"></i><i style="height:55px"></i><i style="height:78px"></i><i style="height:105px"></i></span><span class="pink">TIME ADDS UP</span></div></section><div class="foot">SMALL MOVES. MORE CONTROL.</div></div><script>
 const tl=gsap.timeline({paused:true});
-tl.to(".progress",{width:"31%",duration:7.8,ease:"none"},0)
-.fromTo(".eyebrow",{y:25,opacity:0},{y:0,opacity:1,duration:.5},.1)
-.fromTo("#head",{y:85,opacity:0,scale:.92},{y:0,opacity:1,scale:1,duration:.75,ease:"power3.out"},.45)
-.fromTo("#sub",{y:30,opacity:0},{y:0,opacity:1,duration:.45},1.35)
-.fromTo("#card",{y:130,scale:.8,opacity:0},{y:0,scale:1,opacity:1,duration:.65,ease:"back.out(1.6)"},2.0)
-.to("#card",{rotation:-3,duration:.22,yoyo:true,repeat:3,transformOrigin:"50% 50%"},2.85)
-.to(".minimum",{scale:1.12,color:"#ffd45c",duration:.28,yoyo:true,repeat:3,transformOrigin:"50% 50%"},3.2)
-.to("#head",{y:-22,duration:.3,yoyo:true,repeat:1},5.0)
-.to("#sub",{text:"It can keep you in debt longer than you expect.",color:"#ff6c9a",duration:.25},6.1);
+tl.to(".progress",{width:"31%",duration:8,ease:"none"},0)
+.fromTo("#beat1",{y:65,scale:.94,opacity:0},{y:0,scale:1,opacity:1,duration:.38,ease:"power3.out"},0).to("#beat1",{y:-35,scale:1.03,opacity:0,duration:.25},2.27)
+.fromTo("#beat2",{y:65,scale:.94,opacity:0},{y:0,scale:1,opacity:1,duration:.38,ease:"power3.out"},2.45).to("#beat2",{y:-35,scale:1.03,opacity:0,duration:.25},4.87)
+.fromTo("#beat3",{y:65,scale:.94,opacity:0},{y:0,scale:1,opacity:1,duration:.38,ease:"power3.out"},5.05)
+.to(".foot",{color:"#54ef9b",duration:.25,yoyo:true,repeat:1},7.4);
 window.__timelines=window.__timelines||{};window.__timelines.hook=tl;
 </script></template>
