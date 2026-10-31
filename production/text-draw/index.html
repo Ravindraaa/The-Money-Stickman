@@ -1,61 +1,57 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><title>$70K and Still Broke?</title></head><body>
+<html lang="en"><head><meta charset="utf-8"><title>Your First $1,000 Is So Hard to Save</title></head><body>
 <div id="root" data-composition-id="main" data-start="0" data-duration="38" data-width="1080" data-height="1920">
 <style>
-#root{position:absolute;inset:0;overflow:hidden;background:#07101f;color:#f8fafc;font-family:Arial,Helvetica,sans-serif}
-.bg{position:absolute;inset:0;background-image:linear-gradient(#49617e20 1px,transparent 1px),linear-gradient(90deg,#49617e20 1px,transparent 1px);background-size:64px 64px}
-.glow{position:absolute;width:900px;height:900px;border-radius:50%;filter:blur(100px);opacity:.18;background:#0ea5e9;left:90px;top:420px}
-.brand{position:absolute;top:90px;left:65px;font-size:25px;letter-spacing:7px;font-weight:900;color:#67e8f9}
-.scene{position:absolute;inset:0;opacity:0;animation:show 38s linear both}
-@keyframes show{0%,100%{opacity:0}}
-.s1{animation:scene1 38s linear both}.s2{animation:scene2 38s linear both}.s3{animation:scene3 38s linear both}.s4{animation:scene4 38s linear both}.s5{animation:scene5 38s linear both}.s6{animation:scene6 38s linear both}
-@keyframes scene1{0%,1%{opacity:0}2%,10%{opacity:1}11%,100%{opacity:0}}
-@keyframes scene2{0%,10%{opacity:0}11%,23%{opacity:1}24%,100%{opacity:0}}
-@keyframes scene3{0%,23%{opacity:0}24%,42%{opacity:1}43%,100%{opacity:0}}
-@keyframes scene4{0%,42%{opacity:0}43%,63%{opacity:1}64%,100%{opacity:0}}
-@keyframes scene5{0%,63%{opacity:0}64%,83%{opacity:1}84%,100%{opacity:0}}
-@keyframes scene6{0%,83%{opacity:0}84%,98%{opacity:1}100%{opacity:0}}
-.kicker{position:absolute;top:300px;left:70px;right:70px;text-align:center;font-size:36px;letter-spacing:5px;color:#94a3b8;font-weight:900}
-.big{position:absolute;top:510px;left:35px;right:35px;text-align:center;font-size:150px;line-height:.95;font-weight:1000;letter-spacing:-6px}
-.medium{position:absolute;top:850px;left:70px;right:70px;text-align:center;font-size:58px;line-height:1.12;font-weight:950}
-.small{position:absolute;bottom:210px;left:70px;right:70px;text-align:center;font-size:34px;color:#cbd5e1;font-weight:800}
-.green{color:#4ade80}.red{color:#fb7185}.yellow{color:#facc15}.cyan{color:#67e8f9}
-.pop{animation:pop .65s cubic-bezier(.2,1.5,.4,1) both}
-@keyframes pop{0%{transform:scale(.35) translateY(80px);opacity:0}100%{transform:scale(1);opacity:1}}
-.money{position:absolute;top:1080px;left:250px;width:580px;height:250px;border:7px solid #4ade80;border-radius:35px;background:#12382e;display:grid;place-items:center;color:#4ade80;font-size:112px;font-weight:1000;box-shadow:0 0 55px #22c55e35;animation:float 2s ease-in-out infinite alternate}
-@keyframes float{to{transform:translateY(-25px) rotate(-2deg)}}
-.taxbar{position:absolute;top:1120px;left:110px;right:110px;height:90px;border-radius:20px;background:#1e293b;overflow:hidden}
-.taxfill{height:100%;width:64%;background:linear-gradient(90deg,#22c55e,#67e8f9);animation:shrink 3s ease-in-out infinite alternate}
-@keyframes shrink{to{width:43%}}
-.taxlabel{position:absolute;top:1240px;left:0;right:0;text-align:center;font-size:45px;font-weight:900}
-.cards{position:absolute;top:1000px;left:60px;right:60px;display:flex;gap:18px;justify-content:center}
-.card{width:30%;height:260px;border:4px solid #fb7185;border-radius:25px;background:#351c2b;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;color:#fecdd3;font-size:32px;font-weight:950;animation:rise .6s both}
-.card:nth-child(2){animation-delay:.25s}.card:nth-child(3){animation-delay:.5s}
-@keyframes rise{from{transform:translateY(220px) rotate(5deg);opacity:0}to{transform:none;opacity:1}}
-.drain{position:absolute;top:1370px;left:90px;right:90px;height:28px;border-radius:20px;background:#334155;overflow:hidden}
-.drain:after{content:"";display:block;width:100%;height:100%;background:#fb7185;transform-origin:left;animation:drain 4s ease-in-out infinite}
-@keyframes drain{to{transform:scaleX(.08)}}
-.chart{position:absolute;top:1040px;left:120px;right:120px;height:420px;border-left:8px solid #64748b;border-bottom:8px solid #64748b}
-.line{position:absolute;left:20px;right:20px;top:30px;height:340px;border-top:12px solid #4ade80;transform:skewY(-18deg);animation:grow 2.5s ease-out both}
-.line:after{content:"";position:absolute;right:0;top:-35px;width:55px;height:55px;border-top:12px solid #4ade80;border-right:12px solid #4ade80;transform:rotate(45deg)}
-.spending{position:absolute;top:1450px;left:140px;right:140px;height:22px;background:#fb7185;transform:rotate(8deg)}
-@keyframes grow{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
-.transferbox{position:absolute;top:1080px;left:120px;right:120px;height:180px;border:5px solid #facc15;border-radius:28px;background:#302713;display:grid;place-items:center;font-size:72px;font-weight:1000;color:#facc15;animation:slide 1s ease-out both}
-@keyframes slide{from{transform:translateX(-900px)}to{transform:none}}
-.arrow{position:absolute;top:1280px;left:455px;font-size:100px;color:#4ade80;animation:bounce 1s infinite alternate}
-@keyframes bounce{to{transform:translateY(30px)}}
-.final{position:absolute;top:500px;left:60px;right:60px;text-align:center;font-size:100px;font-weight:1000;line-height:1.05}
-.question{position:absolute;top:1050px;left:60px;right:60px;text-align:center;font-size:62px;font-weight:950;color:#facc15}
-.caption{position:absolute;bottom:110px;left:50px;right:50px;text-align:center;font-size:27px;letter-spacing:3px;color:#94a3b8;font-weight:900}
+*{box-sizing:border-box}#root{position:absolute;inset:0;overflow:hidden;background:#070b18;color:#f8fafc;font-family:Arial,Helvetica,sans-serif}
+.bg{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,#152a43 0%,#070b18 68%);}.grid{position:absolute;inset:0;opacity:.2;background-image:linear-gradient(#6c8bb31c 1px,transparent 1px),linear-gradient(90deg,#6c8bb31c 1px,transparent 1px);background-size:54px 54px}
+.brand{position:absolute;top:72px;left:64px;font-size:23px;letter-spacing:6px;font-weight:900;color:#7dd3fc}.progress{position:absolute;top:132px;left:64px;right:64px;height:7px;background:#23334b;border-radius:9px;overflow:hidden}.progress:after{content:"";display:block;width:100%;height:100%;background:linear-gradient(90deg,#22d3ee,#4ade80);transform-origin:left;animation:progress 37s linear both}@keyframes progress{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.scene{position:absolute;inset:0;opacity:0}.s1{--accent:#4ade80}.s2{--accent:#facc15}.s3{--accent:#fb7185}.s4{--accent:#38bdf8}.s5{--accent:#4ade80}.s6{--accent:#facc15}
+.kicker{position:absolute;top:240px;left:60px;right:60px;text-align:center;font-size:30px;letter-spacing:6px;color:#a9bdd4;font-weight:900}
+.headline{position:absolute;top:390px;left:48px;right:48px;text-align:center;font-size:112px;line-height:.96;font-weight:1000;letter-spacing:-5px;text-shadow:0 12px 40px #0008}
+.sub{position:absolute;top:760px;left:80px;right:80px;text-align:center;font-size:43px;line-height:1.15;font-weight:900;color:#dbeafe}
+.foot{position:absolute;bottom:180px;left:70px;right:70px;text-align:center;font-size:30px;line-height:1.2;color:#cbd5e1;font-weight:800}
+.green{color:#4ade80}.red{color:#fb7185}.yellow{color:#facc15}.cyan{color:#67e8f9}.pink{color:#f9a8d4}
+.motion{animation-delay:var(--scene-start,0s)!important;animation-fill-mode:both!important}
+.pop{animation:pop .7s cubic-bezier(.16,1.5,.4,1) both}@keyframes pop{0%{opacity:0;transform:scale(.25) translateY(100px);filter:blur(15px)}100%{opacity:1;transform:scale(1);filter:blur(0)}}
+.float{animation:float 2.4s ease-in-out infinite alternate}@keyframes float{to{transform:translateY(-24px) rotate(2deg)}}
+.money-stack{position:absolute;top:1000px;left:220px;width:640px;height:300px;transform-style:preserve-3d}
+.bill{position:absolute;width:580px;height:245px;border:7px solid #4ade80;border-radius:28px;background:linear-gradient(135deg,#174b3c,#0c2a25);box-shadow:0 20px 55px #0008;display:grid;place-items:center;color:#86efac;font-size:115px;font-weight:1000;letter-spacing:-5px}
+.bill:nth-child(1){transform:translate(38px,38px) rotate(8deg);opacity:.55}.bill:nth-child(2){transform:translate(18px,18px) rotate(4deg);opacity:.8}.bill:nth-child(3){transform:rotate(-2deg)}
+.coin{position:absolute;width:120px;height:120px;border:8px solid #fde68a;border-radius:50%;background:radial-gradient(circle,#facc15,#a16207);color:#713f12;font-size:65px;font-weight:1000;display:grid;place-items:center;box-shadow:0 15px 30px #0008;animation:coinspin 2s ease-in-out infinite alternate}@keyframes coinspin{to{transform:translateY(-38px) rotate(18deg)}}
+.coin.c1{top:950px;left:100px}.coin.c2{top:1250px;right:100px;animation-delay:.4s}.coin.c3{top:900px;right:140px;animation-delay:.8s}
+.counter{position:absolute;top:930px;left:0;right:0;text-align:center;font-size:150px;font-weight:1000;color:#4ade80;letter-spacing:-8px;text-shadow:0 0 50px #22c55e55}
+.target{position:absolute;top:1110px;left:240px;width:600px;height:600px;border:9px solid #4ade80;border-radius:50%;box-shadow:0 0 0 28px #4ade8020,0 0 0 58px #4ade8010;animation:pulse 1.8s ease-out infinite}
+.target:before,.target:after{content:"";position:absolute;border:8px solid #4ade80;border-radius:50%;inset:65px}.target:after{inset:145px;background:#4ade80}
+@keyframes pulse{50%{transform:scale(1.04);box-shadow:0 0 0 45px #4ade8020,0 0 0 85px #4ade8010}}
+.dollars{position:absolute;top:1070px;left:80px;right:80px;display:flex;justify-content:space-between;align-items:center;font-size:72px;font-weight:1000;color:#4ade80}
+.arrowline{position:absolute;top:1220px;left:100px;right:100px;height:14px;background:#4ade80;border-radius:20px;transform-origin:left;animation:draw 1.2s ease-out both}.arrowline:after{content:"";position:absolute;right:-2px;top:-22px;width:55px;height:55px;border-top:14px solid #4ade80;border-right:14px solid #4ade80;transform:rotate(45deg)}@keyframes draw{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.bill-grid{position:absolute;top:1000px;left:60px;right:60px;display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.expense{height:190px;border:3px solid #fb7185;border-radius:26px;background:linear-gradient(145deg,#3b1e31,#1e1729);display:flex;align-items:center;justify-content:space-between;padding:25px 28px;font-size:31px;font-weight:950;color:#fecdd3;box-shadow:0 14px 30px #0007;animation:drop .55s cubic-bezier(.2,1.4,.4,1) both}
+.expense:nth-child(2){animation-delay:.22s}.expense:nth-child(3){animation-delay:.44s}.expense:nth-child(4){animation-delay:.66s}
+.expense b{font-size:42px;color:#fb7185}@keyframes drop{from{opacity:0;transform:translateY(-220px) rotate(-8deg)}to{opacity:1;transform:none}}
+.domino{position:absolute;top:1490px;left:110px;right:110px;height:16px;background:#fb7185;border-radius:20px;box-shadow:0 0 30px #fb718555}
+.drainlabel{position:absolute;top:1540px;left:0;right:0;text-align:center;color:#fb7185;font-size:34px;font-weight:1000;letter-spacing:4px}
+.shock{position:absolute;top:1020px;left:350px;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,#fda4af,#be123c 55%,#4c0519);display:grid;place-items:center;color:white;font-size:125px;font-weight:1000;box-shadow:0 0 0 25px #fb718522,0 0 90px #fb718566;animation:shock .8s cubic-bezier(.2,1.6,.4,1) both}
+@keyframes shock{0%{transform:scale(0) rotate(-90deg)}70%{transform:scale(1.18) rotate(12deg)}100%{transform:scale(1) rotate(0)}}
+.backstep{position:absolute;top:1460px;left:120px;right:120px;text-align:center;font-size:55px;font-weight:1000;color:#fecdd3}
+.ladder{position:absolute;top:1000px;left:180px;width:720px;height:600px;border-left:14px solid #4ade80;border-right:14px solid #4ade80;display:flex;flex-direction:column;justify-content:space-around}
+.rung{height:13px;background:#4ade80;border-radius:20px;box-shadow:0 0 20px #4ade8055;transform-origin:left;animation:rung 1s ease-out both}.rung:nth-child(2){animation-delay:.2s}.rung:nth-child(3){animation-delay:.4s}.rung:nth-child(4){animation-delay:.6s}.rung:nth-child(5){animation-delay:.8s}@keyframes rung{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.step-label{position:absolute;left:0;right:0;text-align:center;font-size:34px;font-weight:950;color:#bbf7d0}
+.step-label.a{top:960px}.step-label.b{top:1610px}
+.auto-card{position:absolute;top:1120px;left:100px;right:100px;height:260px;border:5px solid #4ade80;border-radius:35px;background:linear-gradient(130deg,#143c32,#0b211e);display:flex;align-items:center;justify-content:space-around;box-shadow:0 20px 70px #22c55e22}
+.auto-card .from,.auto-card .to{font-size:48px;font-weight:1000;text-align:center}.auto-card .arrow{font-size:95px;color:#4ade80;animation:slidearrow .8s ease-in-out infinite alternate}@keyframes slidearrow{to{transform:translateX(22px)}}
+.smallcoin{width:120px;height:120px;border-radius:50%;background:#4ade80;color:#064e3b;display:grid;place-items:center;font-size:47px;font-weight:1000;margin:25px auto;box-shadow:0 0 45px #4ade8066}
+.endline{position:absolute;top:480px;left:55px;right:55px;text-align:center;font-size:105px;line-height:1.02;font-weight:1000;letter-spacing:-4px}
+.cta{position:absolute;top:1120px;left:65px;right:65px;border:4px solid #facc15;border-radius:30px;background:#332a12;padding:38px 25px;text-align:center;color:#fde68a;font-size:48px;font-weight:1000;box-shadow:0 0 55px #facc1522}
+.caption{position:absolute;bottom:85px;left:45px;right:45px;text-align:center;font-size:23px;letter-spacing:5px;color:#7890a8;font-weight:900}
 </style>
-<div class="bg"></div><div class="glow"></div><div class="brand">THE MONEY STICKMAN  /  MONEY, MADE SIMPLE</div>
-<section class="scene s1"><div class="kicker">YOU MAKE</div><div class="big pop"><span class="green">$70,000</span></div><div class="medium">A YEAR.</div><div class="money">$70K</div><div class="small red">AND YOU'RE STILL BROKE?</div></section>
-<section class="scene s2"><div class="kicker">THE PAYCHECK ILLUSION</div><div class="big pop">$70K</div><div class="medium">BEFORE TAXES</div><div class="taxbar"><div class="taxfill"></div></div><div class="taxlabel"><span class="green">TAKE-HOME</span> ≠ SALARY</div><div class="small">Your real paycheck is much smaller.</div></section>
-<section class="scene s3"><div class="kicker">THEN THE BILLS HIT</div><div class="big"><span class="red">GONE.</span></div><div class="cards"><div class="card">RENT<br>$1,800</div><div class="card">CAR +<br>INSURANCE</div><div class="card">FOOD +<br>DEBT</div></div><div class="drain"></div><div class="small">Your money disappears before payday.</div></section>
-<section class="scene s4"><div class="kicker">THE LIFESTYLE TRAP</div><div class="big pop">MORE<br><span class="green">INCOME</span></div><div class="medium">MORE SPENDING.</div><div class="chart"><div class="line"></div></div><div class="spending"></div><div class="small">Bigger car. Bigger apartment. More subscriptions.</div></section>
-<section class="scene s5"><div class="kicker">BREAK THE CYCLE</div><div class="big pop"><span class="yellow">PAY</span><br>YOURSELF<br><span class="green">FIRST.</span></div><div class="transferbox">PAYCHECK  →  SAVINGS</div><div class="arrow">↓</div><div class="small">Automate savings before you spend.</div></section>
-<section class="scene s6"><div class="kicker">YOUR TURN</div><div class="final"><span class="green">KEEP MORE.</span><br>BUILD WEALTH.</div><div class="question">WHAT'S EATING<br>YOUR PAYCHECK?</div><div class="small">Drop it in the comments ↓</div></section>
-<div class="caption">REAL MONEY. REAL LIFE. SMARTER MOVES.</div>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
-<script>window.__timelines=window.__timelines||{};const tl=gsap.timeline({paused:true});tl.to({}, {duration:38});window.__timelines.main=tl;</script>
+<div class="bg"></div><div class="grid"></div><div class="brand">MONEY, MADE SIMPLE  /  THE MONEY STICKMAN</div><div class="progress"></div>
+<section class="scene s1"><div class="kicker">THE FIRST MILESTONE</div><div class="headline motion pop">WHY IS YOUR<br><span class="green">$1,000</span><br>SO HARD?</div><div class="sub motion pop">It isn't your income.<br>It's the system you're stuck in.</div><div class="money-stack float"><div class="bill">$1,000</div><div class="bill">$1,000</div><div class="bill">$1,000</div></div><div class="coin c1">$</div><div class="coin c2">$</div><div class="coin c3">$</div><div class="foot">THE FIRST $1,000 CHANGES THE GAME.</div></section>
+<section class="scene s2"><div class="kicker">IT STARTS WITH ONE PAYCHECK</div><div class="headline motion pop">YOU GET PAID.<br><span class="green">YOU FEEL RICH.</span></div><div class="sub">Then rent, food, transport and bills take their turn.</div><div class="counter">$1,000</div><div class="target"></div><div class="dollars"><span>PAYDAY</span><span>→</span><span>BILLS</span></div><div class="foot">Your money already has too many jobs.</div></section>
+<section class="scene s3"><div class="kicker">THE MONEY LEAK</div><div class="headline motion pop">A LITTLE HERE.<br><span class="red">A LITTLE THERE.</span></div><div class="bill-grid"><div class="expense">TAKEOUT <b>-$24</b></div><div class="expense">SUBSCRIPTIONS <b>-$18</b></div><div class="expense">RIDESHARE <b>-$32</b></div><div class="expense">RANDOM BUYS <b>-$41</b></div></div><div class="domino"></div><div class="drainlabel">SMALL SPENDS. BIG DAMAGE.</div><div class="foot">Illustrative examples — not a budget average.</div></section>
+<section class="scene s4"><div class="kicker">THEN LIFE HAPPENS</div><div class="headline motion pop">ONE SURPRISE<br><span class="red">WIPES IT OUT.</span></div><div class="shock">!</div><div class="backstep">CAR REPAIR  −$450</div><div class="foot">Without a buffer, you start from zero again.</div></section>
+<section class="scene s5"><div class="kicker">MAKE SAVING AUTOMATIC</div><div class="headline motion pop">SAVE FIRST.<br><span class="green">SPEND SECOND.</span></div><div class="step-label a">BUILD YOUR FIRST $1,000</div><div class="ladder"><div class="rung"></div><div class="rung"></div><div class="rung"></div><div class="rung"></div><div class="rung"></div></div><div class="step-label b">START SMALL. REPEAT EVERY PAYDAY.</div><div class="auto-card"><div class="from">PAYDAY</div><div class="arrow">→</div><div class="to"><div class="smallcoin">$25</div>AUTO-SAVE</div></div><div class="foot">Even $25 each payday builds the habit.</div></section>
+<section class="scene s6"><div class="kicker">YOUR FIRST WIN</div><div class="endline motion pop"><span class="green">$1,000</span><br>IN THE BANK.<br><span class="yellow">LESS PANIC.</span></div><div class="cta">WHAT'S THE HARDEST PART<br>OF SAVING FOR YOU?</div><div class="foot">Tell me in the comments.</div></section>
+<div class="caption">SMALL MOVES. MORE CONTROL.</div>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script><script>window.__timelines=window.__timelines||{};const tl=gsap.timeline({paused:true});tl.to({}, {duration:38});window.__timelines.main=tl;</script>
 </div></body></html>
