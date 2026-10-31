@@ -1,33 +1,26 @@
-<template>
-<style>
+<template><style>
 #root{position:absolute;inset:0;overflow:hidden;background:radial-gradient(ellipse at 52% 42%,#14263e 0%,#07101f 48%,#040914 100%);font-family:Inter,Arial,sans-serif;color:#f7fbff}
-.top{position:absolute;top:72px;left:70px;right:70px;display:flex;justify-content:space-between;align-items:center;font-size:23px;letter-spacing:5px;font-weight:800;color:#a9b7c9}.line{position:absolute;top:126px;left:70px;width:940px;height:3px;background:#23384d}.progress{height:100%;width:0;background:#54ef9b;box-shadow:0 0 20px #54ef9b}
-.eyebrow{position:absolute;top:245px;width:100%;text-align:center;font-size:28px;letter-spacing:7px;font-weight:800;color:#8fa4bb}
-.head{position:absolute;top:365px;left:65px;right:65px;text-align:center;font-size:78px;line-height:1.08;font-weight:950;letter-spacing:-2px}.green{color:#54ef9b;text-shadow:0 0 28px #54ef9b55}.yellow{color:#ffd45c;text-shadow:0 0 25px #ffd45c44}
-.list{position:absolute;top:770px;left:115px;right:115px;display:flex;flex-direction:column;gap:24px}
-.item{height:105px;border:2px solid #31516a;border-radius:22px;background:linear-gradient(130deg,#10253a,#0b1b2b);display:flex;align-items:center;padding:0 30px;gap:24px;opacity:0}
-.check{width:48px;height:48px;border-radius:50%;border:3px solid #54ef9b;color:#54ef9b;display:grid;place-items:center;font-size:28px;font-weight:950}
-.item span{font-size:31px;font-weight:850;color:#e6eef7}
-.question{position:absolute;top:1320px;left:90px;right:90px;text-align:center;font-size:34px;font-weight:850;color:#e5edf5}
-.foot{position:absolute;bottom:100px;width:100%;text-align:center;font-size:22px;letter-spacing:5px;color:#71849b;font-weight:800}
-</style>
-<div id="root" data-composition-id="payoff" data-width="1080" data-height="1920">
-<div class="top"><span>MONEY, MADE SIMPLE / THE MONEY STICKMAN</span><span>03</span></div><div class="line"><div class="progress"></div></div>
-<div class="eyebrow">TAKE BACK CONTROL</div>
-<div class="head" id="head">MAKE YOUR CARD<br><span class="green">WORK FOR YOU.</span></div>
-<div class="list" id="list"><div class="item"><div class="check">✓</div><span>Know your balance</span></div><div class="item"><div class="check">✓</div><span>Understand your interest rate</span></div><div class="item"><div class="check">✓</div><span>Pay more than the minimum</span></div><div class="item"><div class="check">✓</div><span>Pause new charges if possible</span></div></div>
-<div class="question" id="question">YOUR CARD. YOUR RULES.</div>
-<div class="foot">SMALL MOVES. MORE CONTROL.</div></div>
-<script>
+.top{position:absolute;top:72px;left:70px;right:70px;display:flex;justify-content:space-between;font-size:21px;letter-spacing:4px;font-weight:800;color:#a9b7c9}
+.line{position:absolute;top:126px;left:70px;width:940px;height:4px;background:#23384d}.progress{height:100%;width:0;background:#54ef9b;box-shadow:0 0 20px #54ef9b}
+.eyebrow{position:absolute;top:250px;width:100%;text-align:center;font-size:25px;letter-spacing:6px;font-weight:850;color:#8fa4bb}
+.beat{position:absolute;inset:390px 65px 300px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;text-align:center;opacity:0}
+.head{font-size:76px;line-height:1.04;font-weight:950;letter-spacing:-2px;max-width:950px}
+.sub{margin-top:38px;font-size:32px;line-height:1.25;font-weight:650;color:#d6e0ec;max-width:900px}
+.visual{margin-top:62px;min-width:520px;min-height:155px;padding:28px 38px;border:2px solid #31516a;border-radius:28px;background:linear-gradient(135deg,#10253a,#0b1b2b);box-shadow:0 0 55px #54ef9b16;display:flex;align-items:center;justify-content:center;gap:24px;font-size:48px;font-weight:950}
+.pink{color:#ff6c9a;text-shadow:0 0 24px #ff6c9a55}.green{color:#54ef9b;text-shadow:0 0 24px #54ef9b55}.yellow{color:#ffd45c;text-shadow:0 0 24px #ffd45c55}
+.foot{position:absolute;bottom:100px;width:100%;text-align:center;font-size:21px;letter-spacing:5px;color:#71849b;font-weight:800}
+.pill{padding:14px 22px;border-radius:18px;background:#172d42;border:2px solid #41617b;font-size:30px}
+.bars{height:120px;display:flex;align-items:end;gap:14px}.bars i{display:block;width:54px;border-radius:10px 10px 4px 4px;background:linear-gradient(180deg,#ff6c9a,#743d68);height:30px}
+.orbit{width:115px;height:115px;border:8px solid #54ef9b;border-radius:50%;display:grid;place-items:center;font-size:42px;color:#54ef9b;box-shadow:0 0 35px #54ef9b44}
+</style><div id="root" data-composition-id="payoff" data-width="1080" data-height="1920"><div class="top"><span>MONEY, MADE SIMPLE / THE MONEY STICKMAN</span><span>03</span></div><div class="line"><div class="progress"></div></div><div class="eyebrow">TAKE BACK CONTROL</div><section class="beat" id="beat1"><div class="head">CHECK YOUR<br><span class="green">FULL BALANCE.</span></div><div class="sub">Start by knowing exactly what you owe.</div><div class="visual"><span class="pill">CURRENT BALANCE</span><span class="yellow">$ ?</span></div></section><section class="beat" id="beat2"><div class="head">KNOW YOUR<br><span class="green">INTEREST RATE.</span></div><div class="sub">Understand the rate being applied to your balance.</div><div class="visual"><span class="orbit">%</span><span class="pill">APR</span></div></section><section class="beat" id="beat3"><div class="head">PAY MORE THAN<br>THE <span class="yellow">MINIMUM.</span></div><div class="sub">Whenever you can, add even a little extra.</div><div class="visual"><span class="pink">MINIMUM</span><span class="green">+ EXTRA</span><span class="green">=</span><span class="yellow">PROGRESS</span></div></section><section class="beat" id="beat4"><div class="head">PAUSE NEW<br><span class="pink">CHARGES.</span></div><div class="sub">Avoid adding purchases while you pay the balance down.</div><div class="visual"><span class="pill">NEW PURCHASES</span><span class="pink">PAUSED</span></div></section><section class="beat" id="beat5"><div class="head">MAKE YOUR CARD<br><span class="green">WORK FOR YOU.</span></div><div class="sub">Your credit card should work for you, not against you.</div><div class="visual"><span class="green">YOUR CARD. YOUR RULES.</span></div></section><section class="beat" id="beat6"><div class="head">FOLLOW FOR<br><span class="yellow">MONEY MOVES.</span></div><div class="sub">The Money Stickman — money moves that make sense.</div><div class="visual"><span class="green">FOLLOW THE MONEY STICKMAN ✓</span></div></section><div class="foot">SMALL MOVES. MORE CONTROL.</div></div><script>
 const tl=gsap.timeline({paused:true});
-tl.to(".progress",{width:"100%",duration:11.8,ease:"none"},0)
-.fromTo(".eyebrow",{y:25,opacity:0},{y:0,opacity:1,duration:.45},.1)
-.fromTo("#head",{scale:.9,y:45,opacity:0},{scale:1,y:0,opacity:1,duration:.65,ease:"power3.out"},.4)
-.to(".item",{x:0,opacity:1,stagger:.48,duration:.45,ease:"power3.out"},1.5)
-.to(".check",{scale:1.18,stagger:.35,duration:.22,yoyo:true,repeat:1,transformOrigin:"50% 50%"},3.5)
-.to("#head",{y:-18,duration:.3,yoyo:true,repeat:1},5.3)
-.to("#question",{color:"#54ef9b",scale:1.08,duration:.3,yoyo:true,repeat:2},6.6)
-.to(".item",{borderColor:"#54ef9b",stagger:.22,duration:.3},8.2)
-.to("#question",{text:"YOUR CREDIT CARD SHOULD WORK FOR YOU.",duration:.25},10.0);
+tl.to(".progress",{width:"100%",duration:12,ease:"none"},0)
+.fromTo("#beat1",{y:65,scale:.94,opacity:0},{y:0,scale:1,opacity:1,duration:.38,ease:"power3.out"},0).to("#beat1",{y:-35,scale:1.03,opacity:0,duration:.25},2.07)
+.fromTo("#beat2",{y:65,scale:.94,opacity:0},{y:0,scale:1,opacity:1,duration:.38,ease:"power3.out"},2.25).to("#beat2",{y:-35,scale:1.03,opacity:0,duration:.25},4.32)
+.fromTo("#beat3",{y:65,scale:.94,opacity:0},{y:0,scale:1,opacity:1,duration:.38,ease:"power3.out"},4.5).to("#beat3",{y:-35,scale:1.03,opacity:0,duration:.25},6.57)
+.fromTo("#beat4",{y:65,scale:.94,opacity:0},{y:0,scale:1,opacity:1,duration:.38,ease:"power3.out"},6.75).to("#beat4",{y:-35,scale:1.03,opacity:0,duration:.25},8.82)
+.fromTo("#beat5",{y:65,scale:.94,opacity:0},{y:0,scale:1,opacity:1,duration:.38,ease:"power3.out"},9).to("#beat5",{y:-35,scale:1.03,opacity:0,duration:.25},10.620000000000001)
+.fromTo("#beat6",{y:65,scale:.94,opacity:0},{y:0,scale:1,opacity:1,duration:.38,ease:"power3.out"},10.8)
+.to(".foot",{color:"#54ef9b",duration:.25,yoyo:true,repeat:1},11.4);
 window.__timelines=window.__timelines||{};window.__timelines.payoff=tl;
 </script></template>
