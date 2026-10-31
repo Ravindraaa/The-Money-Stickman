@@ -33,7 +33,7 @@ jobs:
         working-directory: production/text-draw
         run: |
           python -m pip install --user edge-tts
-          ~/.local/bin/edge-tts --voice en-US-ChristopherNeural --rate=+8% --text "Your paycheck just landed. Two thousand dollars. But rent, food, gas, and debt take most of it. Here's the move: save twenty dollars automatically, before you spend it." --write-media narration.mp3
+          ~/.local/bin/edge-tts --voice en-US-AndrewMultilingualNeural --rate=+5% --text "Your paycheck just landed. Two thousand dollars. But rent, food, gas, and debt take most of it. Here's the move: save twenty dollars automatically, before you spend it." --write-media narration.mp3
       - name: Verify and mux MP4 with narration
         working-directory: production/text-draw
         run: |
