@@ -19,7 +19,7 @@ html = re.sub(r'data-duration="[^"]+"', f'data-duration="{total:.3f}"', html, co
 
 # Replace the complete scene timing block in one operation. Avoid nested-brace
 # regex replacements: CSS keyframes contain nested rule braces.
-start_marker = ".scene{position:absolute;inset:0;opacity:0;animation:show 38s linear both}"
+start_marker = ".scene{position:absolute;inset:0;opacity:0}"
 end_marker = ".kicker{"
 a = html.index(start_marker)
 b = html.index(end_marker, a)
@@ -33,7 +33,7 @@ for i, dur in enumerate(durations, 1):
     p1 = (begin + fade) / total * 100
     p2 = max(begin + fade, end - fade) / total * 100
     p3 = end / total * 100
-    rules.append(f".s{i}{{animation:scene{i} {total:.3f}s linear both}}")
+    rules.append(f".s{i}{{--scene-start:{begin:.3f}s;animation:scene{i} {total:.3f}s linear both}}")
     rules.append(
         f"@keyframes scene{i}{{0%,{p0:.4f}%{{opacity:0}}"
         f"{p1:.4f}%,{p2:.4f}%{{opacity:1}}"
