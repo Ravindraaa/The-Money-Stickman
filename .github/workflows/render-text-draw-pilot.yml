@@ -28,12 +28,12 @@ jobs:
         run: |
           python -m pip install --user edge-tts
           TTS="$HOME/.local/bin/edge-tts"
-          "$TTS" --voice en-US-AndrewMultilingualNeural --rate=+5% --text "You make seventy thousand dollars a year… and you're still broke. Here's why." --write-media voice_1.mp3
-          "$TTS" --voice en-US-AndrewMultilingualNeural --rate=+5% --text "Your paycheck looks big, but after taxes, you're taking home much less." --write-media voice_2.mp3
-          "$TTS" --voice en-US-AndrewMultilingualNeural --rate=+5% --text "Then comes rent. A car payment. Insurance. Groceries. Credit card bills. Suddenly, your money is already gone before the next paycheck arrives." --write-media voice_3.mp3
-          "$TTS" --voice en-US-AndrewMultilingualNeural --rate=+5% --text "And here's the trap: every time you earn more, you upgrade your lifestyle. A nicer car. A bigger apartment. More subscriptions." --write-media voice_4.mp3
-          "$TTS" --voice en-US-AndrewMultilingualNeural --rate=+5% --text "Want to break the cycle? Stop increasing your spending every time your income increases. Pay yourself first. Automate your savings. And give every dollar a job." --write-media voice_5.mp3
-          "$TTS" --voice en-US-AndrewMultilingualNeural --rate=+5% --text "What's eating your paycheck?" --write-media voice_6.mp3
+          "$TTS" --voice en-US-AndrewMultilingualNeural --rate=+5% --text "Why is your first one thousand dollars so hard to save? It isn't just your income. It's the system you're stuck in." --write-media voice_1.mp3
+          "$TTS" --voice en-US-AndrewMultilingualNeural --rate=+5% --text "You get paid, you feel rich. Then rent, food, transport, and bills take their turn. Your money already has too many jobs." --write-media voice_2.mp3
+          "$TTS" --voice en-US-AndrewMultilingualNeural --rate=+5% --text "A little takeout here. A subscription there. A rideshare. A random buy. Small spends quietly do big damage." --write-media voice_3.mp3
+          "$TTS" --voice en-US-AndrewMultilingualNeural --rate=+5% --text "Then life happens. One surprise expense, like a car repair, can wipe out what you saved. Without a buffer, you start from zero again." --write-media voice_4.mp3
+          "$TTS" --voice en-US-AndrewMultilingualNeural --rate=+5% --text "Flip the order. Save first, spend second. Start with twenty-five dollars every payday and automate it. Build the habit, then build your first one thousand." --write-media voice_5.mp3
+          "$TTS" --voice en-US-AndrewMultilingualNeural --rate=+5% --text "A thousand dollars in the bank means less panic. What's the hardest part of saving for you?" --write-media voice_6.mp3
           printf "file 'voice_1.mp3'\nfile 'voice_2.mp3'\nfile 'voice_3.mp3'\nfile 'voice_4.mp3'\nfile 'voice_5.mp3'\nfile 'voice_6.mp3'\n" > voice_list.txt
           ffmpeg -y -f concat -safe 0 -i voice_list.txt -c copy narration.mp3
           python sync_timeline.py
