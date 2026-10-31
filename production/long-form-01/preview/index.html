@@ -21,15 +21,15 @@
 .panel-caption{position:absolute;left:64px;top:290px;font-size:30px;font-weight:900;letter-spacing:1px;color:#ffffff}
 .bill{position:absolute;left:150px;top:405px;width:500px;height:190px;border:5px solid #6ee7a8;border-radius:22px;background:linear-gradient(135deg,#15533f,#0b2a22);display:grid;place-items:center;color:#d1fae5;font-size:66px;font-weight:1000;box-shadow:0 20px 45px #0008;animation:float 2.5s ease-in-out infinite alternate}
 @keyframes float{to{transform:translateY(-14px) rotate(1deg)}}
-.coin{position:absolute;width:82px;height:82px;border:6px solid #fde68a;border-radius:50%;background:radial-gradient(circle,#facc15,#a16207);display:grid;place-items:center;color:#422006;font-size:38px;font-weight:1000;box-shadow:0 12px 25px #0008;animation:bob 2s ease-in-out infinite alternate}
+.coin{position:absolute;width:82px;height:82px;border:6px solid #fff7cc;border-radius:50%;background:#fef3c7;display:grid;place-items:center;color:#1f2937;font-size:38px;font-weight:1000;box-shadow:0 12px 25px #0008;animation:bob 2s ease-in-out infinite alternate}
 .coin.one{left:55px;top:545px}.coin.two{right:55px;top:545px;animation-delay:.5s}
 @keyframes bob{to{transform:translateY(-18px) rotate(12deg)}}
 .footer{position:absolute;left:90px;bottom:42px;font-size:28px;letter-spacing:2px;font-weight:900;color:#ffffff}
-.tile{position:absolute;width:315px;height:120px;padding:20px;border:2px solid #9bb6d2;border-radius:18px;background:#12263c;color:#ffffff;font-size:30px;font-weight:950;box-shadow:0 12px 30px #0006;animation:tileIn .55s cubic-bezier(.2,.8,.2,1) both}
-.tile small{display:block;margin-top:8px;font-size:28px;letter-spacing:1px;color:#ffffff;font-weight:900}
-.tile.rent{left:58px;top:390px;animation-delay:.1s}.tile.food{right:58px;top:390px;animation-delay:.25s}.tile.car{left:58px;top:535px;animation-delay:.4s}.tile.bills{right:58px;top:535px;animation-delay:.55s}\n@keyframes tileIn{from{opacity:0;transform:translateY(38px) scale(.94)}to{opacity:1;transform:translateY(0) scale(1)}}
-.total{position:absolute;left:0;right:0;top:500px;text-align:center;font-size:74px;font-weight:1000;color:#ffffff}
-.total-caption{position:absolute;left:0;right:0;top:600px;text-align:center;font-size:28px;letter-spacing:1px;font-weight:900;color:#ffffff}
+.tile{position:absolute;width:315px;height:100px;padding:14px 20px;border:2px solid #9bb6d2;border-radius:18px;background:#12263c;color:#ffffff;font-size:30px;font-weight:950;box-shadow:0 12px 30px #0006;animation:tileIn .55s cubic-bezier(.2,.8,.2,1) both}
+.tile small{display:block;margin-top:5px;font-size:25px;letter-spacing:1px;color:#ffffff;font-weight:900}
+.tile.rent{left:58px;top:330px;animation-delay:25.2s}.tile.food{right:58px;top:330px;animation-delay:29s}.tile.car{left:58px;top:440px;animation-delay:33s}.tile.bills{right:58px;top:440px;animation-delay:37s}\n@keyframes tileIn{from{opacity:0;transform:translateY(38px) scale(.94)}to{opacity:1;transform:translateY(0) scale(1)}}\n@keyframes totalPop{from{opacity:0;transform:translateY(18px) scale(.92)}to{opacity:1;transform:translateY(0) scale(1)}}
+.total{position:absolute;left:0;right:0;top:555px;animation:totalPop .65s ease-out 40.5s both}text-align:center;font-size:74px;font-weight:1000;color:#ffffff}
+.total-caption{position:absolute;left:0;right:0;top:635px;text-align:center;font-size:28px;letter-spacing:1px;font-weight:900;color:#ffffff}
 .scene .kicker,.scene .head,.scene .copy,.scene .panel{animation:enter .7s ease-out both}
 @keyframes enter{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
 </style>
