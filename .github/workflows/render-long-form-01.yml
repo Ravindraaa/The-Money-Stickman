@@ -1,0 +1,79 @@
+name: Render Long Form Part 1 — First $1,000
+on:
+  push:
+    branches: [long-form-first-1000]
+    paths:
+      - 'production/long-form-01/**'
+      - '.github/workflows/render-long-form-01.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install FFmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+      - name: Install HyperFrames
+        run: npm install --global hyperframes
+      - name: Generate approved-voice narration in eight sections
+        working-directory: production/long-form-01
+        run: |
+          python -m pip install --user edge-tts
+          TTS="$HOME/.local/bin/edge-tts"
+          "$TTS" --voice en-US-AndrewMultilingualNeural --rate=+5% --text "You would think saving your first one thousand dollars should be simple. Just spend a little less, put the rest away, and wait. But if you've ever tried it, you know it can feel almost impossible. You get paid, you make a plan, and somehow, by the end of the month, that thousand dollars is still nowhere in sight. Here's the part most people miss: the first thousand isn't just a money goal. It's a battle against timing, habits, and surprise expenses." --write-media voice_1.mp3
+          "$TTS" --voice en-US-AndrewMultilingualNeural --rate=+5% --text "Picture payday. Your account balance jumps, and for a moment, it feels like you're finally ahead. Then rent is due. Your car needs gas. Groceries, phone bill, insurance, utilities, and minimum payments all arrive. Before you buy anything fun, a big part of that paycheck already belongs somewhere else. This is why a budget can feel discouraging: you're not starting with a pile of free money. You're starting with income that already has assignments." --write-media voice_2.mp3
+          "$TTS" --voice en-US-AndrewMultilingualNeural --rate=+5% --text "Now look at the spending that doesn't feel important. A delivery fee. A coffee because you're tired. A subscription you forgot about. One quick rideshare. A sale that looks too good to miss. None of these purchases has to be huge to matter. The problem is repetition. A few small charges, repeated every week, can quietly take the exact money you thought you would save. You don't need to feel guilty about every coffee. You need to notice the pattern before it becomes automatic." --write-media voice_3.mp3
+          "$TTS" --voice en-US-AndrewMultilingualNeural --rate=+5% --text "And then something breaks. A tire goes flat. A car repair shows up. Your phone needs replacing, or a medical bill arrives. If you have no emergency buffer, the money you carefully saved gets pulled straight back out. It feels like starting over, and that's one reason people give up. But that setback doesn't mean you're bad at saving. It means your savings goal and your emergency protection were competing for the same dollars." --write-media voice_4.mp3
+          "$TTS" --voice en-US-AndrewMultilingualNeural --rate=+5% --text "Here's a simple shift: stop waiting to see what is left at the end of the month. Decide what you can save when you get paid, move it first, and build your spending plan around what's left. Even twenty-five dollars every payday is a real start. If you are paid twice a month, that's fifty dollars a month. The first win isn't the amount. It's proving that saving happens automatically, before the money gets absorbed by everything else." --write-media voice_5.mp3
+          "$TTS" --voice en-US-AndrewMultilingualNeural --rate=+5% --text "Break the goal into smaller milestones. Your first one hundred dollars creates a little breathing room. Two hundred and fifty proves you can repeat the habit. Five hundred gives you a more meaningful buffer. Then keep going toward one thousand. Use a separate savings account if that helps you avoid spending it. Set an automatic transfer for payday, and check your progress once a week instead of checking the balance every hour." --write-media voice_6.mp3
+          "$TTS" --voice en-US-AndrewMultilingualNeural --rate=+5% --text "Try this for your next four paychecks. First, look at the last thirty days of transactions and find one recurring expense you can reduce or cancel. Second, choose a payday savings amount that won't make you miss rent, food, or required bills. Third, automate that transfer. Fourth, when an unexpected expense happens, pause and rebuild instead of deciding the whole plan failed. Keep the amount realistic. Consistency beats an ambitious target you abandon after two weeks." --write-media voice_7.mp3
+          "$TTS" --voice en-US-AndrewMultilingualNeural --rate=+5% --text "Your first thousand dollars won't solve every money problem. But it can give you options. A car repair becomes less terrifying. A surprise bill is less likely to go straight onto a credit card. And you begin to trust yourself with money because you've built a system that works in real life. Start with the next twenty-five dollars, not the perfect month. What's the biggest thing that makes saving difficult for you? Tell me in the comments, and follow for practical money habits that actually stick." --write-media voice_8.mp3
+          printf "file 'voice_1.mp3'\nfile 'voice_2.mp3'\nfile 'voice_3.mp3'\nfile 'voice_4.mp3'\nfile 'voice_5.mp3'\nfile 'voice_6.mp3'\nfile 'voice_7.mp3'\nfile 'voice_8.mp3'\n" > voice_list.txt
+          ffmpeg -y -f concat -safe 0 -i voice_list.txt -c copy narration.mp3
+          python sync_timeline.py
+      - name: Validate composition
+        working-directory: production/long-form-01
+        run: hyperframes check --json
+      - name: Render visual timeline
+        working-directory: production/long-form-01
+        run: hyperframes render
+      - name: Verify and mux 16:9 MP4 with narration
+        working-directory: production/long-form-01
+        run: |
+          set -euo pipefail
+          VIDEO="$(find renders -maxdepth 1 -type f -name '*.mp4' | sort | tail -n 1)"
+          test -n "$VIDEO"
+          VIDEO_DURATION="$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$VIDEO")"
+          AUDIO_DURATION="$(ffprobe -v error -show_entries format=duration -of csv=p=0 narration.mp3)"
+          python - "$VIDEO_DURATION" "$AUDIO_DURATION" <<'PY'
+          import sys
+          v, a = map(float, sys.argv[1:])
+          print(f"Visual render: {v:.2f}s | Narration: {a:.2f}s")
+          if v + 0.35 < a: raise SystemExit("FAIL: visual timeline ends before narration")
+          if not 210 <= a <= 255: raise SystemExit("FAIL: narration outside 3:30–4:15 target")
+          PY
+          mkdir -p final
+          ffmpeg -y -i "$VIDEO" -i narration.mp3 -map 0:v:0 -map 1:a:0 -c:v libx264 -preset veryfast -crf 18 -pix_fmt yuv420p -r 30 -c:a aac -b:a 192k -af "loudnorm=I=-16:TP=-1.5:LRA=11" -t "$AUDIO_DURATION" -movflags +faststart final/first-1000-part-1-16x9.mp4
+          ffprobe -v error -select_streams v:0 -show_entries stream=width,height,r_frame_rate -of default=noprint_wrappers=1 final/first-1000-part-1-16x9.mp4
+          FINAL_VIDEO="$(ffprobe -v error -select_streams v:0 -show_entries stream=duration -of csv=p=0 final/first-1000-part-1-16x9.mp4)"
+          FINAL_AUDIO="$(ffprobe -v error -select_streams a:0 -show_entries stream=duration -of csv=p=0 final/first-1000-part-1-16x9.mp4)"
+          python - "$FINAL_VIDEO" "$FINAL_AUDIO" <<'PY'
+          import sys
+          v,a=map(float,sys.argv[1:])
+          if abs(v-a)>0.35: raise SystemExit("FAIL: audio/video durations not aligned")
+          PY
+      - name: Upload review render
+        uses: actions/upload-artifact@v4
+        with:
+          name: first-1000-long-form-part-1
+          path: production/long-form-01/final/first-1000-part-1-16x9.mp4
+          if-no-files-found: error
+          retention-days: 7
