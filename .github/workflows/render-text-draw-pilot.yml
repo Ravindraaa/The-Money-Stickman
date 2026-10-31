@@ -23,26 +23,54 @@ jobs:
           sudo apt-get install -y ffmpeg
       - name: Install HyperFrames
         run: npm install --global hyperframes
+      - name: Generate voiceover in six scene-matched chunks
+        working-directory: production/text-draw
+        run: |
+          python -m pip install --user edge-tts
+          TTS="$HOME/.local/bin/edge-tts"
+          "$TTS" --voice en-US-AndrewMultilingualNeural --rate=+5% --text "You make seventy thousand dollars a year… and you're still broke. Here's why." --write-media voice_1.mp3
+          "$TTS" --voice en-US-AndrewMultilingualNeural --rate=+5% --text "Your paycheck looks big, but after taxes, you're taking home much less." --write-media voice_2.mp3
+          "$TTS" --voice en-US-AndrewMultilingualNeural --rate=+5% --text "Then comes rent. A car payment. Insurance. Groceries. Credit card bills. Suddenly, your money is already gone before the next paycheck arrives." --write-media voice_3.mp3
+          "$TTS" --voice en-US-AndrewMultilingualNeural --rate=+5% --text "And here's the trap: every time you earn more, you upgrade your lifestyle. A nicer car. A bigger apartment. More subscriptions." --write-media voice_4.mp3
+          "$TTS" --voice en-US-AndrewMultilingualNeural --rate=+5% --text "Want to break the cycle? Stop increasing your spending every time your income increases. Pay yourself first. Automate your savings. And give every dollar a job." --write-media voice_5.mp3
+          "$TTS" --voice en-US-AndrewMultilingualNeural --rate=+5% --text "What's eating your paycheck?" --write-media voice_6.mp3
+          printf "file 'voice_1.mp3'\nfile 'voice_2.mp3'\nfile 'voice_3.mp3'\nfile 'voice_4.mp3'\nfile 'voice_5.mp3'\nfile 'voice_6.mp3'\n" > voice_list.txt
+          ffmpeg -y -f concat -safe 0 -i voice_list.txt -c copy narration.mp3
+          python sync_timeline.py
       - name: Validate composition
         working-directory: production/text-draw
         run: hyperframes check --json
       - name: Render visual timeline
         working-directory: production/text-draw
         run: hyperframes render
-      - name: Generate US English voiceover
-        working-directory: production/text-draw
-        run: |
-          python -m pip install --user edge-tts
-          ~/.local/bin/edge-tts --voice en-US-AndrewMultilingualNeural --rate=+5% --text "You make seventy thousand dollars a year… and you're still broke. Here's why. Your paycheck looks big, but after taxes, you're taking home much less. Then comes rent. A car payment. Insurance. Groceries. Credit card bills. Suddenly, your money is already gone before the next paycheck arrives. And here's the trap: every time you earn more, you upgrade your lifestyle. A nicer car. A bigger apartment. More subscriptions. Want to break the cycle? Stop increasing your spending every time your income increases. Pay yourself first. Automate your savings. And give every dollar a job. What's eating your paycheck?" --write-media narration.mp3
       - name: Verify and mux MP4 with narration
         working-directory: production/text-draw
         run: |
-          VIDEO="$(find renders -maxdepth 1 -type f -name '*.mp4' | head -n 1)"
+          set -euo pipefail
+          VIDEO="$(find renders -maxdepth 1 -type f -name '*.mp4' | sort | tail -n 1)"
           test -n "$VIDEO"
+          VIDEO_DURATION="$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$VIDEO")"
+          AUDIO_DURATION="$(ffprobe -v error -show_entries format=duration -of csv=p=0 narration.mp3)"
+          python - "$VIDEO_DURATION" "$AUDIO_DURATION" <<'PY'
+          import sys
+          v, a = map(float, sys.argv[1:])
+          print(f"Visual render: {v:.2f}s | Narration: {a:.2f}s")
+          if v + 0.25 < a:
+              raise SystemExit("FAIL: visual timeline ends before narration")
+          if a < 20:
+              raise SystemExit("FAIL: narration is unexpectedly short")
+          PY
           mkdir -p final
-          ffmpeg -y -i "$VIDEO" -i narration.mp3 -map 0:v:0 -map 1:a:0 -c:v copy -c:a aac -b:a 192k -af "loudnorm=I=-16:TP=-1.5:LRA=11" -shortest final/text-draw-motion-pilot.mp4
-          ffprobe -v error -show_entries format=duration:stream=codec_name,width,height -of json final/text-draw-motion-pilot.mp4
-          ffprobe -v error -select_streams a:0 -show_entries stream=codec_name -of csv=p=0 final/text-draw-motion-pilot.mp4 | grep -q aac
+          ffmpeg -y -i "$VIDEO" -i narration.mp3 -map 0:v:0 -map 1:a:0 -c:v libx264 -preset veryfast -crf 18 -pix_fmt yuv420p -c:a aac -b:a 192k -af "loudnorm=I=-16:TP=-1.5:LRA=11" -t "$AUDIO_DURATION" -movflags +faststart final/text-draw-motion-pilot.mp4
+          FINAL_VIDEO="$(ffprobe -v error -select_streams v:0 -show_entries stream=duration -of csv=p=0 final/text-draw-motion-pilot.mp4)"
+          FINAL_AUDIO="$(ffprobe -v error -select_streams a:0 -show_entries stream=duration -of csv=p=0 final/text-draw-motion-pilot.mp4)"
+          python - "$FINAL_VIDEO" "$FINAL_AUDIO" <<'PY'
+          import sys
+          v, a = map(float, sys.argv[1:])
+          print(f"FINAL VIDEO={v:.2f}s AUDIO={a:.2f}s")
+          if abs(v-a) > 0.35:
+              raise SystemExit("FAIL: final audio/video durations are not aligned")
+          PY
       - name: Upload review render
         uses: actions/upload-artifact@v4
         with:
