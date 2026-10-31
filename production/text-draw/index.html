@@ -1,5 +1,11 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><title>Text + Draw Motion Pilot</title></head><body>
 <div id="root" data-composition-id="main" data-start="0" data-duration="12" data-width="1080" data-height="1920">
-<div id="pilot" data-composition-id="pilot" data-composition-src="pilot.html" data-start="0" data-duration="12" data-track-index="1" data-track-kind="graphics" data-width="1080" data-height="1920"></div>
-</div></body></html>
+<div id="pilot" data-composition-id="pilot" data-composition-src="compositions/pilot.html" data-start="0" data-duration="12" data-track-index="1" data-track-kind="graphics" data-width="1080" data-height="1920"></div>
+</div>
+<script>
+const rootTl = gsap.timeline({ paused: true });
+rootTl.to({}, { duration: 12 });
+window.__timelines["main"] = rootTl;
+</script>
+</body></html>
