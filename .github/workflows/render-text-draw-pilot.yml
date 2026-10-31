@@ -29,14 +29,20 @@ jobs:
       - name: Render visual timeline
         working-directory: production/text-draw
         run: hyperframes render
-      - name: Verify MP4
+      - name: Generate US English voiceover
+        working-directory: production/text-draw
+        run: |
+          python -m pip install --user edge-tts
+          ~/.local/bin/edge-tts --voice en-US-ChristopherNeural --rate=+8% --text "Your paycheck just landed. Two thousand dollars. But rent, food, gas, and debt take most of it. Here's the move: save twenty dollars automatically, before you spend it." --write-media narration.mp3
+      - name: Verify and mux MP4 with narration
         working-directory: production/text-draw
         run: |
           VIDEO="$(find renders -maxdepth 1 -type f -name '*.mp4' | head -n 1)"
           test -n "$VIDEO"
-          ffprobe -v error -show_entries format=duration:stream=codec_name,width,height -of json "$VIDEO"
           mkdir -p final
-          cp "$VIDEO" final/text-draw-motion-pilot.mp4
+          ffmpeg -y -i "$VIDEO" -i narration.mp3 -map 0:v:0 -map 1:a:0 -c:v copy -c:a aac -b:a 192k -af "loudnorm=I=-16:TP=-1.5:LRA=11" -shortest final/text-draw-motion-pilot.mp4
+          ffprobe -v error -show_entries format=duration:stream=codec_name,width,height -of json final/text-draw-motion-pilot.mp4
+          ffprobe -v error -select_streams a:0 -show_entries stream=codec_name -of csv=p=0 final/text-draw-motion-pilot.mp4 | grep -q aac
       - name: Upload review render
         uses: actions/upload-artifact@v4
         with:
