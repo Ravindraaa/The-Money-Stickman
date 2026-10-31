@@ -1,44 +1,26 @@
-<template>
-<style>
+<template><style>
 #root{position:absolute;inset:0;overflow:hidden;background:radial-gradient(ellipse at 52% 42%,#14263e 0%,#07101f 48%,#040914 100%);font-family:Inter,Arial,sans-serif;color:#f7fbff}
-.top{position:absolute;top:72px;left:70px;right:70px;display:flex;justify-content:space-between;align-items:center;font-size:23px;letter-spacing:5px;font-weight:800;color:#a9b7c9}.line{position:absolute;top:126px;left:70px;width:940px;height:3px;background:#23384d}.progress{height:100%;width:0;background:#54ef9b;box-shadow:0 0 20px #54ef9b}
-.eyebrow{position:absolute;top:230px;width:100%;text-align:center;font-size:28px;letter-spacing:7px;font-weight:800;color:#8fa4bb}
-.head{position:absolute;top:340px;left:55px;right:55px;text-align:center;font-size:77px;line-height:1.08;font-weight:950;letter-spacing:-2px}.green{color:#54ef9b;text-shadow:0 0 25px #54ef9b44}.pink{color:#ff6c9a}
-.explain{position:absolute;top:555px;left:95px;right:95px;text-align:center;font-size:32px;color:#d3dfeb;font-weight:650}
-.panel{position:absolute;top:735px;left:105px;right:105px;height:350px;border:3px solid #31516a;border-radius:32px;background:linear-gradient(130deg,#0c1d31,#102a3c);box-shadow:0 0 60px #54ef9b14}
-.paneltitle{position:absolute;top:780px;width:100%;text-align:center;font-size:28px;letter-spacing:4px;color:#aebfd0;font-weight:850}
-.balance{position:absolute;top:860px;left:0;right:0;text-align:center;font-size:84px;font-weight:950;color:#f2f6fb}
-.interest{position:absolute;top:980px;width:100%;text-align:center;font-size:35px;font-weight:900;color:#ff6c9a;opacity:0}
-.stack{position:absolute;top:1160px;left:145px;right:145px;height:120px;display:flex;align-items:end;justify-content:center;gap:16px}
-.bar{width:110px;border-radius:14px 14px 5px 5px;background:linear-gradient(180deg,#ff6c9a,#743d68);height:25px;transform-origin:bottom}
-.labels{position:absolute;top:1320px;width:100%;text-align:center;font-size:28px;letter-spacing:3px;font-weight:850;color:#b5c6d7}
-.foot{position:absolute;bottom:100px;width:100%;text-align:center;font-size:22px;letter-spacing:5px;color:#71849b;font-weight:800}
-</style>
-<div id="root" data-composition-id="interest" data-width="1080" data-height="1920">
-<div class="top"><span>MONEY, MADE SIMPLE / THE MONEY STICKMAN</span><span>02</span></div><div class="line"><div class="progress"></div></div>
-<div class="eyebrow">WHY THE BALANCE LINGERS</div>
-<div class="head" id="head">YOUR PAYMENT<br>COVERS <span class="pink">ONLY PART.</span></div>
-<div class="explain" id="explain">The unpaid balance can keep collecting interest.</div>
-<div class="panel" id="panel"></div><div class="paneltitle">REMAINING BALANCE</div>
-<div class="balance" id="balance">BALANCE</div><div class="interest" id="interestLabel">+ INTEREST CAN ACCRUE</div>
-<div class="stack" id="stack"><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
-<div class="labels" id="labels">MONTH AFTER MONTH</div>
-<div class="foot">SMALL MOVES. MORE CONTROL.</div></div>
-<script>
+.top{position:absolute;top:72px;left:70px;right:70px;display:flex;justify-content:space-between;font-size:21px;letter-spacing:4px;font-weight:800;color:#a9b7c9}
+.line{position:absolute;top:126px;left:70px;width:940px;height:4px;background:#23384d}.progress{height:100%;width:0;background:#54ef9b;box-shadow:0 0 20px #54ef9b}
+.eyebrow{position:absolute;top:250px;width:100%;text-align:center;font-size:25px;letter-spacing:6px;font-weight:850;color:#8fa4bb}
+.beat{position:absolute;inset:390px 65px 300px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;text-align:center;opacity:0}
+.head{font-size:76px;line-height:1.04;font-weight:950;letter-spacing:-2px;max-width:950px}
+.sub{margin-top:38px;font-size:32px;line-height:1.25;font-weight:650;color:#d6e0ec;max-width:900px}
+.visual{margin-top:62px;min-width:520px;min-height:155px;padding:28px 38px;border:2px solid #31516a;border-radius:28px;background:linear-gradient(135deg,#10253a,#0b1b2b);box-shadow:0 0 55px #54ef9b16;display:flex;align-items:center;justify-content:center;gap:24px;font-size:48px;font-weight:950}
+.pink{color:#ff6c9a;text-shadow:0 0 24px #ff6c9a55}.green{color:#54ef9b;text-shadow:0 0 24px #54ef9b55}.yellow{color:#ffd45c;text-shadow:0 0 24px #ffd45c55}
+.foot{position:absolute;bottom:100px;width:100%;text-align:center;font-size:21px;letter-spacing:5px;color:#71849b;font-weight:800}
+.pill{padding:14px 22px;border-radius:18px;background:#172d42;border:2px solid #41617b;font-size:30px}
+.bars{height:120px;display:flex;align-items:end;gap:14px}.bars i{display:block;width:54px;border-radius:10px 10px 4px 4px;background:linear-gradient(180deg,#ff6c9a,#743d68);height:30px}
+.orbit{width:115px;height:115px;border:8px solid #54ef9b;border-radius:50%;display:grid;place-items:center;font-size:42px;color:#54ef9b;box-shadow:0 0 35px #54ef9b44}
+</style><div id="root" data-composition-id="interest" data-width="1080" data-height="1920"><div class="top"><span>MONEY, MADE SIMPLE / THE MONEY STICKMAN</span><span>02</span></div><div class="line"><div class="progress"></div></div><div class="eyebrow">WHY THE BALANCE LINGERS</div><section class="beat" id="beat1"><div class="head">HERE’S THE <span class="yellow">TRAP.</span></div><div class="sub">Your minimum payment covers only part of what you owe.</div><div class="visual"><span class="pill">TOTAL BALANCE</span><span class="pink">−</span><span class="pill">MINIMUM PAID</span></div></section><section class="beat" id="beat2"><div class="head">THE REST STAYS<br><span class="pink">ON YOUR BALANCE.</span></div><div class="sub">The unpaid amount does not simply disappear.</div><div class="visual"><span class="yellow">REMAINING BALANCE</span><span class="orbit">$</span></div></section><section class="beat" id="beat3"><div class="head">INTEREST KEEPS<br><span class="pink">ADDING UP.</span></div><div class="sub">That unpaid balance can keep collecting interest…</div><div class="visual"><span class="bars"><i style="height:28px"></i><i style="height:48px"></i><i style="height:72px"></i><i style="height:100px"></i></span></div></section><section class="beat" id="beat4"><div class="head">MONTH AFTER<br><span class="yellow">MONTH.</span></div><div class="sub">…even while you keep making payments.</div><div class="visual"><span class="pill">MONTH 1</span><span class="pill">MONTH 2</span><span class="pill">MONTH 3</span></div></section><section class="beat" id="beat5"><div class="head">ON TIME DOESN’T<br>MEAN <span class="pink">FAST.</span></div><div class="sub">Your debt may shrink much more slowly than you think.</div><div class="visual"><span class="green">PAYMENT MADE ✓</span><span class="pink">BALANCE STILL HIGH</span></div></section><section class="beat" id="beat6"><div class="head">NEW PURCHASES<br>MAKE IT <span class="pink">HARDER.</span></div><div class="sub">Adding new charges can make it even harder to get ahead.</div><div class="visual"><span class="pill">NEW CHARGES +</span><span class="yellow">BALANCE GROWS</span></div></section><div class="foot">SMALL MOVES. MORE CONTROL.</div></div><script>
 const tl=gsap.timeline({paused:true});
-tl.to(".progress",{width:"68%",duration:14.8,ease:"none"},0)
-.fromTo(".eyebrow",{y:25,opacity:0},{y:0,opacity:1,duration:.45},.1)
-.fromTo("#head",{y:75,opacity:0},{y:0,opacity:1,duration:.65,ease:"power3.out"},.35)
-.fromTo("#explain",{opacity:0,y:25},{opacity:1,y:0,duration:.45},1.0)
-.fromTo("#panel",{y:80,scale:.9,opacity:0},{y:0,scale:1,opacity:1,duration:.65,ease:"back.out(1.35)"},1.55)
-.fromTo("#balance",{scale:.6,opacity:0},{scale:1,opacity:1,duration:.5,ease:"back.out(1.8)"},2.25)
-.fromTo("#interestLabel",{y:20,opacity:0},{y:0,opacity:1,duration:.4},3.0)
-.to(".bar",{height:(i)=>[36,48,62,77,92,108][i],stagger:.28,duration:.4,ease:"power2.out"},4.0)
-.to("#labels",{color:"#54ef9b",scale:1.08,duration:.3,yoyo:true,repeat:2},6.2)
-.to("#head",{scale:.94,y:-25,duration:.3},8.0)
-.to("#explain",{text:"Your debt may shrink much more slowly than you think.",color:"#ff6c9a",duration:.25},8.25)
-.to(".bar",{y:-18,stagger:.12,duration:.22,yoyo:true,repeat:3},10.0)
-.to("#interestLabel",{scale:1.12,duration:.25,yoyo:true,repeat:3},12.0)
-.to("#balance",{text:"STILL OWED",color:"#ffd45c",duration:.3},14.0);
+tl.to(".progress",{width:"68%",duration:15,ease:"none"},0)
+.fromTo("#beat1",{y:65,scale:.94,opacity:0},{y:0,scale:1,opacity:1,duration:.38,ease:"power3.out"},0).to("#beat1",{y:-35,scale:1.03,opacity:0,duration:.25},2.27)
+.fromTo("#beat2",{y:65,scale:.94,opacity:0},{y:0,scale:1,opacity:1,duration:.38,ease:"power3.out"},2.45).to("#beat2",{y:-35,scale:1.03,opacity:0,duration:.25},4.720000000000001)
+.fromTo("#beat3",{y:65,scale:.94,opacity:0},{y:0,scale:1,opacity:1,duration:.38,ease:"power3.out"},4.9).to("#beat3",{y:-35,scale:1.03,opacity:0,duration:.25},7.17)
+.fromTo("#beat4",{y:65,scale:.94,opacity:0},{y:0,scale:1,opacity:1,duration:.38,ease:"power3.out"},7.35).to("#beat4",{y:-35,scale:1.03,opacity:0,duration:.25},9.620000000000001)
+.fromTo("#beat5",{y:65,scale:.94,opacity:0},{y:0,scale:1,opacity:1,duration:.38,ease:"power3.out"},9.8).to("#beat5",{y:-35,scale:1.03,opacity:0,duration:.25},12.07)
+.fromTo("#beat6",{y:65,scale:.94,opacity:0},{y:0,scale:1,opacity:1,duration:.38,ease:"power3.out"},12.25)
+.to(".foot",{color:"#54ef9b",duration:.25,yoyo:true,repeat:1},14.4);
 window.__timelines=window.__timelines||{};window.__timelines.interest=tl;
 </script></template>
