@@ -15,30 +15,39 @@ for p in chunks:
 total = sum(durations) + 0.8
 html_path = root / "index.html"
 html = html_path.read_text()
-html = re.sub(r'data-duration="[^"]+"', f'data-duration="{total:.3f}"', html)
-html = re.sub(r'\.scene\{position:absolute;inset:0;opacity:0;animation:show 38s linear both\}', f'.scene{{position:absolute;inset:0;opacity:0}}', html)
+html = re.sub(r'data-duration="[^"]+"', f'data-duration="{total:.3f}"', html, count=1)
 
-# Build each scene's own timing from the measured duration of its matching spoken chunk.
-starts = []
+# Replace the complete scene timing block in one operation. Avoid nested-brace
+# regex replacements: CSS keyframes contain nested rule braces.
+start_marker = ".scene{position:absolute;inset:0;opacity:0;animation:show 38s linear both}"
+end_marker = ".kicker{"
+a = html.index(start_marker)
+b = html.index(end_marker, a)
 cursor = 0.0
-for d in durations:
-    starts.append(cursor)
-    cursor += d
-
-for i, (start, dur) in enumerate(zip(starts, durations), 1):
-    end = start + dur
-    # A short crossfade keeps the screen changing with the spoken section.
+rules = [".scene{position:absolute;inset:0;opacity:0}"]
+for i, dur in enumerate(durations, 1):
+    begin = cursor
+    end = cursor + dur
     fade = min(0.22, dur * 0.12)
-    anim = f'.s{i}{{animation:scene{i} {total:.3f}s linear both}}'
-    html = re.sub(rf'\.s{i}\{{animation:scene{i}[^}}]*\}}', anim, html)
-    kf = (f'@keyframes scene{i}{{'
-          f'0%,{start/total*100:.4f}%{{opacity:0}}'
-          f'{(start+fade)/total*100:.4f}%,{max(start+fade,end-fade)/total*100:.4f}%{{opacity:1}}'
-          f'{end/total*100:.4f}%,100%{{opacity:0}}'
-          f'}}')
-    html = re.sub(rf'@keyframes scene{i}\{{[^}}]*\}}', kf, html)
+    p0 = begin / total * 100
+    p1 = (begin + fade) / total * 100
+    p2 = max(begin + fade, end - fade) / total * 100
+    p3 = end / total * 100
+    rules.append(f".s{i}{{animation:scene{i} {total:.3f}s linear both}}")
+    rules.append(
+        f"@keyframes scene{i}{{0%,{p0:.4f}%{{opacity:0}}"
+        f"{p1:.4f}%,{p2:.4f}%{{opacity:1}}"
+        f"{p3:.4f}%,100%{{opacity:0}}}}"
+    )
+    cursor = end
+html = html[:a] + "\n".join(rules) + "\n" + html[b:]
 
-# Keep the final scene visible through the final spoken question and a short tail.
+audio = f'<audio id="narration" src="narration.mp3" data-start="0" data-duration="{total:.3f}" data-track-index="0" data-volume="1"></audio>'
+if '<audio id="narration"' in html:
+    html = re.sub(r'<audio id="narration"[^>]*></audio>', audio, html)
+else:
+    html = html.replace('<div class="brand">', audio + '\n<div class="brand">', 1)
+
 html_path.write_text(html)
 print("VOICE_DURATIONS=" + ",".join(f"{x:.2f}" for x in durations))
 print(f"COMPOSITION_DURATION={total:.2f}")
