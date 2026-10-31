@@ -1,0 +1,78 @@
+name: Render Money Stickman Short 03
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'production/short-03/**'
+      - '.github/workflows/render-short-03.yml'
+permissions:
+  contents: read
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: money-stickman-short-03-render
+      cancel-in-progress: true
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Cache Python packages and Chatterbox model
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/pip
+            ~/.cache/huggingface
+            ~/.cache/torch
+          key: money-stickman-short03-voice-${{ runner.os }}-py311-v1
+          restore-keys: money-stickman-short03-voice-${{ runner.os }}-py311-
+      - name: Install FFmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+      - name: Install HyperFrames
+        run: npm install --global hyperframes
+      - name: Prepare project-local GSAP asset
+        run: |
+          mkdir -p production/short-03/vendor
+          cp production/vendor/gsap.min.js production/short-03/vendor/gsap.min.js
+      - name: Validate Short 03 composition
+        working-directory: production/short-03
+        run: hyperframes check --json
+      - name: Render visual timeline
+        working-directory: production/short-03
+        run: hyperframes render
+      - name: Install narration dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install chatterbox-tts soundfile
+      - name: Generate narration in locked Voice B style
+        working-directory: production/short-03
+        run: python scripts/generate_voice.py
+      - name: Mux narration into 35-second MP4
+        working-directory: production/short-03
+        run: |
+          mkdir -p final
+          VIDEO="$(find renders -maxdepth 1 -type f -name '*.mp4' | head -n 1)"
+          test -n "$VIDEO"
+          DURATION="$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "$VIDEO")"
+          python -c "d=float('$DURATION'); print(f'Visual render duration: {d:.2f}s'); assert d >= 35, 'Visual render must be at least 35 seconds'"
+          AUDIO_DURATION="$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 short-03-voice.wav)"
+          SPEED="$(python -c "d=float('$AUDIO_DURATION'); print(f'{d/35:.6f}')")"
+          echo "Narration duration: ${AUDIO_DURATION}s; tempo factor: ${SPEED}"
+          ffmpeg -y -i "$VIDEO" -i short-03-voice.wav -filter_complex "[1:a]atempo=$SPEED,loudnorm=I=-16:TP=-1.5:LRA=11,apad,atrim=0:35,afade=t=out:st=34:d=1[voice]" -map 0:v:0 -map "[voice]" -c:v copy -c:a aac -b:a 192k -t 35 -movflags +faststart final/the-money-stickman-short-03.mp4
+          ffprobe -v error -show_entries format=duration:stream=codec_name,width,height -of json final/the-money-stickman-short-03.mp4
+      - name: Upload review MP4
+        uses: actions/upload-artifact@v4
+        with:
+          name: money-stickman-short-03-review
+          path: |
+            production/short-03/final/the-money-stickman-short-03.mp4
+            production/short-03/short-03-voice.wav
+          if-no-files-found: error
+          retention-days: 7
