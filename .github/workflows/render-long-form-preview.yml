@@ -10,7 +10,7 @@ permissions:
   contents: read
 jobs:
   preview:
-    if: github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'push'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -24,6 +24,9 @@ jobs:
           sudo apt-get install -y ffmpeg
       - name: Install HyperFrames
         run: npm install --global hyperframes
+      - name: Validate preview timeline generator syntax
+        working-directory: production/long-form-01/preview
+        run: python -m py_compile sync_preview.py
       - name: Generate first two approved-voice sections
         working-directory: production/long-form-01/preview
         run: |
