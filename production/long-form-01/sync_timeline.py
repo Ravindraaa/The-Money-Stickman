@@ -16,6 +16,8 @@ html_path = root / "index.html"
 html = html_path.read_text()
 import re
 html = re.sub(r'data-duration="[^"]+"', f'data-duration="{total:.3f}"', html, count=1)
+html = re.sub(r'(<audio id="narration"[^>]*data-duration=")[^"]+(")', rf'\g<1>{total:.3f}\g<2>', html, count=1)
+html = re.sub(r'animation:progress 240s linear both', f'animation:progress {total:.3f}s linear both', html)
 start_marker = ".scene{position:absolute;inset:0;opacity:0}"
 end_marker = ".kicker{"
 a, b = html.index(start_marker), html.index(end_marker, html.index(start_marker))
@@ -30,6 +32,10 @@ for i, dur in enumerate(durations, 1):
     rules.append(f"@keyframes scene{i}{{0%,{p0:.4f}%{{opacity:0}}{p1:.4f}%,{p2:.4f}%{{opacity:1}}{p3:.4f}%,100%{{opacity:0}}}}")
     cursor = end
 html = html[:a] + "\n".join(rules) + "\n" + html[b:]
+if "window.__timelines.main" not in html:
+    registration = ('<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>'
+        + '<script>window.__timelines=window.__timelines||{};const tl=gsap.timeline({paused:true});tl.to({}, {duration:' + f"{total:.3f}" + '});window.__timelines.main=tl;</script>')
+    html = html.replace("</body>", registration + "</body>")
 html_path.write_text(html)
 print("VOICE_DURATIONS=" + ",".join(f"{x:.2f}" for x in durations))
 print(f"COMPOSITION_DURATION={total:.2f}")
