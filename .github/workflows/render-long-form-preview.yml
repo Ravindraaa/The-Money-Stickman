@@ -1,0 +1,59 @@
+name: Visual Preview — First 60 Seconds
+on:
+  push:
+    branches: [long-form-first-1000]
+    paths:
+      - 'production/long-form-01/preview/**'
+      - '.github/workflows/render-long-form-preview.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install FFmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+      - name: Install HyperFrames
+        run: npm install --global hyperframes
+      - name: Generate first two approved-voice sections
+        working-directory: production/long-form-01/preview
+        run: |
+          python -m pip install --user edge-tts
+          TTS="$HOME/.local/bin/edge-tts"
+          "$TTS" --voice en-US-AndrewMultilingualNeural --rate=+5% --text "You would think saving your first one thousand dollars should be simple. Just spend a little less, put the rest away, and wait. But if you've ever tried it, you know it can feel almost impossible. You get paid, you make a plan, and somehow, by the end of the month, that thousand dollars is still nowhere in sight. Here's the part most people miss: the first thousand isn't just a money goal. It's a battle against timing, habits, and surprise expenses." --write-media voice_1.mp3
+          "$TTS" --voice en-US-AndrewMultilingualNeural --rate=+5% --text "Picture payday. Your account balance jumps, and for a moment, it feels like you're finally ahead. Then rent is due. Your car needs gas. Groceries, phone bill, insurance, utilities, and minimum payments all arrive. Before you buy anything fun, a big part of that paycheck already belongs somewhere else. This is why a budget can feel discouraging: you're not starting with a pile of free money. You're starting with income that already has assignments." --write-media voice_2.mp3
+          printf "file 'voice_1.mp3'\nfile 'voice_2.mp3'\n" > voice_list.txt
+          ffmpeg -y -f concat -safe 0 -i voice_list.txt -c copy narration.mp3
+          python sync_preview.py
+      - name: Validate composition
+        working-directory: production/long-form-01/preview
+        run: hyperframes check --json
+      - name: Render 16:9 visual preview
+        working-directory: production/long-form-01/preview
+        run: hyperframes render
+      - name: Mux and verify preview
+        working-directory: production/long-form-01/preview
+        run: |
+          set -euo pipefail
+          VIDEO="$(find renders -maxdepth 1 -type f -name '*.mp4' | sort | tail -n 1)"
+          test -n "$VIDEO"
+          mkdir -p final
+          DURATION="$(ffprobe -v error -show_entries format=duration -of csv=p=0 narration.mp3)"
+          ffmpeg -y -i "$VIDEO" -i narration.mp3 -map 0:v:0 -map 1:a:0 -c:v libx264 -preset veryfast -crf 18 -pix_fmt yuv420p -r 30 -c:a aac -b:a 192k -t "$DURATION" -movflags +faststart final/first-60-seconds-preview-16x9.mp4
+          ffprobe -v error -select_streams v:0 -show_entries stream=width,height,r_frame_rate -of default=noprint_wrappers=1 final/first-60-seconds-preview-16x9.mp4
+          ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1 final/first-60-seconds-preview-16x9.mp4
+      - name: Upload visual preview
+        uses: actions/upload-artifact@v4
+        with:
+          name: first-60-seconds-visual-preview
+          path: production/long-form-01/preview/final/first-60-seconds-preview-16x9.mp4
+          if-no-files-found: error
+          retention-days: 7
