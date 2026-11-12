@@ -39,7 +39,7 @@ def load_script(path: Path | None, inline_text: str | None) -> str:
     return text
 
 
-def waveform_report(audio: np.ndarray, sample_rate: int) -> dict:
+def waveform_report(audio: np.ndarray, sample_rate: int) -> tuple[np.ndarray, dict]:
     if audio.ndim != 1:
         audio = np.asarray(audio).reshape(-1)
     if audio.size == 0 or not np.isfinite(audio).all():
