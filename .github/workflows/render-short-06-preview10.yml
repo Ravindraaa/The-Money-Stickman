@@ -57,7 +57,7 @@ jobs:
           V="$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "$VIDEO")"
           A="$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 preview-voice.wav)"
           python -c "v=float('$V'); a=float('$A'); print(f'Video {v:.2f}s | Voice {a:.2f}s'); assert v >= 10 and 7.5 <= a <= 11.5"
-          ffmpeg -y -i "$VIDEO" -i preview-voice.wav -filter_complex "[1:a]loudnorm=I=-16:TP=-1.5:LRA=11,apad,atrim=0:10,afade=t=out:st=9.4:d=.6[a]" -map 0:v:0 -map "[a]" -c:v copy -c:a aac -b:a 192k -t 10 -movflags +faststart final/short06-3d-preview-10s.mp4
+          ffmpeg -y -i "$VIDEO" -i preview-voice.wav -filter_complex "[1:a]loudnorm=I=-16:TP=-1.5:LRA=11,apad,atrim=0:10,afade=t=out:st=9.4:d=0.6[a]" -map 0:v:0 -map "[a]" -c:v copy -c:a aac -b:a 192k -t 10 -movflags +faststart final/short06-3d-preview-10s.mp4
           ffprobe -v error -show_entries format=duration:stream=width,height,codec_name -of json final/short06-3d-preview-10s.mp4
       - uses: actions/upload-artifact@v4
         with:
