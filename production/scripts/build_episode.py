@@ -56,8 +56,8 @@ def scene_html(beat: dict, number: int) -> str:
 <div id="root" data-composition-id="beat-{number:03d}" data-width="{W}" data-height="{H}">
 <div class="grid"></div><div class="glow"></div>
 <div class="brand">THE MONEY STICKMAN</div>
-<div class="eyebrow">{label}</div>
-<div class="headline">{caption}</div>
+<div class="eyebrow">BEAT {number:02d} • {label}</div>
+<div class="headline">{label}</div>
 <div class="stage"><div class="floor"></div>{svg_character()}<div class="prop">{icon}</div></div>
 <div class="caption">{caption}</div><div class="number">BEAT {number:02d}</div>
 </div>
