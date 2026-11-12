@@ -1,0 +1,35 @@
+<template><style>
+#root{position:absolute;inset:0;overflow:hidden;background:radial-gradient(ellipse at 50% 45%,#173e5b,#07111e 68%);color:white;font-family:Inter,Arial,sans-serif}
+#bg{position:absolute;inset:-10%;background:radial-gradient(circle at 50% 45%,#28618a55,transparent 55%)}
+.header{position:absolute;top:62px;left:60px;right:60px;display:flex;justify-content:space-between;font-size:20px;font-weight:900;letter-spacing:3px;color:#c9e7f8}
+.scene{position:absolute;inset:0;opacity:0}
+.kicker{position:absolute;top:210px;width:100%;text-align:center;color:#7af5bf;font-size:27px;font-weight:900;letter-spacing:5px}
+.head{position:absolute;top:280px;left:65px;right:65px;text-align:center;font-size:76px;line-height:1.02;font-weight:1000;text-shadow:0 8px 35px #0009}
+.stage{position:absolute;top:610px;left:80px;right:80px;height:730px;perspective:1300px;display:flex;align-items:center;justify-content:center}
+.platform{position:absolute;width:760px;height:500px;bottom:30px;border-radius:50%;background:radial-gradient(ellipse,#2c85ba55,#07111e00 70%);transform:rotateX(68deg)}
+.coin-stack{position:absolute;display:flex;flex-direction:column-reverse;align-items:center;transform-style:preserve-3d;filter:drop-shadow(0 30px 25px #0009)}
+.coin{width:250px;height:62px;border-radius:50%;margin-top:-8px;background:linear-gradient(90deg,#8a5a12,#ffe28a 25%,#b97a1c 50%,#ffdc78 76%,#87510e);border:5px solid #ffe9a6;box-shadow:0 10px 0 #74440d,0 18px 25px #0008;position:relative}
+.coin:after{content:"$";position:absolute;inset:0;text-align:center;color:#7a4a10;font-size:42px;font-weight:1000;line-height:52px;text-shadow:0 1px #fff8}
+.stack-a{left:95px;bottom:175px}.stack-b{right:95px;bottom:235px;transform:scale(1.22) translateZ(80px)}
+.fund-card{position:absolute;width:360px;height:420px;border-radius:34px;background:linear-gradient(145deg,#2376a8,#092c4a);border:3px solid #7bdfff;box-shadow:0 35px 65px #000a,inset 0 0 50px #7bdfff33;transform:rotateY(-18deg) rotateX(8deg);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:24px}
+.fund-card .big{font-size:110px;font-weight:1000;color:#b8f3ff;text-shadow:0 8px 22px #001}
+.fund-card .small{font-size:30px;letter-spacing:3px;font-weight:900}
+.company{position:absolute;width:100px;height:170px;bottom:90px;border-radius:12px 12px 4px 4px;background:linear-gradient(90deg,#14517a,#56b7e8,#12496c);box-shadow:0 20px 30px #0008;transform:translateZ(90px)}
+.company:before{content:"";position:absolute;inset:18px;background:repeating-linear-gradient(90deg,#d7f7ff 0 9px,transparent 9px 23px),repeating-linear-gradient(0deg,transparent 0 18px,#b4eaff 18px 27px);opacity:.75}
+.c1{left:70px;height:150px}.c2{left:190px;height:220px}.c3{right:190px;height:190px}.c4{right:70px;height:130px}
+.caption{position:absolute;bottom:260px;left:70px;right:70px;min-height:150px;padding:25px 32px;border-radius:30px;background:#061321f2;border:2px solid #ffffff44;box-shadow:0 20px 50px #0009;display:flex;align-items:center;justify-content:center;text-align:center;font-size:43px;line-height:1.13;font-weight:950}
+.caption em{font-style:normal;color:#7af5bf}
+.footer{position:absolute;bottom:78px;width:100%;text-align:center;font-size:19px;letter-spacing:5px;font-weight:900;color:#a9c1d3}
+.mascot{position:absolute;right:65px;top:135px;width:65px;height:100px;z-index:5}
+.mascot circle,.mascot path{stroke:#fff;stroke-width:7;fill:none;stroke-linecap:round;stroke-linejoin:round}.mascot circle{fill:#fff}
+</style><div id="root" data-composition-id="episode" data-width="1080" data-height="1920"><div id="bg"></div><div class="header"><span>THE MONEY STICKMAN</span><span>3D EXPLAINER TEST</span></div><div id="scenes"></div><svg class="mascot" viewBox="0 0 100 150"><circle cx="50" cy="24" r="18"/><path d="M50 44V95M50 55L20 78M50 55L80 78M50 95L25 135M50 95L75 135"/></svg><div class="footer">SMALL MOVES. LONG-TERM THINKING.</div></div><script>
+const beats=[
+{t:0,d:5,k:"START WITH ONE SIMPLE MOVE",h:"DON'T PICK STOCKS.",c:"Want to invest? Start with a <em>broad index fund.</em>",type:0},
+{t:5,d:5,k:"ONE FUND. MANY COMPANIES.",h:"OWN A SMALL SLICE.",c:"One investment can hold <em>hundreds of companies.</em>",type:1}
+];
+const host=document.querySelector("#scenes");
+beats.forEach((b,i)=>{let e=document.createElement("section");e.className="scene";e.id="s"+i;e.innerHTML='<div class="kicker">'+b.k+'</div><div class="head">'+b.h+'</div><div class="stage"><div class="platform"></div>'+(i===0?'<div class="coin-stack stack-a">'+Array(4).fill('<div class="coin"></div>').join("")+'</div><div class="coin-stack stack-b">'+Array(6).fill('<div class="coin"></div>').join("")+'</div><div class="fund-card"><div class="big">$</div><div class="small">INDEX FUND</div></div>':'<div class="company c1"></div><div class="company c2"></div><div class="company c3"></div><div class="company c4"></div><div class="fund-card"><div class="big">500+</div><div class="small">COMPANIES</div></div>')+'</div><div class="caption">'+b.c+'</div>';host.appendChild(e)});
+const tl=gsap.timeline({paused:true});
+beats.forEach((b,i)=>{let e="#s"+i;tl.set(e,{opacity:1},b.t);tl.fromTo(e+" .head",{y:70,opacity:0},{y:0,opacity:1,duration:.45,ease:"power3.out"},b.t);tl.fromTo(e+" .fund-card",{y:260,rotationY:-35,rotationX:25,scale:.65,opacity:0},{y:0,rotationY:-18,rotationX:8,scale:1,opacity:1,duration:1,ease:"back.out(1.4)"},b.t+.25);tl.fromTo(e+" .coin-stack",{y:220,rotationX:50,opacity:0},{y:0,rotationX:0,opacity:1,duration:.85,stagger:.12,ease:"back.out(1.5)"},b.t+.4);tl.fromTo(e+" .company",{y:180,scaleY:.2,opacity:0},{y:0,scaleY:1,opacity:1,duration:.6,stagger:.12,ease:"back.out(1.6)"},b.t+.35);tl.fromTo(e+" .caption",{y:75,opacity:0,scale:.96},{y:0,opacity:1,scale:1,duration:.45,ease:"power3.out"},b.t+.55);tl.to(e+" .fund-card",{y:-24,rotationY:0,duration:1.1,yoyo:true,repeat:1,ease:"sine.inOut"},b.t+1.5);tl.to(e+" .coin-stack",{y:-22,duration:.75,yoyo:true,repeat:1,ease:"sine.inOut"},b.t+1.7);tl.to(e,{opacity:0,duration:.12},b.t+b.d-.12)});
+window.__timelines=window.__timelines||{};window.__timelines.episode=tl;
+</script></template>
