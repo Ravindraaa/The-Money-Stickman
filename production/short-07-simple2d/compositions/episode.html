@@ -1,0 +1,84 @@
+<template>
+<style>
+#root{position:absolute;inset:0;overflow:hidden;background:#fff;color:#171717;font-family:Arial,sans-serif}
+.scene{position:absolute;inset:0;opacity:0}
+.top{position:absolute;top:115px;left:70px;right:70px;text-align:center;font-size:56px;line-height:1.08;font-weight:900;color:#171717}
+.draw{position:absolute;left:80px;right:80px;top:400px;height:900px}
+.caption{position:absolute;left:75px;right:75px;bottom:220px;min-height:170px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:49px;line-height:1.12;font-weight:900;color:#171717}
+.yellow{color:#e5a900}
+.stroke{fill:none;stroke:#171717;stroke-width:13;stroke-linecap:round;stroke-linejoin:round}
+.thin{fill:none;stroke:#171717;stroke-width:8;stroke-linecap:round;stroke-linejoin:round}
+.fill-yellow{fill:#ffd84d;stroke:#171717;stroke-width:9;stroke-linejoin:round}
+.fill-green{fill:#73b96b;stroke:#171717;stroke-width:9;stroke-linejoin:round}
+.fill-red{fill:#ef7770;stroke:#171717;stroke-width:9;stroke-linejoin:round}
+.note{font-size:45px;font-weight:900;fill:#171717}
+.small{font-size:34px;font-weight:900;fill:#171717}
+#brand{position:absolute;bottom:90px;left:0;right:0;text-align:center;font-size:24px;font-weight:900;letter-spacing:5px;color:#555}
+</style>
+<div id="root" data-composition-id="episode">
+<section class="scene" id="a">
+<div class="top">WHY IS YOUR GROCERY BILL<br/>GETTING BIGGER?</div>
+<svg class="draw" viewBox="0 0 920 900">
+<!-- stick person -->
+<circle cx="260" cy="185" r="75" fill="#ffd6ad" stroke="#171717" stroke-width="10"/>
+<path class="thin" d="M230 175h4m55 0h4M240 225q25 20 50 0"/>
+<path class="stroke" d="M260 265v270m0 80-100 150m100-150 105 150m-105-280-105 105m105-105 120 80"/>
+<!-- grocery bag -->
+<path class="fill-yellow" d="M470 440h300l-35 300H505z"/>
+<path class="stroke" d="M545 440q0-125 75-125t75 125"/>
+<path class="thin" d="M550 540h135"/>
+<g id="items"><path class="fill-green" d="M570 430q-40-85 15-125 60 60 15 125z"/><path class="fill-red" d="M660 430q-15-90 50-100 45 75-50 100z"/></g>
+<text x="620" y="650" text-anchor="middle" class="note">GROCERIES</text>
+<path class="thin" d="M390 500l45 0m-22-22 22 22-22 22"/>
+</svg>
+<div class="caption">You buy the <span class="yellow">&nbsp;same groceries…</span></div>
+</section>
+<section class="scene" id="b">
+<div class="top">BUT THE PRICE TAGS<br/>KEEP GOING UP.</div>
+<svg class="draw" viewBox="0 0 920 900">
+<g id="tag1"><path class="fill-yellow" d="M120 240h260v180H120z"/><circle cx="345" cy="275" r="13" fill="white" stroke="#171717" stroke-width="7"/><text x="245" y="355" text-anchor="middle" class="note">$5</text></g>
+<g id="tag2"><path class="fill-red" d="M520 120h260v180H520z"/><circle cx="745" cy="155" r="13" fill="white" stroke="#171717" stroke-width="7"/><text x="645" y="235" text-anchor="middle" class="note">$8</text></g>
+<path id="arrow" d="M390 500Q470 400 560 350" stroke="#e3a600" stroke-width="20" fill="none" stroke-linecap="round"/>
+<path d="M520 350l45 0-10 45" stroke="#e3a600" stroke-width="20" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="460" y="680" text-anchor="middle" class="note">SAME ITEM</text>
+</svg>
+<div class="caption">That's <span class="yellow">&nbsp;inflation.</span> Prices rise.</div>
+</section>
+<section class="scene" id="c">
+<div class="top">YOUR $10 DOESN'T<br/>GO AS FAR.</div>
+<svg class="draw" viewBox="0 0 920 900">
+<g id="money"><path class="fill-green" d="M120 260h290v170H120z"/><circle cx="265" cy="345" r="48" fill="#fff2a8" stroke="#171717" stroke-width="8"/><text x="265" y="362" text-anchor="middle" class="note">$10</text></g>
+<path class="stroke" d="M490 340h90m-35-35 35 35-35 35"/>
+<g id="basket"><path class="fill-yellow" d="M620 420h210l-25 220H645z"/><path class="stroke" d="M660 420q0-115 65-115t65 115"/></g>
+<g id="few"><path class="fill-green" d="M680 390q-25-55 15-80 40 35 15 80z"/><path class="fill-red" d="M745 390q-10-60 35-65 30 50-35 65z"/></g>
+<text x="460" y="740" text-anchor="middle" class="small">LESS BUYING POWER</text>
+</svg>
+<div class="caption">The same <span class="yellow">&nbsp;$10</span> buys you less.</div>
+</section>
+<div id="brand">THE MONEY STICKMAN</div>
+</div>
+<script>
+const tl=gsap.timeline({paused:true});
+tl.set("#a",{opacity:1},0)
+.fromTo("#a .top",{y:35,opacity:0},{y:0,opacity:1,duration:.35},0)
+.fromTo("#a .draw",{scale:.92,opacity:0,transformOrigin:"50% 50%"},{scale:1,opacity:1,duration:.55,ease:"back.out(1.3)"},.2)
+.fromTo("#a .caption",{y:45,opacity:0},{y:0,opacity:1,duration:.35},.7)
+.to("#a #items",{y:-18,rotation:5,transformOrigin:"50% 100%",duration:.45,yoyo:true,repeat:1},1.5)
+.to("#a",{opacity:0,duration:.12},2.88)
+.set("#b",{opacity:1},3)
+.fromTo("#b .top",{y:30,opacity:0},{y:0,opacity:1,duration:.35},3)
+.fromTo("#b #tag1",{x:-150,opacity:0},{x:0,opacity:1,duration:.45,ease:"back.out(1.4)"},3.15)
+.fromTo("#b #tag2",{x:150,opacity:0,scale:.7},{x:0,opacity:1,scale:1,duration:.5,ease:"back.out(1.4)"},3.65)
+.fromTo("#b #arrow",{strokeDasharray:300,strokeDashoffset:300},{strokeDashoffset:0,duration:.5},4.1)
+.fromTo("#b .caption",{y:40,opacity:0},{y:0,opacity:1,duration:.35},4.45)
+.to("#b",{opacity:0,duration:.12},6.38)
+.set("#c",{opacity:1},6.5)
+.fromTo("#c .top",{y:30,opacity:0},{y:0,opacity:1,duration:.35},6.5)
+.fromTo("#c #money",{x:-70,opacity:0},{x:0,opacity:1,duration:.45,ease:"power2.out"},6.7)
+.fromTo("#c #basket",{x:80,opacity:0},{x:0,opacity:1,duration:.45,ease:"power2.out"},7.05)
+.fromTo("#c #few",{y:-60,opacity:0},{y:0,opacity:1,duration:.4},7.45)
+.fromTo("#c .caption",{y:40,opacity:0},{y:0,opacity:1,duration:.35},8)
+.to("#c #money",{scale:.92,transformOrigin:"50% 50%",duration:.35,yoyo:true,repeat:1},8.7);
+window.__timelines=window.__timelines||{};window.__timelines.episode=tl;
+</script>
+</template>
