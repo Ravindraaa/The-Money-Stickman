@@ -65,6 +65,7 @@ def waveform_report(audio: np.ndarray, sample_rate: int) -> dict:
     if silent_ratio > 0.35:
         raise ValueError(f"Too much near-silence in narration ({silent_ratio:.0%}).")
 
+    clipping_detected = peak >= 1.0
     # Prevent clipping while retaining the natural dynamic range.
     if peak > 0.98:
         audio = audio * (0.98 / peak)
@@ -76,7 +77,7 @@ def waveform_report(audio: np.ndarray, sample_rate: int) -> dict:
         "peak": round(peak, 5),
         "rms": round(rms, 5),
         "near_silence_ratio": round(silent_ratio, 4),
-        "clipping_detected_before_protection": bool(peak >= 1.0),
+        "clipping_detected_before_protection": clipping_detected,
         "voice_engine": "Chatterbox TTS",
         "voice_profile": "Voice B creative profile",
         "exaggeration": DEFAULT_EXAGGERATION,
