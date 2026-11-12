@@ -45,23 +45,71 @@ The engine:
 
 The engine does not claim to prove that a voice sounds natural. A human must listen to the complete WAV.
 
-## Next implementation stages
+## Implemented in this branch
 
-1. **Script compiler:** turn one supplied script into structured narration beats, caption chunks, scene descriptions, character actions, props, and transition cues. Preserve the exact approved script; never invent factual financial claims.
-2. **Voice timing:** generate narration first, measure duration, and align beat boundaries to speech pauses/phrases. Use forced alignment where available; do not distribute words evenly across scenes.
-3. **Reusable GSAP scene system:** render data-driven scene templates with layered stickman body parts, facial expressions, props, camera moves, and kinetic typography. A meaningful visual change must occur every 2–3 seconds.
-4. **Audio post:** add ducked background music and scene-synced SFX, with fades and loudness checks.
-5. **Render orchestrator:** one command accepts a script, creates an isolated episode folder, runs each stage, renders the vertical MP4, and emits title/description/hashtags plus QA metadata.
-6. **Automated QA:** verify duration, dimensions, FPS, codecs, audio stream, caption safe areas, scene-change cadence, and no silent/truncated narration.
-7. **Human approval:** inspect the MP4 and listen to the audio before upload. Uploading/publishing is always a separate explicit approval.
+### Offline script compiler
 
-## Current limitations
+`production/scripts/compile_storyboard.py`:
+- Splits a supplied script into short narration beats.
+- Uses deterministic local keyword rules to choose a scene category, prop, accent and character action.
+- Preserves all script words and punctuation; it does not invent financial claims.
+- No paid API, cloud LLM, or network request is used.
 
-- This branch currently implements the reusable narration stage only.
-- It does not yet dynamically generate scene compositions from arbitrary scripts.
-- The existing HyperFrames compositions remain episode-specific until the GSAP scene system is generalized.
+### Local voice + animation builder
+
+`production/scripts/build_episode.py`:
+- Loads Chatterbox locally and generates each narration beat separately with the approved Voice B settings (exaggeration 0.82, CFG 0.28).
+- Measures every generated audio segment and uses its measured duration as that scene's duration. There is no arbitrary fixed 35-second timeline and no speech time-stretching.
+- Creates one reusable GSAP composition per narration beat, with the recurring SVG character, keyword-selected props, kinetic text, camera-like movement, and scene-specific character actions.
+- Writes `narration.wav`, individual beat WAVs, `storyboard.json`, a HyperFrames `index.html`, and the generated compositions.
+- Copies the project's local GSAP bundle into the episode folder.
+- Auto-selects CPU for GPUs with less than 6 GB VRAM to avoid unreliable low-memory inference.
+
+### Local render and finalization
+
+`production/scripts/run_local.py` is the cross-platform one-command entry point. It builds the episode, runs HyperFrames validation and rendering, then muxes the measured narration into the MP4.
+
+`production/scripts/finalize_episode.py`:
+- Refuses to mux if video and audio durations differ by more than 0.20 seconds.
+- Verifies 1080x1920 video dimensions.
+- Applies loudness normalization and short audio fades without changing speech speed.
+- Produces `final/the-money-stickman-short.mp4`.
+
+### Run it locally
+
+Install FFmpeg and Node.js first, then:
+
+```bash
+npm install --global hyperframes
+python -m pip install -r production/requirements-local.txt
+```
+
+Create a UTF-8 text file containing the narration, for example `my-script.txt`, then run from the repository root:
+
+```bash
+python production/scripts/run_local.py my-script.txt --output my-episode
+```
+
+Optional device selection:
+
+```bash
+python production/scripts/run_local.py my-script.txt --output my-episode --device cpu
+python production/scripts/run_local.py my-script.txt --output my-episode --device cuda
+```
+
+The generated MP4 is at `my-episode/final/the-money-stickman-short.mp4`.
+
+### Automated tests
+
+`tests/test_storyboard_compiler.py` checks chunk limits, finance-topic classification, script text preservation, and scene metadata. GitHub Actions runs Python syntax compilation and these offline tests. No Chatterbox model download is needed for the compiler tests.
+
+## Current limitations and quality gates
+
+- The storyboard compiler is deterministic and keyword-based, not a semantic AI director. It works fully offline but can choose a generic or imperfect visual for ambiguous language.
+- Audio is generated one beat at a time so scene boundaries match the generated speech segments exactly. Listen for prosody changes between beats; improve chunking or add a reference voice only if needed.
 - Chatterbox Voice B settings reproduce the approved delivery style, but without a supplied reference voice sample they do not guarantee identical speaker identity on every generation.
-- No render or audio-quality pass is marked successful until executed in the target GitHub Actions environment and reviewed.
+- This environment has not executed the full local Chatterbox + HyperFrames render. The code and CI compiler tests must pass before claiming a successful MP4.
+- Human review of the full MP4 and full narration remains mandatory before publishing. The runner does not upload or publish anything.
 
 ## Branch safety
 
