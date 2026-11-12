@@ -1,10 +1,12 @@
 import sys
 import unittest
+import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "production" / "scripts"))
 from compile_storyboard import compile_beats, split_script, classify
+from scene_renderer import build_hyperframes
 
 
 class StoryboardCompilerTests(unittest.TestCase):
@@ -33,6 +35,22 @@ class StoryboardCompilerTests(unittest.TestCase):
             self.assertTrue(item["icon"])
             self.assertTrue(item["accent"])
             self.assertTrue(item["action"])
+
+    def test_scene_renderer_builds_timed_hyperframes_compositions(self):
+        beats = compile_beats("Credit card debt. Save money every payday.", 5)
+        beats[0]["duration"] = 2.4
+        beats[1]["duration"] = 2.7
+        with tempfile.TemporaryDirectory() as temp:
+            output = Path(temp)
+            total = build_hyperframes(beats, output)
+            index = (output / "index.html").read_text(encoding="utf-8")
+            scene = (output / "compositions" / "beat-001.html").read_text(encoding="utf-8")
+            self.assertAlmostEqual(total, 5.1, places=3)
+            self.assertIn('data-start="2.4000"', index)
+            self.assertIn('data-duration="2.7000"', index)
+            self.assertIn('gsap.timeline', scene)
+            self.assertIn('class="stickman"', scene)
+            self.assertIn('data-width="1080"', scene)
 
 
 if __name__ == "__main__":
