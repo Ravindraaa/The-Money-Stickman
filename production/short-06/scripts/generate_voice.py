@@ -3,16 +3,17 @@ import soundfile as sf
 from chatterbox.tts import ChatterboxTTS
 
 TEXT = (
-    "Want to invest but feel lost? Don't pick stocks. Do this instead. "
-    "Buy an index fund. One fund, hundreds of companies. Big names you know, all in one. "
-    "One bad company won't sink the fund. Low fees keep more money yours. "
-    "Fees quietly eat returns for decades. Pick a low-cost one. Check the expense ratio. "
-    "Now the secret: consistency. Invest the same amount every month. "
-    "Market up? Keep going. Market down? Keep going. That's called dollar-cost averaging. "
-    "It removes the stress of timing. Even experts can't time the market. "
-    "Time in the market beats timing it. Start early, even small. "
-    "Compounding does the heavy lifting. Start in your 401(k) or a Roth IRA. "
-    "Not a guarantee. Investments can lose value. Follow for one money lesson a day."
+    "Want to invest but feel lost? You do not need to become a stock-picking expert. "
+    "Start with a broad, low-cost index fund that tracks a market index. "
+    "One fund can give you exposure to hundreds of companies, including familiar names across different industries. "
+    "If one company struggles, the others are still part of the basket. That spreads company-specific risk, but it does not remove market risk. "
+    "Now check the expense ratio. It is the annual fund fee, and even small costs can add up over many years. "
+    "Next, build a simple habit. Choose an amount you can afford and invest it regularly, like every payday or once a month. "
+    "When prices rise, stick to your plan. When prices fall, stick to your plan too, if your goals and finances have not changed. "
+    "Investing the same amount at regular intervals is called dollar-cost averaging. It can make the process more consistent, but it cannot guarantee a profit. "
+    "Nobody can reliably predict every market move. Give a long-term plan time to work, and start with an amount that feels manageable. "
+    "Compounding may help growth build on itself over time. You might use a workplace 401(k) or an IRA, but understand the account rules first. "
+    "Investments can lose value, including the money you put in. Follow for one practical money lesson every day."
 )
 
 def main():
