@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Build a complete local episode: Chatterbox beat audio + GSAP scene compositions."""
 from __future__ import annotations
-import argparse, html, json, re, sys, shutil
+import argparse, json, re, sys, shutil
 from pathlib import Path
 import numpy as np
 import soundfile as sf
@@ -10,7 +10,6 @@ from chatterbox.tts import ChatterboxTTS
 from compile_storyboard import compile_beats
 from scene_renderer import build_hyperframes
 
-W, H = 1080, 1920
 VOICE_EXAGGERATION, VOICE_CFG = 0.82, 0.28
 GAP_SECONDS = 0.08
 VOICE_CHUNK_WORDS = 14
