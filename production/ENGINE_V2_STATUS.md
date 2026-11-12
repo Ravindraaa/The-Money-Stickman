@@ -49,7 +49,7 @@ The engine does not claim to prove that a voice sounds natural. A human must lis
 
 ### Offline script compiler
 
-`production/scripts/compile_storyboard.py`:
+`production/scripts/compile_storyboard.py` and `production/scripts/scene_renderer.py`:
 - Splits a supplied script into short narration beats.
 - Uses deterministic local keyword rules to choose a scene category, prop, accent and character action.
 - Preserves all script words and punctuation; it does not invent financial claims.
@@ -58,7 +58,7 @@ The engine does not claim to prove that a voice sounds natural. A human must lis
 ### Local voice + animation builder
 
 `production/scripts/build_episode.py`:
-- Loads Chatterbox locally and generates each narration beat separately with the approved Voice B settings (exaggeration 0.82, CFG 0.28).
+- Loads Chatterbox locally and generates phrase-level narration chunks with the approved Voice B settings (exaggeration 0.82, CFG 0.28).
 - Generates narration in roughly 14-word phrase chunks to preserve more natural prosody, then maps two short visual beats into each measured voice chunk. Scene boundaries are estimated by word share within that chunk (not phoneme-level forced alignment); total scene timing matches the exact generated audio duration. There is no arbitrary fixed 35-second timeline and no speech time-stretching.
 - Creates one reusable GSAP composition per narration beat, with the recurring SVG character, keyword-selected props, kinetic text, camera-like movement, and scene-specific character actions.
 - Writes `narration.wav`, phrase-level WAV chunks, `storyboard.json`, a HyperFrames `index.html`, and the generated compositions.
@@ -101,13 +101,13 @@ The generated MP4 is at `my-episode/final/the-money-stickman-short.mp4`.
 
 ### Automated tests
 
-`tests/test_storyboard_compiler.py` checks chunk limits, finance-topic classification, script text preservation, and scene metadata. GitHub Actions runs Python syntax compilation and these offline tests. No Chatterbox model download is needed for the compiler tests.
+`tests/test_storyboard_compiler.py` checks chunk limits, finance-topic classification, script text preservation, generated GSAP scenes, and HyperFrames timeline offsets. GitHub Actions runs Python syntax compilation and these offline tests. No Chatterbox model download is needed for the compiler tests.
 
 ## Current limitations and quality gates
 
 - The storyboard compiler is deterministic and keyword-based, not a semantic AI director. It works fully offline but can choose a generic or imperfect visual for ambiguous language.
-- Scene boundaries inside each phrase-level voice chunk are estimated by word count. They are aligned to the generated chunk's exact duration, but are not yet phoneme-level forced alignment. The next timing upgrade should use a local forced aligner if timing precision needs to improve.
-- Audio is generated one beat at a time so scene boundaries match the generated speech segments exactly. Listen for prosody changes between beats; improve chunking or add a reference voice only if needed.
+- Scene boundaries inside each phrase-level voice chunk are estimated by word count. They are aligned to the generated chunk's exact duration, but are not yet phoneme-level forced alignment. The next timing upgrade should use a local forced aligner if timing precision needs to improve. Initial Chatterbox model weights are downloaded once into the local cache; inference then runs locally without paid API calls.
+- Audio is generated in phrase-level chunks to preserve prosody. Scene changes within each chunk use a word-share timing estimate; listen closely and improve timing if a caption transition lands noticeably early or late.
 - Chatterbox Voice B settings reproduce the approved delivery style, but without a supplied reference voice sample they do not guarantee identical speaker identity on every generation.
 - This environment has not executed the full local Chatterbox + HyperFrames render. The code and CI compiler tests must pass before claiming a successful MP4.
 - Human review of the full MP4 and full narration remains mandatory before publishing. The runner does not upload or publish anything.
