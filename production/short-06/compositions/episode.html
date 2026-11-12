@@ -1,0 +1,65 @@
+<template><style>
+#root{position:absolute;inset:0;overflow:hidden;background:#07111f;color:#fff;font-family:Inter,Arial,sans-serif}
+#backdrop{position:absolute;inset:-8%;background:radial-gradient(ellipse at 72% 28%,#244f69 0%,#10263b 35%,#07111f 75%);transform:scale(1.08)}
+.grain{position:absolute;inset:0;opacity:.14;background-image:radial-gradient(#fff 0.6px,transparent .7px);background-size:5px 5px}
+.vignette{position:absolute;inset:0;background:linear-gradient(180deg,#06101a22 0%,#06101a00 35%,#06101a66 100%),radial-gradient(ellipse,transparent 40%,#02071199 100%)}
+.header{position:absolute;top:62px;left:62px;right:62px;display:flex;justify-content:space-between;font-size:19px;font-weight:900;letter-spacing:3px;color:#d4e7f4}
+.progress{position:absolute;top:111px;left:62px;right:62px;height:6px;background:#ffffff28;border-radius:9px;overflow:hidden}.bar{height:100%;width:0;background:#6cf5b2;box-shadow:0 0 22px #6cf5b2}
+.scene{position:absolute;inset:0;opacity:0;overflow:hidden}
+.kicker{position:absolute;top:200px;left:70px;right:70px;text-align:center;font-size:25px;letter-spacing:5px;font-weight:900;color:#79f5bf;text-transform:uppercase}
+.title{position:absolute;top:290px;left:58px;right:58px;text-align:center;font-size:76px;line-height:1.02;font-weight:1000;letter-spacing:-2px;text-shadow:0 8px 32px #0009}
+.subtitle{position:absolute;top:490px;left:100px;right:100px;text-align:center;font-size:32px;line-height:1.18;font-weight:750;color:#dceaf4}
+.visual{position:absolute;left:80px;right:80px;top:700px;height:720px;display:flex;align-items:center;justify-content:center}
+.panel{position:absolute;width:690px;height:570px;border:1px solid #ffffff38;border-radius:42px;background:linear-gradient(145deg,#ffffff20,#ffffff08);box-shadow:0 35px 90px #0008;backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.symbol{font-size:220px;filter:drop-shadow(0 25px 24px #0008);z-index:2}
+.orbit{position:absolute;width:470px;height:470px;border:2px solid #ffffff30;border-radius:50%;box-shadow:0 0 80px #55dfff24}
+.pill{position:absolute;bottom:220px;left:90px;right:90px;min-height:110px;border-radius:26px;background:#061321eF;border:1px solid #ffffff3a;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px 30px;font-size:37px;line-height:1.1;font-weight:950;box-shadow:0 18px 55px #0008}
+.footer{position:absolute;bottom:78px;width:100%;text-align:center;font-size:18px;letter-spacing:5px;font-weight:900;color:#a9c1d3}
+.green{color:#72f5b5}.yellow{color:#ffdc78}.red{color:#ff7892}
+.mascot{position:absolute;right:72px;top:145px;width:72px;height:112px;z-index:5;opacity:.95}
+.mascot circle,.mascot path{stroke:#fff;stroke-width:7;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.mascot circle{fill:#fff}
+.shard{position:absolute;width:150px;height:150px;border-radius:28px;background:linear-gradient(135deg,#78f5c055,#78f5c008);border:1px solid #ffffff24;transform:rotate(24deg)}
+.s1{left:-30px;top:500px}.s2{right:-40px;bottom:420px;width:210px;height:210px}
+</style>
+<div id="root" data-composition-id="episode" data-width="1080" data-height="1920">
+<div id="backdrop"></div><div class="grain"></div><div class="vignette"></div>
+<div class="header"><span>THE MONEY STICKMAN</span><span>INDEX FUND PLAYBOOK</span></div><div class="progress"><div class="bar"></div></div>
+<div class="shard s1"></div><div class="shard s2"></div>
+<div id="scenes"></div>
+<div class="footer">SMALL MOVES. LONG-TERM THINKING.</div>
+<svg class="mascot" viewBox="0 0 100 150"><circle cx="50" cy="24" r="18"/><path d="M50 44V95M50 55L20 78M50 55L80 78M50 95L25 135M50 95L75 135"/></svg>
+</div>
+<script>
+const beats=[
+["Want to invest but feel lost?","TOO MANY CHOICES","Start simple.","📱","charts"],
+["Don't pick stocks. Do this instead.","SKIP THE GUESSWORK","Build broad exposure.","📊","tiles"],
+["Buy an index fund.","ONE SIMPLE FUND","Own a slice of the market.","🫙","jar"],
+["One fund, hundreds of companies.","BROAD EXPOSURE","Many companies. One investment.","🌃","city"],
+["Big names you know, all in one.","DIVERSIFIED BASKET","Different businesses. Different sectors.","🏙️","buildings"],
+["One bad company won't sink the fund.","RISK IS SPREAD","One tile dims. The whole basket remains.","🧩","tiles"],
+["Low fees keep more money yours.","KEEP MORE","Costs matter over time.","💵","cash"],
+["Fees quietly eat returns for decades.","SMALL FEES ADD UP","Watch the expense ratio.","🪙","coins"],
+["Pick a low-cost one. Check the expense ratio.","CHECK THE FEE","Compare costs before you choose.","🔎","gauge"],
+["Now the secret: consistency.","SHOW UP MONTHLY","A repeatable habit beats a perfect guess.","🏃","runner"],
+["Invest the same amount every month.","AUTOMATE THE HABIT","Same amount. Regular schedule.","🗓️","calendar"],
+["Market up? Keep going.","MARKET UP?","Stay with your plan.","📈","up"],
+["Market down? Keep going.","MARKET DOWN?","Don't panic-sell based on a dip.","🌧️","down"],
+["That's called dollar-cost averaging.","DOLLAR-COST AVERAGING","Fixed amounts at regular intervals.","🪙","cups"],
+["It removes the stress of timing.","LESS GUESSING","A plan can reduce timing pressure.","😌","calm"],
+["Even experts can't time the market.","NO CRYSTAL BALL","Short-term moves are hard to predict.","⏱️","clock"],
+["Time in the market beats timing it.","THINK LONG TERM","Consistency gives your plan time.","☁️","time"],
+["Start early, even small.","START SMALL","Your first contribution counts.","🌱","seed"],
+["Compounding does the heavy lifting.","LET IT BUILD","Potential growth can build on growth.","❄️","snowball"],
+["Start in your 401(k) or a Roth IRA.","USE THE RIGHT ACCOUNT","Understand the rules and tax treatment.","🏦","account"],
+["Not a guarantee. Investments can lose value.","RISK IS REAL","Diversification doesn't eliminate risk.","⚠️","warning"],
+["Follow for one money lesson a day.","BUILD YOUR MONEY IQ","Save this. Follow for daily lessons.","⭐","cta"]
+];
+const host=document.querySelector("#scenes");
+beats.forEach((b,i)=>{const el=document.createElement("section");el.className="scene";el.id="scene"+i;el.innerHTML='<div class="kicker">'+b[1]+'</div><div class="title">'+b[0]+'</div><div class="subtitle">'+b[2]+'</div><div class="visual"><div class="panel"><div class="orbit"></div><div class="symbol">'+b[3]+'</div></div></div><div class="pill">'+(i===20?'Investing involves risk. Returns are never guaranteed.':b[1])+'</div>';host.appendChild(el);});
+const tl=gsap.timeline({paused:true});
+beats.forEach((b,i)=>{const t=i===21?42:i*2;const el="#scene"+i;tl.set(el,{opacity:1},t);tl.fromTo(el+" .panel",{scale:.72,rotation:-7,y:70},{scale:1,rotation:0,y:0,duration:.42,ease:"back.out(1.7)"},t);tl.fromTo(el+" .symbol",{scale:.35,rotation:18,y:90},{scale:1,rotation:0,y:0,duration:.5,ease:"elastic.out(1,.55)"},t+.04);tl.fromTo(el+" .title",{y:70,opacity:0,filter:"blur(12px)"},{y:0,opacity:1,filter:"blur(0px)",duration:.32,ease:"power3.out"},t+.02);tl.fromTo(el+" .subtitle",{y:35,opacity:0},{y:0,opacity:1,duration:.32,ease:"power2.out"},t+.12);tl.fromTo(el+" .pill",{y:80,scale:.92,opacity:0},{y:0,scale:1,opacity:1,duration:.28,ease:"power3.out"},t+.18);tl.to(el+" .orbit",{rotation:100,scale:1.12,duration:1.55,ease:"none"},t);tl.to(el+" .panel",{x:i%2?18:-18,duration:.9,yoyo:true,repeat:1,ease:"sine.inOut"},t+.25);tl.to(el+" .symbol",{y:-24,scale:1.08,duration:.55,yoyo:true,repeat:1,ease:"sine.inOut"},t+.55);tl.to(el,{opacity:0,duration:.12},t+1.88);});
+tl.to(".bar",{width:"100%",duration:45,ease:"none"},0);
+tl.to("#backdrop",{scale:1.2,backgroundPosition:"100% 50%",duration:45,ease:"none"},0);
+window.__timelines=window.__timelines||{};window.__timelines.episode=tl;
+</script></template>
