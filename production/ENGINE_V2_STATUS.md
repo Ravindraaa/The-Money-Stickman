@@ -59,9 +59,9 @@ The engine does not claim to prove that a voice sounds natural. A human must lis
 
 `production/scripts/build_episode.py`:
 - Loads Chatterbox locally and generates each narration beat separately with the approved Voice B settings (exaggeration 0.82, CFG 0.28).
-- Measures every generated audio segment and uses its measured duration as that scene's duration. There is no arbitrary fixed 35-second timeline and no speech time-stretching.
+- Generates narration in roughly 14-word phrase chunks to preserve more natural prosody, then maps two short visual beats into each measured voice chunk. Scene boundaries are estimated by word share within that chunk (not phoneme-level forced alignment); total scene timing matches the exact generated audio duration. There is no arbitrary fixed 35-second timeline and no speech time-stretching.
 - Creates one reusable GSAP composition per narration beat, with the recurring SVG character, keyword-selected props, kinetic text, camera-like movement, and scene-specific character actions.
-- Writes `narration.wav`, individual beat WAVs, `storyboard.json`, a HyperFrames `index.html`, and the generated compositions.
+- Writes `narration.wav`, phrase-level WAV chunks, `storyboard.json`, a HyperFrames `index.html`, and the generated compositions.
 - Copies the project's local GSAP bundle into the episode folder.
 - Auto-selects CPU for GPUs with less than 6 GB VRAM to avoid unreliable low-memory inference.
 
@@ -106,6 +106,7 @@ The generated MP4 is at `my-episode/final/the-money-stickman-short.mp4`.
 ## Current limitations and quality gates
 
 - The storyboard compiler is deterministic and keyword-based, not a semantic AI director. It works fully offline but can choose a generic or imperfect visual for ambiguous language.
+- Scene boundaries inside each phrase-level voice chunk are estimated by word count. They are aligned to the generated chunk's exact duration, but are not yet phoneme-level forced alignment. The next timing upgrade should use a local forced aligner if timing precision needs to improve.
 - Audio is generated one beat at a time so scene boundaries match the generated speech segments exactly. Listen for prosody changes between beats; improve chunking or add a reference voice only if needed.
 - Chatterbox Voice B settings reproduce the approved delivery style, but without a supplied reference voice sample they do not guarantee identical speaker identity on every generation.
 - This environment has not executed the full local Chatterbox + HyperFrames render. The code and CI compiler tests must pass before claiming a successful MP4.
