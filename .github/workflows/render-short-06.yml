@@ -1,0 +1,77 @@
+name: Render Money Stickman Short 06 — Index Funds
+on:
+  push:
+    branches: [engine-v2-foundation]
+    paths:
+      - 'production/short-06/**'
+      - '.github/workflows/render-short-06.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    concurrency:
+      group: money-stickman-short-06-render
+      cancel-in-progress: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Cache Python packages and Chatterbox model
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/pip
+            ~/.cache/huggingface
+            ~/.cache/torch
+          key: money-stickman-short06-voice-${{ runner.os }}-py311-v1
+          restore-keys: money-stickman-short06-voice-${{ runner.os }}-py311-
+      - name: Install FFmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+      - name: Install HyperFrames
+        run: npm install --global hyperframes
+      - name: Prepare project-local GSAP asset
+        run: |
+          mkdir -p production/short-06/vendor
+          cp production/vendor/gsap.min.js production/short-06/vendor/gsap.min.js
+      - name: Validate Short 06 composition
+        working-directory: production/short-06
+        run: hyperframes check --json
+      - name: Render 45-second visual timeline
+        working-directory: production/short-06
+        run: hyperframes render
+      - name: Install narration dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install chatterbox-tts soundfile
+      - name: Generate upbeat Voice B narration
+        working-directory: production/short-06
+        run: python scripts/generate_voice.py
+      - name: Mux natural-speed narration into MP4
+        working-directory: production/short-06
+        run: |
+          mkdir -p final
+          VIDEO="$(find renders -maxdepth 1 -type f -name '*.mp4' | head -n 1)"
+          test -n "$VIDEO"
+          VIDEO_DURATION="$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "$VIDEO")"
+          AUDIO_DURATION="$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 short-06-voice.wav)"
+          python -c "v=float('$VIDEO_DURATION'); a=float('$AUDIO_DURATION'); print(f'Video: {v:.2f}s | Natural voice: {a:.2f}s'); assert v >= 45 and 40 <= a <= 48, 'Narration must fit the 45s short without speed manipulation'"
+          ffmpeg -y -i "$VIDEO" -i short-06-voice.wav -filter_complex "[1:a]loudnorm=I=-16:TP=-1.5:LRA=11,apad,atrim=0:45,afade=t=out:st=44:d=1[voice]" -map 0:v:0 -map "[voice]" -c:v copy -c:a aac -b:a 192k -t 45 -movflags +faststart final/the-money-stickman-short-06.mp4
+          ffprobe -v error -show_entries format=duration:stream=codec_name,width,height -of json final/the-money-stickman-short-06.mp4
+      - name: Upload review MP4 and narration
+        uses: actions/upload-artifact@v4
+        with:
+          name: money-stickman-short-06-review
+          path: |
+            production/short-06/final/the-money-stickman-short-06.mp4
+            production/short-06/short-06-voice.wav
+          if-no-files-found: error
+          retention-days: 7
