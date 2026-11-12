@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Build a complete local episode: Chatterbox beat audio + GSAP scene compositions."""
 from __future__ import annotations
-import argparse, html, json, re, sys
+import argparse, html, json, re, sys, shutil
 from pathlib import Path
 import numpy as np
 import soundfile as sf
@@ -116,10 +116,19 @@ def main():
         if not script: raise ValueError("Script is empty.")
         beats=compile_beats(script,a.max_words)
         if not beats: raise ValueError("No narration beats were produced.")
-        device=("cuda" if torch.cuda.is_available() else "cpu") if a.device=="auto" else a.device
+        if a.device=="auto":
+            # A 4 GB laptop GPU is too tight for reliable Chatterbox inference.
+            has_room = torch.cuda.is_available() and torch.cuda.get_device_properties(0).total_memory >= 6 * 1024**3
+            device = "cuda" if has_room else "cpu"
+        else:
+            device = a.device
         if device=="cuda" and not torch.cuda.is_available(): raise RuntimeError("CUDA is unavailable.")
         a.output_dir.mkdir(parents=True,exist_ok=True)
         audio_dir=a.output_dir/"audio"; audio_dir.mkdir(exist_ok=True)
+        vendor_dir=a.output_dir/"vendor"; vendor_dir.mkdir(exist_ok=True)
+        project_gsap=Path(__file__).resolve().parents[1]/"vendor"/"gsap.min.js"
+        if not project_gsap.is_file(): raise FileNotFoundError(f"Missing GSAP bundle: {project_gsap}")
+        shutil.copy2(project_gsap,vendor_dir/"gsap.min.js")
         print(f"Loading local Chatterbox model on {device} for {len(beats)} beats...")
         model=ChatterboxTTS.from_pretrained(device=device)
         full_audio=[]
