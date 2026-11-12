@@ -1,11 +1,11 @@
 <template><style>
 #root{position:absolute;inset:0;overflow:hidden;background:#07111f;color:#fff;font-family:Inter,Arial,sans-serif}
-#backdrop{position:absolute;inset:-8%;background:radial-gradient(ellipse at 72% 28%,#244f69 0%,#10263b 35%,#07111f 75%);transform:scale(1.08)}
+#backdrop{position:absolute;inset:-8%;background:radial-gradient(ellipse at 72% 28%,#244f69 0%,#10263b 35%,#07111f 75%);transform:none}
 .grain{position:absolute;inset:0;opacity:.14;background-image:radial-gradient(#fff 0.6px,transparent .7px);background-size:5px 5px}
 .vignette{position:absolute;inset:0;background:linear-gradient(180deg,#06101a22 0%,#06101a00 35%,#06101a66 100%),radial-gradient(ellipse,transparent 40%,#02071199 100%)}
 .header{position:absolute;top:62px;left:62px;right:62px;display:flex;justify-content:space-between;font-size:19px;font-weight:900;letter-spacing:3px;color:#d4e7f4}
 .progress{position:absolute;top:111px;left:62px;right:62px;height:6px;background:#ffffff28;border-radius:9px;overflow:hidden}.bar{height:100%;width:0;background:#6cf5b2;box-shadow:0 0 22px #6cf5b2}
-.scene{position:absolute;inset:0;opacity:0;overflow:hidden}
+.scene{position:absolute;inset:0;opacity:0;overflow:hidden}\n#scene20 .subtitle{top:570px;}
 .kicker{position:absolute;top:200px;left:70px;right:70px;text-align:center;font-size:25px;letter-spacing:5px;font-weight:900;color:#79f5bf;text-transform:uppercase}
 .title{position:absolute;top:290px;left:58px;right:58px;text-align:center;font-size:76px;line-height:1.02;font-weight:1000;letter-spacing:-2px;text-shadow:0 8px 32px #0009}
 .subtitle{position:absolute;top:490px;left:100px;right:100px;text-align:center;font-size:32px;line-height:1.18;font-weight:750;color:#dceaf4}
@@ -60,6 +60,6 @@ beats.forEach((b,i)=>{const el=document.createElement("section");el.className="s
 const tl=gsap.timeline({paused:true});
 beats.forEach((b,i)=>{const t=i===21?42:i*2;const el="#scene"+i;tl.set(el,{opacity:1},t);tl.fromTo(el+" .panel",{scale:.72,rotation:-7,y:70},{scale:1,rotation:0,y:0,duration:.42,ease:"back.out(1.7)"},t);tl.fromTo(el+" .symbol",{scale:.35,rotation:18,y:90},{scale:1,rotation:0,y:0,duration:.5,ease:"elastic.out(1,.55)"},t+.04);tl.fromTo(el+" .title",{y:70,opacity:0,filter:"blur(12px)"},{y:0,opacity:1,filter:"blur(0px)",duration:.32,ease:"power3.out"},t+.02);tl.fromTo(el+" .subtitle",{y:35,opacity:0},{y:0,opacity:1,duration:.32,ease:"power2.out"},t+.12);tl.fromTo(el+" .pill",{y:80,scale:.92,opacity:0},{y:0,scale:1,opacity:1,duration:.28,ease:"power3.out"},t+.18);tl.to(el+" .orbit",{rotation:100,scale:1.12,duration:1.55,ease:"none"},t);tl.to(el+" .panel",{x:i%2?18:-18,duration:.9,yoyo:true,repeat:1,ease:"sine.inOut"},t+.25);tl.to(el+" .symbol",{y:-24,scale:1.08,duration:.55,yoyo:true,repeat:1,ease:"sine.inOut"},t+.55);tl.to(el,{opacity:0,duration:.12},t+1.88);});
 tl.to(".bar",{width:"100%",duration:45,ease:"none"},0);
-tl.to("#backdrop",{scale:1.2,backgroundPosition:"100% 50%",duration:45,ease:"none"},0);
+tl.fromTo("#backdrop",{scale:1.08},{scale:1.2,backgroundPosition:"100% 50%",duration:45,ease:"none"},0);
 window.__timelines=window.__timelines||{};window.__timelines.episode=tl;
 </script></template>
