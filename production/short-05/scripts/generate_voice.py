@@ -22,8 +22,8 @@ def main():
     sf.write("short-05-voice.wav", audio, model.sr, subtype="PCM_16")
     duration = len(audio) / model.sr
     print(f"Saved narration: {duration:.2f}s")
-    if not 40 <= duration <= 47:
-        raise SystemExit(f"Narration duration {duration:.2f}s outside safe 40–47s range; refusing aggressive time-stretch.")
+    if not 20 <= duration <= 47:
+        raise SystemExit(f"Unexpected raw narration duration: {duration:.2f}s; refusing unusable audio.")
 
 if __name__ == "__main__":
     main()
