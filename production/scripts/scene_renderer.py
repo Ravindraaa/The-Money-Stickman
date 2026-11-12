@@ -38,8 +38,10 @@ def scene_html(beat: dict, number: int) -> str:
 .eyebrow{{position:absolute;top:275px;width:100%;text-align:center;font-size:25px;font-weight:900;letter-spacing:5px;color:{accent}}}
 .headline{{position:absolute;top:355px;left:70px;right:70px;text-align:center;font-size:66px;line-height:1.08;font-weight:950;overflow-wrap:anywhere}}
 .stage{{position:absolute;top:650px;left:0;right:0;height:820px}}
-.stickman{{position:absolute;left:50%;top:130px;width:350px;height:610px;margin-left:-175px;filter:drop-shadow(0 22px 30px #0008)}}
-.prop{{position:absolute;left:690px;top:230px;width:190px;height:190px;border-radius:42px;display:grid;place-items:center;font-size:105px;background:#ffffff12;border:2px solid #ffffff24;box-shadow:0 25px 70px #0005}}
+.character-idle{{position:absolute;left:50%;top:130px;width:350px;height:610px;margin-left:-175px;animation:drift 1.8s ease-in-out infinite}}
+.stickman{{width:350px;height:610px;filter:drop-shadow(0 22px 30px #0008)}}
+.prop-float{{position:absolute;left:690px;top:230px;animation:pulse 1.7s ease-in-out infinite}}
+.prop{{position:relative;width:190px;height:190px;border-radius:42px;display:grid;place-items:center;font-size:105px;background:#ffffff12;border:2px solid #ffffff24;box-shadow:0 25px 70px #0005}}
 .floor{{position:absolute;bottom:30px;left:130px;right:130px;height:10px;border-radius:50%;background:{accent};filter:blur(13px);opacity:.7}}
 .caption{{position:absolute;bottom:205px;left:58px;right:58px;min-height:130px;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px 28px;box-sizing:border-box;border-radius:26px;background:#071326ed;border:1px solid #ffffff26;font-size:37px;line-height:1.18;font-weight:850;box-shadow:0 20px 55px #0006}}
 .number{{position:absolute;bottom:115px;right:72px;color:#8ca3c4;font-size:22px;font-weight:800;letter-spacing:3px}}
@@ -51,7 +53,7 @@ def scene_html(beat: dict, number: int) -> str:
 <div class="brand">THE MONEY STICKMAN</div>
 <div class="eyebrow">BEAT {number:02d} • {label}</div>
 <div class="headline">{label}</div>
-<div class="stage"><div class="floor"></div>{svg_character()}<div class="prop">{icon}</div></div>
+<div class="stage"><div class="floor"></div><div class="character-idle">{svg_character()}</div><div class="prop-float"><div class="prop">{icon}</div></div></div>
 <div class="caption">{caption}</div><div class="number">BEAT {number:02d}</div>
 </div>
 <script>
