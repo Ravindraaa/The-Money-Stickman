@@ -1,0 +1,6 @@
+# Local-only episode generation dependencies.
+# PyTorch is installed as a Chatterbox dependency; use the official PyTorch
+# selector if you need a specific CUDA build for your machine.
+chatterbox-tts
+numpy
+soundfile
