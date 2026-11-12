@@ -12,6 +12,7 @@ from compile_storyboard import compile_beats
 W, H = 1080, 1920
 VOICE_EXAGGERATION, VOICE_CFG = 0.82, 0.28
 GAP_SECONDS = 0.08
+VOICE_CHUNK_WORDS = 14
 
 def svg_character() -> str:
     # Shared character geometry: keep proportions and face consistent in every scene.
@@ -133,16 +134,41 @@ def main():
         model=ChatterboxTTS.from_pretrained(device=device)
         full_audio=[]
         sr=int(model.sr)
-        for i,beat in enumerate(beats,1):
-            print(f"[{i}/{len(beats)}] Voice B: {beat['text']}")
-            wav=model.generate(beat["text"],exaggeration=VOICE_EXAGGERATION,cfg_weight=VOICE_CFG)
+        # Generate two visual beats together to retain more natural phrase-level prosody.
+        voice_groups=[]
+        pending=[]
+        pending_words=0
+        for beat in beats:
+            pending.append(beat)
+            pending_words += len(beat["text"].split())
+            if pending_words >= VOICE_CHUNK_WORDS:
+                voice_groups.append(pending)
+                pending=[]
+                pending_words=0
+        if pending:
+            voice_groups.append(pending)
+
+        for group_index, group in enumerate(voice_groups,1):
+            spoken_text=" ".join(item["text"] for item in group)
+            print(f"[voice {group_index}/{len(voice_groups)}] Voice B: {spoken_text}")
+            wav=model.generate(spoken_text,exaggeration=VOICE_EXAGGERATION,cfg_weight=VOICE_CFG)
             samples=wav.detach().float().cpu().squeeze().numpy().astype(np.float32).reshape(-1)
-            if not samples.size or not np.isfinite(samples).all(): raise ValueError(f"Bad audio at beat {i}")
+            if not samples.size or not np.isfinite(samples).all():
+                raise ValueError(f"Bad audio in voice chunk {group_index}")
             gap=np.zeros(int(sr*GAP_SECONDS),dtype=np.float32)
             segment=np.concatenate([samples,gap])
-            beat["duration"]=round(len(segment)/sr,4)
-            beat["audio"]=f"audio/beat-{i:03d}.wav"
-            sf.write(a.output_dir/beat["audio"],segment,sr,subtype="PCM_16")
+            total_words=sum(len(item["text"].split()) for item in group)
+            elapsed=0.0
+            for local_index, beat in enumerate(group):
+                share=len(beat["text"].split())/total_words
+                duration=len(segment)/sr*share
+                if local_index==len(group)-1:
+                    duration=len(segment)/sr-elapsed
+                beat["duration"]=round(duration,6)
+                beat["audio"]=f"audio/voice-{group_index:03d}.wav"
+                beat["voice_chunk"]=group_index
+                elapsed += duration
+            sf.write(a.output_dir/f"audio/voice-{group_index:03d}.wav",segment,sr,subtype="PCM_16")
             full_audio.append(segment)
         joined=np.concatenate(full_audio)
         sf.write(a.output_dir/"narration.wav",joined,sr,subtype="PCM_16")
