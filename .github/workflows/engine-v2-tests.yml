@@ -1,0 +1,28 @@
+name: Engine V2 local compiler tests
+on:
+  push:
+    branches: [engine-v2-foundation]
+    paths:
+      - 'production/scripts/**'
+      - 'tests/**'
+      - '.github/workflows/engine-v2-tests.yml'
+  pull_request:
+    paths:
+      - 'production/scripts/**'
+      - 'tests/**'
+      - '.github/workflows/engine-v2-tests.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  compiler-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Compile all Python modules
+        run: python -m compileall -q production/scripts tests
+      - name: Run offline storyboard compiler tests
+        run: python -m unittest discover -s tests -v
