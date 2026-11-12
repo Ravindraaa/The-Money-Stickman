@@ -62,9 +62,13 @@ jobs:
           VIDEO="$(find renders -maxdepth 1 -type f -name '*.mp4' | head -n 1)"
           test -n "$VIDEO"
           VIDEO_DURATION="$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "$VIDEO")"
-          AUDIO_DURATION="$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 short-05-voice.wav)"
-          python -c "v=float('$VIDEO_DURATION'); a=float('$AUDIO_DURATION'); print(f'Video: {v:.2f}s | Voice: {a:.2f}s'); assert v >= 45 and 40 <= a <= 47, 'Unexpected video or narration duration'"
-          ffmpeg -y -i "$VIDEO" -i short-05-voice.wav -filter_complex "[1:a]loudnorm=I=-16:TP=-1.5:LRA=11,apad,atrim=0:45,afade=t=out:st=44:d=1[voice]" -map 0:v:0 -map "[voice]" -c:v copy -c:a aac -b:a 192k -t 45 -movflags +faststart final/the-money-stickman-short-05.mp4
+          RAW_AUDIO_DURATION="$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 short-05-voice.wav)"
+          echo "Raw Chatterbox narration: ${RAW_AUDIO_DURATION}s"
+          # Chatterbox delivered this read unusually fast (29s). Slow it gently with pitch-preserving atempo.
+          ffmpeg -y -i short-05-voice.wav -filter:a "atempo=0.68" -c:a pcm_s16le short-05-voice-paced.wav
+          AUDIO_DURATION="$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 short-05-voice-paced.wav)"
+          python -c "v=float('$VIDEO_DURATION'); a=float('$AUDIO_DURATION'); print(f'Video: {v:.2f}s | Paced voice: {a:.2f}s'); assert v >= 45 and 40 <= a <= 47, 'Unexpected video or paced narration duration'"
+          ffmpeg -y -i "$VIDEO" -i short-05-voice-paced.wav -filter_complex "[1:a]loudnorm=I=-16:TP=-1.5:LRA=11,apad,atrim=0:45,afade=t=out:st=44:d=1[voice]" -map 0:v:0 -map "[voice]" -c:v copy -c:a aac -b:a 192k -t 45 -movflags +faststart final/the-money-stickman-short-05.mp4
           ffprobe -v error -show_entries format=duration:stream=codec_name,width,height -of json final/the-money-stickman-short-05.mp4
       - name: Upload review MP4 and narration
         uses: actions/upload-artifact@v4
