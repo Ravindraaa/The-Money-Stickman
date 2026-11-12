@@ -1,6 +1,8 @@
 import torch, soundfile as sf
 from chatterbox.tts import ChatterboxTTS
-TEXT = "Want to invest? Start with a broad index fund. One investment can hold hundreds of companies."
+TEXT = ("Want to invest but feel lost? You do not need to pick individual stocks. "
+        "Start with a broad index fund and keep your plan simple. "
+        "One fund can hold hundreds of companies, giving you exposure across many businesses in a single investment.")
 def main():
     device = "cuda" if torch.cuda.is_available() and torch.cuda.get_device_properties(0).total_memory >= 6 * 1024**3 else "cpu"
     model = ChatterboxTTS.from_pretrained(device=device)
