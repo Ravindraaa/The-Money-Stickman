@@ -37,6 +37,8 @@ jobs:
         run: hyperframes check --json
       - name: Render 40-second explainer
         working-directory: production/short-11-mortgage-rate-shock
+        env:
+          HYPERFRAMES_BROWSER_PATH: /usr/bin/google-chrome
         run: hyperframes render
       - name: Install Voice B dependencies
         run: |
