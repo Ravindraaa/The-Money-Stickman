@@ -1,0 +1,117 @@
+<template>
+<style>
+#root{position:absolute;inset:0;overflow:hidden;background:#38233f}
+canvas{width:100%;height:100%;display:block}
+</style>
+<div id="root" data-composition-id="episode"><canvas id="paperStage" width="540" height="960"></canvas></div>
+<script src="vendor/paper.js"></script>
+<script>
+(() => {
+ const canvas=document.getElementById('paperStage'), g=canvas.getContext('2d');
+ const W=540,H=960,P=Paper;
+ const C={wall:'#3a2146',cream:'#f4ecda',orange:'#f2643c',mint:'#6cc9a1',yellow:'#e9b949',blue:'#6da8ff',ink:'#2a1826',paper:'#f7f1e3',skin:'#edc4a7'};
+ const grain=P.grainTile(128,'money-stickman-paper-test',24);
+ const cut=(pts,col,seed,o={})=>P.cutout(g,pts,col,seed,{border:4,borderVar:.6,jag:1.1,step:2.4,shadow:.2,tex:{density:.85,len:[12,34],h:[3,7],alpha:[.18,.34]},...o});
+ const poly=(cx,cy,pts)=>pts.map(([x,y])=>[x+cx,y+cy]);
+ const text=(s,x,y,size,color=C.cream,align='center',font='900')=>{g.save();g.font=font+' '+size+'px Arial';g.textAlign=align;g.textBaseline='middle';g.fillStyle=color;g.fillText(s,x,y);g.restore()};
+ const marker=(pts,color,w,seed)=>P.markerStroke(g,pts,color,w,seed,.9);
+ function bg(){
+   g.fillStyle=C.wall;g.fillRect(0,0,W,H);
+   P.marker(g,{x:0,y:0,w:W,h:H},C.wall,'wallpaper',{len:[35,100],h:[5,12],density:.28,alpha:[.15,.28],angle:.2});
+   // layered paper wall panels
+   for(let i=0;i<7;i++){const x=i*92-25;cut([[x,0],[x+84,0],[x+92,960],[x+5,960]],i%2?'#432a49':'#402647','wall-panel-'+i,{border:0,shadow:0,tex:{density:.16,len:[30,70],h:[3,7],alpha:[.12,.2]}})}
+   g.globalAlpha=.16;g.fillStyle=grain;g.fillRect(0,0,W,H);g.globalAlpha=1;
+ }
+ function paperLabel(x,y,w,h,fill,seed,rotation=0){
+   g.save();g.translate(x,y);g.rotate(rotation);
+   cut(P.roundRect(-w/2,-h/2,w,h,12),fill,seed,{border:5,tex:{density:.75,len:[14,38],h:[3,7],alpha:[.14,.3]}});
+   g.restore();
+ }
+ function stickman(x,y,s,pose=0){
+   g.save();g.translate(x,y);g.scale(s,s);
+   // shadow on wall
+   g.globalAlpha=.2;g.fillStyle='#120d1a';g.beginPath();g.ellipse(0,8,75,16,0,0,Math.PI*2);g.fill();g.globalAlpha=1;
+   // body and limbs are separate cut-paper strips
+   cut(P.ellipse(0,-145,48,57),C.orange,'hero-head',{border:5});
+   cut(P.noodle([[0,-90],[2,-5]],23,19),C.blue,'hero-body',{border:4});
+   cut(P.noodle([[-4,-70],[-45,-32],[-76,-48+pose*4]],15,12),C.mint,'hero-arm-left',{border:3});
+   cut(P.noodle([[4,-70],[48,-38],[75,-55-pose*3]],15,12),C.mint,'hero-arm-right',{border:3});
+   cut(P.noodle([[-2,-4],[-32,48],[-42,100]],17,12),C.yellow,'hero-leg-left',{border:3});
+   cut(P.noodle([[2,-4],[34,48],[44,100]],17,12),C.yellow,'hero-leg-right',{border:3});
+   // face: expressive eyes and a little marker smile
+   g.fillStyle=C.ink;g.beginPath();g.ellipse(-17,-154,5,8,0,0,Math.PI*2);g.ellipse(16,-154,5,8,0,0,Math.PI*2);g.fill();
+   marker([[-14,-127],[0,-121],[14,-127]],C.ink,3,'hero-smile');
+   // thumb and fingers on the pointing hand
+   cut(P.noodle([[75,-55],[91,-72],[108,-76]],8,5),C.skin,'hero-finger',{border:2});
+   cut(P.noodle([[88,-68],[104,-59]],5,3),C.skin,'hero-thumb',{border:1.8});
+   g.restore();
+ }
+ function house(x,y,scale){
+   g.save();g.translate(x,y);g.scale(scale,scale);
+   cut(poly(0,0,[[0,95],[150,-30],[300,95],[285,285],[15,285]]),C.yellow,'home-body',{border:6});
+   cut(poly(0,0,[[0,95],[150,-45],[300,95],[280,110],[150,-12],[20,110]]),C.orange,'home-roof',{border:4});
+   cut(P.roundRect(119,160,65,125,7),C.blue,'home-door',{border:3});
+   cut(P.roundRect(38,140,55,55,6),C.mint,'home-window-left',{border:3});
+   cut(P.roundRect(205,140,55,55,6),C.mint,'home-window-right',{border:3});
+   marker([[150,-4],[150,92]],C.ink,3,'roof-fold');
+   g.restore();
+ }
+ function bill(x,y,scale,rot,seed){
+   g.save();g.translate(x,y);g.rotate(rot);g.scale(scale,scale);
+   cut(P.roundRect(-94,-48,188,96,10),C.mint,seed,{border:5,tex:{density:1.2,len:[12,34],h:[3,6]}});
+   cut(P.ellipse(0,0,25,25),C.yellow,seed+'-coin',{border:3});
+   text('$',0,2,35,C.ink);
+   marker([[-72,-25],[-48,-25]],C.ink,2,seed+'-a');marker([[48,25],[72,25]],C.ink,2,seed+'-b');
+   g.restore();
+ }
+ function draw(t){
+   g.clearRect(0,0,W,H);bg();
+   const ease=v=>{v=Math.max(0,Math.min(1,v));return 1-Math.pow(1-v,3)};
+   const pop=(a,b)=>ease((t-a)/(b-a));
+   if(t<1.55){
+     const p=pop(.05,.55);
+     g.save();g.translate(0,(1-p)*100);
+     text('WHY IS A HOME',270,112,34,C.cream);
+     text('STILL SO EXPENSIVE?',270,157,34,C.yellow);
+     house(78,365,1.05);
+     stickman(395,700,1.08,Math.sin(t*4));
+     paperLabel(270,820,390,72,C.cream,'headline-paper',-.025);
+     text('THE 7% MORTGAGE SHOCK',270,820,24,C.ink);
+     g.restore();
+   }else if(t<3.05){
+     text('THE RATE IS',270,120,34,C.cream);
+     text('7.11%',270,235,118,C.yellow);
+     paperLabel(270,365,340,112,C.paper,'rate-note',-.035);
+     text('30-YEAR FIXED',270,365,31,C.ink);
+     house(75,560,.82);stickman(410,790,.9,.5);
+     bill(300,610,.75,-.12,'rate-dollar');
+     text('A NUMBER THAT HITS',270,890,25,C.cream);
+     text('YOUR MONTHLY BUDGET',270,924,25,C.orange);
+   }else if(t<4.55){
+     text('ON A $400K LOAN…',270,118,36,C.cream);
+     paperLabel(270,355,400,190,C.mint,'monthly-gap',.018);
+     text('$300',270,330,112,C.ink);
+     text('MORE / MONTH*',270,415,31,C.ink);
+     bill(130,650,.78,-.18,'bill-one');bill(375,720,.68,.14,'bill-two');
+     stickman(270,835,.8,Math.sin(t*5));
+   }else{
+     text('THAT’S $3,600',270,130,48,C.cream);
+     text('MORE PER YEAR',270,188,48,C.yellow);
+     paperLabel(270,390,430,170,C.paper,'annual-cost',-.02);
+     text('$3,600',270,375,92,C.orange);
+     text('BEFORE TAX + INSURANCE',270,445,22,C.ink);
+     house(35,630,.62);stickman(385,820,.82,.3);
+     text('*ILLUSTRATIVE PAYMENT COMPARISON',270,920,17,C.cream);
+   }
+   // paper grain overlay stays fixed across frames
+   g.save();g.globalAlpha=.07;g.globalCompositeOperation='multiply';g.drawImage(grain,0,0,W,H);g.restore();
+ }
+ const clock={t:0};
+ const tl=gsap.timeline({paused:true});
+ tl.to(clock,{t:6,duration:6,ease:'none',onUpdate:()=>draw(clock.t)});
+ tl.call(()=>draw(6),[],6);
+ draw(0);
+ window.__timelines=window.__timelines||{};window.__timelines.episode=tl;
+})();
+</script>
+</template>
