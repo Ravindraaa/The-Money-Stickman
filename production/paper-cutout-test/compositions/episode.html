@@ -1,110 +1,107 @@
 <template>
 <style>
-#root{position:absolute;inset:0;overflow:hidden;background:#38233f}
+#root{position:absolute;inset:0;overflow:hidden;background:#e9e2d4}
 canvas{width:100%;height:100%;display:block}
 </style>
 <div id="root" data-composition-id="episode"><canvas id="paperStage" width="540" height="960"></canvas></div>
 <script src="vendor/paper.js"></script>
 <script>
 (() => {
- const canvas=document.getElementById('paperStage'), g=canvas.getContext('2d');
+ const canvas=document.getElementById('paperStage'),g=canvas.getContext('2d');
  const W=540,H=960,P=Paper;
- const C={wall:'#3a2146',cream:'#f4ecda',orange:'#f2643c',mint:'#6cc9a1',yellow:'#e9b949',blue:'#6da8ff',ink:'#2a1826',paper:'#f7f1e3',skin:'#edc4a7'};
- const grain=P.grainTile(128,'money-stickman-paper-test',24);
- const cut=(pts,col,seed,o={})=>P.cutout(g,pts,col,seed,{border:4,borderVar:.6,jag:1.1,step:2.4,shadow:.2,tex:{density:.85,len:[12,34],h:[3,7],alpha:[.18,.34]},...o});
- const poly=(cx,cy,pts)=>pts.map(([x,y])=>[x+cx,y+cy]);
- const text=(s,x,y,size,color=C.cream,align='center',font='900')=>{g.save();g.font=font+' '+size+'px Arial';g.textAlign=align;g.textBaseline='middle';g.fillStyle=color;g.fillText(s,x,y);g.restore()};
- const marker=(pts,color,w,seed)=>P.markerStroke(g,pts,color,w,seed,.9);
+ // Restrained palette: warm paper, charcoal ink, one muted ochre accent.
+ const C={bg:'#e9e2d4',paper:'#f7f2e8',paper2:'#ded6c7',ink:'#252525',soft:'#5a554d',accent:'#b58b45',skin:'#d9cbb5'};
+ const grain=P.grainTile(128,'money-stickman-paper-minimal',18);
+ const cut=(pts,col,seed,o={})=>P.cutout(g,pts,col,seed,{border:3.5,borderVar:.45,jag:.75,step:2.6,shadow:.13,tex:{density:.48,len:[18,42],h:[2,5],alpha:[.12,.22]},...o});
+ const text=(s,x,y,size,color=C.ink,align='center',weight='800')=>{g.save();g.font=weight+' '+size+'px Arial';g.textAlign=align;g.textBaseline='middle';g.fillStyle=color;g.fillText(s,x,y);g.restore()};
+ const line=(pts,color=C.ink,w=3,seed='line')=>P.markerStroke(g,pts,color,w,seed,.85);
  function bg(){
-   g.fillStyle=C.wall;g.fillRect(0,0,W,H);
-   P.marker(g,{x:0,y:0,w:W,h:H},C.wall,'wallpaper',{len:[35,100],h:[5,12],density:.28,alpha:[.15,.28],angle:.2});
-   // layered paper wall panels
-   for(let i=0;i<7;i++){const x=i*92-25;cut([[x,0],[x+84,0],[x+92,960],[x+5,960]],i%2?'#432a49':'#402647','wall-panel-'+i,{border:0,shadow:0,tex:{density:.16,len:[30,70],h:[3,7],alpha:[.12,.2]}})}
-   g.globalAlpha=.16;g.fillStyle=grain;g.fillRect(0,0,W,H);g.globalAlpha=1;
+   g.fillStyle=C.bg;g.fillRect(0,0,W,H);
+   // One calm paper sheet, with a subtle edge shadow and fine grain.
+   cut([[22,18],[518,22],[514,942],[25,938]],C.paper,'single-paper-sheet',{border:0,shadow:.08,tex:{density:.12,len:[28,60],h:[2,4],alpha:[.08,.13]}});
+   g.save();g.globalAlpha=.045;g.globalCompositeOperation='multiply';g.drawImage(grain,22,18,W-44,H-36);g.restore();
  }
- function paperLabel(x,y,w,h,fill,seed,rotation=0){
-   g.save();g.translate(x,y);g.rotate(rotation);
-   cut(P.roundRect(-w/2,-h/2,w,h,12),fill,seed,{border:5,tex:{density:.75,len:[14,38],h:[3,7],alpha:[.14,.3]}});
+ function label(x,y,w,h,seed,rot=0){
+   g.save();g.translate(x,y);g.rotate(rot);
+   cut(P.roundRect(-w/2,-h/2,w,h,8),C.paper2,seed,{border:2.5,shadow:.1,tex:{density:.35,len:[15,34],h:[2,4],alpha:[.1,.18]}});
    g.restore();
  }
- function stickman(x,y,s,pose=0){
+ function house(x,y,s){
    g.save();g.translate(x,y);g.scale(s,s);
-   // shadow on wall
-   g.globalAlpha=.2;g.fillStyle='#120d1a';g.beginPath();g.ellipse(0,8,75,16,0,0,Math.PI*2);g.fill();g.globalAlpha=1;
-   // body and limbs are separate cut-paper strips
-   cut(P.ellipse(0,-145,48,57),C.orange,'hero-head',{border:5});
-   cut(P.noodle([[0,-90],[2,-5]],23,19),C.blue,'hero-body',{border:4});
-   cut(P.noodle([[-4,-70],[-45,-32],[-76,-48+pose*4]],15,12),C.mint,'hero-arm-left',{border:3});
-   cut(P.noodle([[4,-70],[48,-38],[75,-55-pose*3]],15,12),C.mint,'hero-arm-right',{border:3});
-   cut(P.noodle([[-2,-4],[-32,48],[-42,100]],17,12),C.yellow,'hero-leg-left',{border:3});
-   cut(P.noodle([[2,-4],[34,48],[44,100]],17,12),C.yellow,'hero-leg-right',{border:3});
-   // face: expressive eyes and a little marker smile
-   g.fillStyle=C.ink;g.beginPath();g.ellipse(-17,-154,5,8,0,0,Math.PI*2);g.ellipse(16,-154,5,8,0,0,Math.PI*2);g.fill();
-   marker([[-14,-127],[0,-121],[14,-127]],C.ink,3,'hero-smile');
-   // thumb and fingers on the pointing hand
-   cut(P.noodle([[75,-55],[91,-72],[108,-76]],8,5),C.skin,'hero-finger',{border:2});
-   cut(P.noodle([[88,-68],[104,-59]],5,3),C.skin,'hero-thumb',{border:1.8});
+   cut([[0,86],[145,-30],[290,86],[278,270],[12,270]],C.paper2,'house-body',{border:5});
+   cut([[0,86],[145,-42],[290,86],[269,103],[145,-14],[20,103]],C.ink,'house-roof',{border:3,tex:{density:.2,len:[20,42],h:[2,4],alpha:[.08,.16]}});
+   cut(P.roundRect(113,151,64,119,5),C.accent,'house-door',{border:3});
+   cut(P.roundRect(32,130,56,54,4),C.paper,'house-window-a',{border:3});
+   cut(P.roundRect(202,130,56,54,4),C.paper,'house-window-b',{border:3});
+   line([[145,-12],[145,72]],C.paper,2,'roof-seam');
    g.restore();
  }
- function house(x,y,scale){
-   g.save();g.translate(x,y);g.scale(scale,scale);
-   cut(poly(0,0,[[0,95],[150,-30],[300,95],[285,285],[15,285]]),C.yellow,'home-body',{border:6});
-   cut(poly(0,0,[[0,95],[150,-45],[300,95],[280,110],[150,-12],[20,110]]),C.orange,'home-roof',{border:4});
-   cut(P.roundRect(119,160,65,125,7),C.blue,'home-door',{border:3});
-   cut(P.roundRect(38,140,55,55,6),C.mint,'home-window-left',{border:3});
-   cut(P.roundRect(205,140,55,55,6),C.mint,'home-window-right',{border:3});
-   marker([[150,-4],[150,92]],C.ink,3,'roof-fold');
+ function person(x,y,s,phase=0){
+   g.save();g.translate(x,y);g.scale(s,s);
+   // Soft grounded shadow; all pieces stay in paper/ink tones.
+   g.globalAlpha=.12;g.fillStyle=C.ink;g.beginPath();g.ellipse(0,8,62,12,0,0,Math.PI*2);g.fill();g.globalAlpha=1;
+   cut(P.ellipse(0,-142,42,49),C.paper2,'person-head',{border:4});
+   // Simple eyes and expression, hand-marked.
+   g.fillStyle=C.ink;g.beginPath();g.arc(-14,-151,3.6,0,Math.PI*2);g.arc(14,-151,3.6,0,Math.PI*2);g.fill();
+   line([[-12,-125],[0,-120],[12,-125]],C.ink,2.3,'person-smile');
+   cut(P.noodle([[0,-92],[0,-8]],19,16),C.ink,'person-body',{border:3});
+   const swing=Math.sin(phase*2.5)*8;
+   cut(P.noodle([[-2,-72],[-39,-38],[-65,-52-swing]],13,10),C.ink,'person-arm-left',{border:2.5});
+   cut(P.noodle([[2,-72],[39,-38],[67,-54+swing]],13,10),C.ink,'person-arm-right',{border:2.5});
+   cut(P.noodle([[-1,-8],[-27,42],[-37,92]],15,11),C.ink,'person-leg-left',{border:2.5});
+   cut(P.noodle([[1,-8],[28,42],[39,92]],15,11),C.ink,'person-leg-right',{border:2.5});
+   // Small ochre sleeve tabs make the figure memorable without adding extra colors.
+   cut(P.noodle([[-42,-40-swing],[-51,-50-swing]],8,6),C.accent,'sleeve-left',{border:1.5});
+   cut(P.noodle([[42,-40+swing],[52,-52+swing]],8,6),C.accent,'sleeve-right',{border:1.5});
    g.restore();
  }
- function bill(x,y,scale,rot,seed){
-   g.save();g.translate(x,y);g.rotate(rot);g.scale(scale,scale);
-   cut(P.roundRect(-94,-48,188,96,10),C.mint,seed,{border:5,tex:{density:1.2,len:[12,34],h:[3,6]}});
-   cut(P.ellipse(0,0,25,25),C.yellow,seed+'-coin',{border:3});
-   text('$',0,2,35,C.ink);
-   marker([[-72,-25],[-48,-25]],C.ink,2,seed+'-a');marker([[48,25],[72,25]],C.ink,2,seed+'-b');
+ function dollar(x,y,s,rot,seed){
+   g.save();g.translate(x,y);g.rotate(rot);g.scale(s,s);
+   cut(P.roundRect(-92,-48,184,96,8),C.paper2,seed,{border:4,tex:{density:.42,len:[14,32],h:[2,4],alpha:[.12,.2]}});
+   cut(P.ellipse(0,0,27,27),C.accent,seed+'-seal',{border:2.5,tex:{density:.25,len:[10,22],h:[2,3]}});
+   text('$',0,1,34,C.ink);
+   line([[-70,-25],[-46,-25]],C.ink,2,seed+'-a');line([[46,25],[70,25]],C.ink,2,seed+'-b');
    g.restore();
  }
  function draw(t){
    g.clearRect(0,0,W,H);bg();
    const ease=v=>{v=Math.max(0,Math.min(1,v));return 1-Math.pow(1-v,3)};
-   const pop=(a,b)=>ease((t-a)/(b-a));
-   if(t<1.55){
-     const p=pop(.05,.55);
-     g.save();g.translate(0,(1-p)*100);
-     text('WHY IS A HOME',270,112,34,C.cream);
-     text('STILL SO EXPENSIVE?',270,157,34,C.yellow);
-     house(78,365,1.05);
-     stickman(395,700,1.08,Math.sin(t*4));
-     paperLabel(270,820,390,72,C.cream,'headline-paper',-.025);
-     text('THE 7% MORTGAGE SHOCK',270,820,24,C.ink);
+   const enter=(a,b)=>ease((t-a)/(b-a));
+   if(t<2){
+     const p=enter(0,.55);
+     g.save();g.translate(0,(1-p)*55);
+     text('THE 7% MORTGAGE TRAP',270,112,29,C.ink);
+     line([[94,150],[446,150]],C.accent,4,'headline-rule');
+     house(65,355,1.02);
+     person(405,710,1.03,t);
+     label(270,835,360,68,'hook-note',-.018);
+     text('WHY DOES BUYING STILL FEEL',270,824,18,C.soft);
+     text('SO EXPENSIVE?',270,849,23,C.ink);
      g.restore();
-   }else if(t<3.05){
-     text('THE RATE IS',270,120,34,C.cream);
-     text('7.11%',270,235,118,C.yellow);
-     paperLabel(270,365,340,112,C.paper,'rate-note',-.035);
-     text('30-YEAR FIXED',270,365,31,C.ink);
-     house(75,560,.82);stickman(410,790,.9,.5);
-     bill(300,610,.75,-.12,'rate-dollar');
-     text('A NUMBER THAT HITS',270,890,25,C.cream);
-     text('YOUR MONTHLY BUDGET',270,924,25,C.orange);
-   }else if(t<4.55){
-     text('ON A $400K LOAN…',270,118,36,C.cream);
-     paperLabel(270,355,400,190,C.mint,'monthly-gap',.018);
-     text('$300',270,330,112,C.ink);
-     text('MORE / MONTH*',270,415,31,C.ink);
-     bill(130,650,.78,-.18,'bill-one');bill(375,720,.68,.14,'bill-two');
-     stickman(270,835,.8,Math.sin(t*5));
+   }else if(t<4){
+     const p=enter(2,2.45);
+     g.save();g.translate((1-p)*50,0);
+     text('THE LATEST RATE',270,118,23,C.soft);
+     text('7.11%',270,260,116,C.accent);
+     label(270,365,300,78,'rate-label',.012);
+     text('30-YEAR FIXED',270,365,27,C.ink);
+     house(40,590,.66);
+     dollar(340,635,.88,-.08,'rate-dollar');
+     person(420,825,.62,t);
+     g.restore();
    }else{
-     text('THAT’S $3,600',270,130,48,C.cream);
-     text('MORE PER YEAR',270,188,48,C.yellow);
-     paperLabel(270,390,430,170,C.paper,'annual-cost',-.02);
-     text('$3,600',270,375,92,C.orange);
-     text('BEFORE TAX + INSURANCE',270,445,22,C.ink);
-     house(35,630,.62);stickman(385,820,.82,.3);
-     text('*ILLUSTRATIVE PAYMENT COMPARISON',270,920,17,C.cream);
+     const p=enter(4,4.45);
+     g.save();g.translate(0,(1-p)*40);
+     text('THE COST ADDS UP',270,116,26,C.soft);
+     label(270,330,380,176,'annual-cost',-.012);
+     text('$3,600',270,300,82,C.accent);
+     text('MORE PER YEAR*',270,365,26,C.ink);
+     dollar(145,640,.74,-.12,'annual-bill-a');
+     dollar(385,700,.66,.1,'annual-bill-b');
+     person(270,845,.72,t);
+     text('*ILLUSTRATIVE LOAN COMPARISON',270,918,15,C.soft);
+     g.restore();
    }
-   // paper grain overlay stays fixed across frames
-   g.save();g.globalAlpha=.07;g.globalCompositeOperation='multiply';g.drawImage(grain,0,0,W,H);g.restore();
  }
  const clock={t:0};
  const tl=gsap.timeline({paused:true});
