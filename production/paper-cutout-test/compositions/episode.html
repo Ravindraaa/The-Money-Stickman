@@ -4,11 +4,15 @@
 canvas{width:100%;height:100%;display:block}
 </style>
 <div id="root" data-composition-id="episode"><canvas id="paperStage" width="540" height="960"></canvas></div>
+<script src="vendor/core.js"></script>
 <script src="vendor/paper.js"></script>
+<script src="vendor/kit.js"></script>
+<script src="vendor/detail.js"></script>
+<script src="vendor/transitions.js"></script>
 <script>
 (() => {
  const canvas=document.getElementById('paperStage'),g=canvas.getContext('2d');
- const W=540,H=960,P=Paper;
+ const W=540,H=960,P=Paper, D=PaperDetail, kit=PaperKit.make({W,H,k:1,px:[W,H]},{font:'Arial'});
  // Restrained palette: warm paper, charcoal ink, one muted ochre accent.
  const C={bg:'#e9e2d4',paper:'#f7f2e8',paper2:'#ded6c7',ink:'#252525',soft:'#5a554d',accent:'#b58b45',skin:'#d9cbb5'};
  const grain=P.grainTile(128,'money-stickman-paper-minimal',18);
@@ -48,6 +52,8 @@ canvas{width:100%;height:100%;display:block}
    const swing=Math.sin(phase*2.5)*8;
    cut(P.noodle([[-2,-72],[-39,-38],[-65,-52-swing]],13,10),C.ink,'person-arm-left',{border:2.5});
    cut(P.noodle([[2,-72],[39,-38],[67,-54+swing]],13,10),C.ink,'person-arm-right',{border:2.5});
+   // Detailed paper hand on the lead arm; hand geometry and fingers are separate cutouts.
+   D.hand(g,67,-54+swing,34,0,'open',{side:'right',skin:C.skin,cuff:C.paper2});
    cut(P.noodle([[-1,-8],[-27,42],[-37,92]],15,11),C.ink,'person-leg-left',{border:2.5});
    cut(P.noodle([[1,-8],[28,42],[39,92]],15,11),C.ink,'person-leg-right',{border:2.5});
    // Small ochre sleeve tabs make the figure memorable without adding extra colors.
