@@ -35,7 +35,7 @@ tl.fromTo("#stack g",{y:-70,rotation:0,opacity:0},{y:0,opacity:1,duration:.45,st
 tl.fromTo("#card",{x:520,rotation:18},{x:0,rotation:-8,duration:.65,ease:"power3.out"},20.4);
 tl.fromTo("#repair",{y:-110,rotation:5},{y:0,rotation:0,duration:.55,ease:"bounce.out"},25.5);
 tl.fromTo("#stat",{scale:.7,opacity:0},{scale:1,opacity:1,duration:.45,ease:"back.out(2)"},27.4);
-tl.fromTo("#strings path",{drawSVG:"0%"},{drawSVG:"100%",duration:.6,stagger:.12},31.5);
+tl.fromTo("#strings path",{scaleX:0,transformOrigin:"50% 50%"},{scaleX:1,duration:.55,stagger:.12,ease:"power2.out"},31.5);
 tl.fromTo("#hero2",{y:45},{y:0,duration:.5,ease:"power2.out"},31.2);
 window.__timelines=window.__timelines||{};window.__timelines.episode=tl;
 </script></template>
