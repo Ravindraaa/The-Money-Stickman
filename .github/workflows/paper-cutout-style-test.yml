@@ -1,0 +1,52 @@
+name: Paper Cutout Style Test
+on:
+  push:
+    branches: [engine-v2-foundation]
+    paths:
+      - 'production/paper-cutout-test/**'
+      - '.github/workflows/paper-cutout-style-test.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: "22"}
+      - name: Install FFmpeg and HyperFrames
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+          npm install --global hyperframes
+      - name: Prepare style-test assets
+        run: |
+          mkdir -p production/paper-cutout-test/vendor
+          cp production/vendor/gsap.min.js production/paper-cutout-test/vendor/gsap.min.js
+          cp production/paper-cutout-test/vendor-source/paper.js production/paper-cutout-test/vendor/paper.js
+      - name: Validate composition
+        working-directory: production/paper-cutout-test
+        run: hyperframes check --json
+      - name: Render 6-second vertical style test
+        working-directory: production/paper-cutout-test
+        env:
+          HYPERFRAMES_BROWSER_PATH: /usr/bin/google-chrome
+        run: hyperframes render
+      - name: Verify render and create preview
+        working-directory: production/paper-cutout-test
+        run: |
+          VIDEO="$(find renders -maxdepth 1 -type f -name '*.mp4' | head -n 1)"
+          test -n "$VIDEO"
+          ffprobe -v error -show_entries format=duration:stream=width,height -of json "$VIDEO"
+          mkdir -p final
+          ffmpeg -y -i "$VIDEO" -vf "fps=1,scale=270:-1,tile=2x3" -frames:v 1 final/contact-sheet.jpg
+          cp "$VIDEO" final/paper-cutout-style-test.mp4
+      - uses: actions/upload-artifact@v4
+        with:
+          name: money-stickman-paper-cutout-style-test
+          path: |
+            production/paper-cutout-test/final/*.mp4
+            production/paper-cutout-test/final/*.jpg
+          retention-days: 7
