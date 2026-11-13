@@ -22,7 +22,7 @@
 <div id="brand">THE MONEY STICKMAN · SOURCES IN DESCRIPTION</div></div>
 <script>
 const tl=gsap.timeline({paused:true});
-const starts=[0,6,12,18,24,30,35];
+const starts=[0,5,10,15,20,25,29];
 starts.forEach((t,i)=>{const s="#s"+i;tl.set(s,{opacity:1},t).fromTo(s+" .kicker",{y:-18,opacity:0},{y:0,opacity:1,duration:.25},t).fromTo(s+" .top",{y:35,opacity:0,scale:.97},{y:0,opacity:1,scale:1,duration:.42,ease:"back.out(1.4)"},t+.12).fromTo(s+" .stage, "+s+" .proof",{y:35,opacity:0,scale:.92,transformOrigin:"50% 50%"},{y:0,opacity:1,scale:1,duration:.55,ease:"power3.out"},t+.35).fromTo(s+" .sub",{y:35,opacity:0},{y:0,opacity:1,duration:.3},t+.8);if(i<6)tl.to(s,{opacity:0,duration:.14},starts[i+1]-.14);
 if(i<7)tl.to(s+" .stage",{scale:1.025,x:8,duration:1.05,ease:"sine.inOut",yoyo:true,repeat:1},t+2.45);
 });
